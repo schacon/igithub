@@ -16,6 +16,11 @@
 		2D500FA20D5A86A600DBA0E3 /* TCPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D500F920D5A86A600DBA0E3 /* TCPServer.m */; };
 		2D500FB40D5A86C000DBA0E3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */; };
 		312C951E0E7A38F200182164 /* Git.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C951D0E7A38F200182164 /* Git.m */; };
+		3191AB5F0E830E8600957F79 /* GitCommit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5A0E830E8600957F79 /* GitCommit.m */; };
+		3191AB600E830E8600957F79 /* GitObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5C0E830E8600957F79 /* GitObject.m */; };
+		3191AB610E830E8600957F79 /* GitServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */; };
+		3191AB730E830F7800957F79 /* NSDataCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB720E830F7800957F79 /* NSDataCompression.m */; };
+		3191AB810E830FA600957F79 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3191AB800E830FA600957F79 /* libz.dylib */; };
 		4A50295F0DF7068E00D72A3B /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A50295E0DF7068E00D72A3B /* BrowserViewController.m */; };
 		4A6968FE0E1AD83800DCB40C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A6968FD0E1AD83800DCB40C /* Default.png */; };
 		4ACBF2160E1AC84C002CC43E /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ACBF2150E1AC84C002CC43E /* bg.png */; };
@@ -26,7 +31,6 @@
 /* Begin PBXFileReference section */
 		188D407D0D6D2F160076AE1E /* TapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapView.m; sourceTree = "<group>"; };
 		188D407E0D6D2F160076AE1E /* TapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapView.h; sourceTree = "<group>"; };
-		1BFA8F9A0DA6BA0400E6B5C8 /* ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* iGitHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iGitHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +43,15 @@
 		2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		312C951C0E7A38F200182164 /* Git.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Git.h; sourceTree = "<group>"; };
 		312C951D0E7A38F200182164 /* Git.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Git.m; sourceTree = "<group>"; };
+		3191AB590E830E8600957F79 /* GitCommit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitCommit.h; sourceTree = "<group>"; };
+		3191AB5A0E830E8600957F79 /* GitCommit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GitCommit.m; sourceTree = "<group>"; };
+		3191AB5B0E830E8600957F79 /* GitObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitObject.h; sourceTree = "<group>"; };
+		3191AB5C0E830E8600957F79 /* GitObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GitObject.m; sourceTree = "<group>"; };
+		3191AB5D0E830E8600957F79 /* GitServerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitServerHandler.h; sourceTree = "<group>"; };
+		3191AB5E0E830E8600957F79 /* GitServerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GitServerHandler.m; sourceTree = "<group>"; };
+		3191AB710E830F7800957F79 /* NSDataCompression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataCompression.h; sourceTree = "<group>"; };
+		3191AB720E830F7800957F79 /* NSDataCompression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataCompression.m; sourceTree = "<group>"; };
+		3191AB800E830FA600957F79 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		4A50295D0DF7068E00D72A3B /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrowserViewController.h; path = Networking/BrowserViewController.h; sourceTree = "<group>"; };
 		4A50295E0DF7068E00D72A3B /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BrowserViewController.m; path = Networking/BrowserViewController.m; sourceTree = "<group>"; };
@@ -59,6 +72,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */,
 				2D500FB40D5A86C000DBA0E3 /* SystemConfiguration.framework in Frameworks */,
+				3191AB810E830FA600957F79 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,13 +91,13 @@
 			isa = PBXGroup;
 			children = (
 				312C951B0E7A38F200182164 /* Git */,
-				1BFA8F9A0DA6BA0400E6B5C8 /* ReadMe.txt */,
 				2D500B1D0D5A766B00DBA0E3 /* Classes */,
 				2D500B6F0D5A793600DBA0E3 /* Support */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				3191AB800E830FA600957F79 /* libz.dylib */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -146,6 +160,14 @@
 		312C951B0E7A38F200182164 /* Git */ = {
 			isa = PBXGroup;
 			children = (
+				3191AB710E830F7800957F79 /* NSDataCompression.h */,
+				3191AB720E830F7800957F79 /* NSDataCompression.m */,
+				3191AB590E830E8600957F79 /* GitCommit.h */,
+				3191AB5A0E830E8600957F79 /* GitCommit.m */,
+				3191AB5B0E830E8600957F79 /* GitObject.h */,
+				3191AB5C0E830E8600957F79 /* GitObject.m */,
+				3191AB5D0E830E8600957F79 /* GitServerHandler.h */,
+				3191AB5E0E830E8600957F79 /* GitServerHandler.m */,
 				312C951C0E7A38F200182164 /* Git.h */,
 				312C951D0E7A38F200182164 /* Git.m */,
 			);
@@ -214,6 +236,10 @@
 				4A50295F0DF7068E00D72A3B /* BrowserViewController.m in Sources */,
 				4AFB75470DF7691E00DCF235 /* Picker.m in Sources */,
 				312C951E0E7A38F200182164 /* Git.m in Sources */,
+				3191AB5F0E830E8600957F79 /* GitCommit.m in Sources */,
+				3191AB600E830E8600957F79 /* GitObject.m in Sources */,
+				3191AB610E830E8600957F79 /* GitServerHandler.m in Sources */,
+				3191AB730E830F7800957F79 /* NSDataCompression.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

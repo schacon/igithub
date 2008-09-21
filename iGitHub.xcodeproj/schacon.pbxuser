@@ -23,7 +23,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					551,
+					552,
 					20,
 					48,
 					43,
@@ -45,7 +45,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					508,
+					512,
 					60,
 					20,
 					48,
@@ -62,8 +62,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 243469861;
-			PBXWorkspaceStateSaveDate = 243469861;
+			PBXPerProjectTemplateStateSaveDate = 243670512;
+			PBXWorkspaceStateSaveDate = 243670512;
 		};
 		perUserProjectItems = {
 			3119E2520E5698460025BCD2 = 3119E2520E5698460025BCD2 /* PlistBookmark */;
@@ -74,15 +74,38 @@
 			3119E2580E5698460025BCD2 = 3119E2580E5698460025BCD2 /* PBXBookmark */;
 			3119E2590E5698460025BCD2 = 3119E2590E5698460025BCD2 /* PBXTextBookmark */;
 			3119E25B0E5698460025BCD2 = 3119E25B0E5698460025BCD2 /* PBXBookmark */;
-			312C95310E7A3BB700182164 = 312C95310E7A3BB700182164 /* PBXTextBookmark */;
-			312C95320E7A3BB700182164 = 312C95320E7A3BB700182164 /* PBXTextBookmark */;
-			312C95330E7A3BB700182164 = 312C95330E7A3BB700182164 /* PBXTextBookmark */;
 			312C95340E7A3BB700182164 = 312C95340E7A3BB700182164 /* PBXTextBookmark */;
 			312C95350E7A3BB700182164 = 312C95350E7A3BB700182164 /* PBXTextBookmark */;
 			312C95360E7A3BB700182164 = 312C95360E7A3BB700182164 /* PBXTextBookmark */;
-			312C95370E7A3BB700182164 = 312C95370E7A3BB700182164 /* PBXTextBookmark */;
-			312C95380E7A3BB700182164 = 312C95380E7A3BB700182164 /* PBXTextBookmark */;
-			3191AB560E830E2900957F79 /* PBXTextBookmark */ = 3191AB560E830E2900957F79 /* PBXTextBookmark */;
+			3158C1220E861B5C004FAE60 = 3158C1220E861B5C004FAE60 /* PBXTextBookmark */;
+			3158C1230E861B5C004FAE60 = 3158C1230E861B5C004FAE60 /* PBXTextBookmark */;
+			3158C1240E861B5C004FAE60 = 3158C1240E861B5C004FAE60 /* PBXTextBookmark */;
+			3158C1250E861B5C004FAE60 = 3158C1250E861B5C004FAE60 /* PBXTextBookmark */;
+			3158C1260E861B5C004FAE60 = 3158C1260E861B5C004FAE60 /* PBXTextBookmark */;
+			3191AB6C0E830EE900957F79 = 3191AB6C0E830EE900957F79 /* PBXTextBookmark */;
+			3191AB6D0E830EE900957F79 = 3191AB6D0E830EE900957F79 /* PBXTextBookmark */;
+			3191AB940E83115200957F79 = 3191AB940E83115200957F79 /* PBXTextBookmark */;
+			3191AB950E83115200957F79 = 3191AB950E83115200957F79 /* PBXTextBookmark */;
+			3191ABB00E837A9E00957F79 = 3191ABB00E837A9E00957F79 /* PBXTextBookmark */;
+			3191ABE80E837EAB00957F79 = 3191ABE80E837EAB00957F79 /* PBXTextBookmark */;
+			3191ABEA0E837EAB00957F79 = 3191ABEA0E837EAB00957F79 /* PBXTextBookmark */;
+			3191ABEF0E837EAB00957F79 = 3191ABEF0E837EAB00957F79 /* PBXTextBookmark */;
+			3191ABF00E837EAB00957F79 = 3191ABF00E837EAB00957F79 /* PBXTextBookmark */;
+			3191ABF90E837EAB00957F79 = 3191ABF90E837EAB00957F79 /* PBXTextBookmark */;
+			3191AC220E856FA500957F79 = 3191AC220E856FA500957F79 /* PBXTextBookmark */;
+			3191AC390E85704C00957F79 = 3191AC390E85704C00957F79 /* PBXTextBookmark */;
+			3191AC3A0E85704C00957F79 = 3191AC3A0E85704C00957F79 /* PBXTextBookmark */;
+			3191AC7B0E85790E00957F79 = 3191AC7B0E85790E00957F79 /* PBXTextBookmark */;
+			3191AC7C0E85790E00957F79 = 3191AC7C0E85790E00957F79 /* PBXTextBookmark */;
+			3191ACA30E857E4800957F79 = 3191ACA30E857E4800957F79 /* PBXTextBookmark */;
+			3191ACC10E85812B00957F79 = 3191ACC10E85812B00957F79 /* PBXTextBookmark */;
+			31A12C690E861BA0008EE3D1 = 31A12C690E861BA0008EE3D1 /* PBXTextBookmark */;
+			31A12C780E861C27008EE3D1 = 31A12C780E861C27008EE3D1 /* PBXTextBookmark */;
+			31A12C7C0E861C41008EE3D1 = 31A12C7C0E861C41008EE3D1 /* PBXTextBookmark */;
+			31A12C810E861CA8008EE3D1 = 31A12C810E861CA8008EE3D1 /* PBXTextBookmark */;
+			31A12C840E861CDA008EE3D1 = 31A12C840E861CDA008EE3D1 /* PBXTextBookmark */;
+			31A12C870E861D4A008EE3D1 = 31A12C870E861D4A008EE3D1 /* PBXTextBookmark */;
+			31A12C8A0E861D82008EE3D1 = 31A12C8A0E861D82008EE3D1 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 3119E1B50E5537520025BCD2 /* Source Control */;
 		userBuildSettings = {
@@ -95,11 +118,18 @@
 			sepNavVisRange = "{0, 211}";
 		};
 	};
+	2D500B1A0D5A766900DBA0E3 /* AppController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {936, 1120}}";
+			sepNavSelRange = "{2800, 58}";
+			sepNavVisRange = "{2403, 579}";
+		};
+	};
 	2D500B1B0D5A766900DBA0E3 /* AppController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1153, 4784}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{5310, 974}";
+			sepNavIntBoundsRect = "{{0, 0}, {1195, 4800}}";
+			sepNavSelRange = "{4608, 0}";
+			sepNavVisRange = "{4162, 876}";
 		};
 	};
 	3119E1A10E5537430025BCD2 /* iGitHub */ = {
@@ -123,8 +153,12 @@
 		executableUserSymbolLevel = 0;
 		libgmallocEnabled = 0;
 		name = iGitHub;
+		savedGlobals = {
+		};
 		sourceDirectories = (
 		);
+		variableFormatDictionary = {
+		};
 	};
 	3119E1B50E5537520025BCD2 /* Source Control */ = {
 		isa = PBXSourceControlManager;
@@ -197,47 +231,17 @@
 	};
 	312C951C0E7A38F200182164 /* Git.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {729, 661}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 110}";
+			sepNavIntBoundsRect = "{{0, 0}, {772, 598}}";
+			sepNavSelRange = "{167, 0}";
+			sepNavVisRange = "{0, 473}";
 		};
 	};
 	312C951D0E7A38F200182164 /* Git.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {729, 661}}";
-			sepNavSelRange = "{110, 0}";
-			sepNavVisRange = "{0, 116}";
+			sepNavIntBoundsRect = "{{0, 0}, {729, 1424}}";
+			sepNavSelRange = "{117, 0}";
+			sepNavVisRange = "{0, 362}";
 		};
-	};
-	312C95310E7A3BB700182164 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 2D500B1B0D5A766900DBA0E3 /* AppController.m */;
-		name = "AppController.m: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 974;
-		vrLoc = 5310;
-	};
-	312C95320E7A3BB700182164 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 312C951C0E7A38F200182164 /* Git.h */;
-		name = "Git.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 110;
-		vrLoc = 0;
-	};
-	312C95330E7A3BB700182164 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 312C951D0E7A38F200182164 /* Git.m */;
-		name = "Git.m: 6";
-		rLen = 0;
-		rLoc = 68;
-		rType = 0;
-		vrLen = 116;
-		vrLoc = 0;
 	};
 	312C95340E7A3BB700182164 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -264,39 +268,349 @@
 		fRef = 312C951D0E7A38F200182164 /* Git.m */;
 		name = "Git.m: 6";
 		rLen = 0;
-		rLoc = 68;
+		rLoc = 141;
 		rType = 0;
 		vrLen = 116;
 		vrLoc = 0;
 	};
-	312C95370E7A3BB700182164 /* PBXTextBookmark */ = {
+	3158C1220E861B5C004FAE60 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = 312C951C0E7A38F200182164 /* Git.h */;
-		name = "Git.h: 1";
+		fRef = 2D500B1B0D5A766900DBA0E3 /* AppController.m */;
+		name = "AppController.m: 161";
+		rLen = 0;
+		rLoc = 4608;
+		rType = 0;
+		vrLen = 876;
+		vrLoc = 4162;
+	};
+	3158C1230E861B5C004FAE60 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 158";
+		rLen = 0;
+		rLoc = 3790;
+		rType = 0;
+		vrLen = 715;
+		vrLoc = 3395;
+	};
+	3158C1240E861B5C004FAE60 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 158";
+		rLen = 0;
+		rLoc = 3790;
+		rType = 0;
+		vrLen = 745;
+		vrLoc = 3395;
+	};
+	3158C1250E861B5C004FAE60 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2D500B1B0D5A766900DBA0E3 /* AppController.m */;
+		name = "AppController.m: 161";
+		rLen = 0;
+		rLoc = 4608;
+		rType = 0;
+		vrLen = 876;
+		vrLoc = 4162;
+	};
+	3158C1260E861B5C004FAE60 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 45";
+		rLen = 0;
+		rLoc = 960;
+		rType = 0;
+		vrLen = 994;
+		vrLoc = 626;
+	};
+	3191AB590E830E8600957F79 /* GitCommit.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {621, 688}}";
+			sepNavSelRange = "{351, 25}";
+			sepNavVisRange = "{91, 493}";
+			sepNavWindowFrame = "{{38, 88}, {928, 764}}";
+		};
+	};
+	3191AB5A0E830E8600957F79 /* GitCommit.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {936, 1760}}";
+			sepNavSelRange = "{1579, 41}";
+			sepNavVisRange = "{1327, 1440}";
+		};
+	};
+	3191AB5B0E830E8600957F79 /* GitObject.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {729, 432}}";
+			sepNavSelRange = "{193, 45}";
+			sepNavVisRange = "{0, 561}";
+		};
+	};
+	3191AB5C0E830E8600957F79 /* GitObject.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {772, 892}}";
+			sepNavSelRange = "{404, 0}";
+			sepNavVisRange = "{0, 630}";
+		};
+	};
+	3191AB5D0E830E8600957F79 /* GitServerHandler.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {772, 598}}";
+			sepNavSelRange = "{376, 0}";
+			sepNavVisRange = "{0, 890}";
+		};
+	};
+	3191AB5E0E830E8600957F79 /* GitServerHandler.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 3280}}";
+			sepNavSelRange = "{4439, 0}";
+			sepNavVisRange = "{4069, 554}";
+		};
+	};
+	3191AB6C0E830EE900957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB590E830E8600957F79 /* GitCommit.h */;
+		name = "GitCommit.h: 1";
 		rLen = 0;
 		rLoc = 0;
 		rType = 0;
-		vrLen = 110;
+		vrLen = 1094;
 		vrLoc = 0;
 	};
-	312C95380E7A3BB700182164 /* PBXTextBookmark */ = {
+	3191AB6D0E830EE900957F79 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = 312C951D0E7A38F200182164 /* Git.m */;
-		name = "Git.m: 12";
+		fRef = 3191AB5A0E830E8600957F79 /* GitCommit.m */;
+		name = "GitCommit.m: 1";
 		rLen = 0;
-		rLoc = 110;
+		rLoc = 0;
 		rType = 0;
-		vrLen = 116;
+		vrLen = 1542;
+		vrLoc = 1773;
+	};
+	3191AB940E83115200957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5C0E830E8600957F79 /* GitObject.m */;
+		name = "GitObject.m: 23";
+		rLen = 0;
+		rLoc = 404;
+		rType = 0;
+		vrLen = 460;
 		vrLoc = 0;
 	};
-	3191AB560E830E2900957F79 /* PBXTextBookmark */ = {
+	3191AB950E83115200957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2D500B1A0D5A766900DBA0E3 /* AppController.h */;
+		name = "AppController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1552;
+		vrLoc = 0;
+	};
+	3191ABB00E837A9E00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4A50295E0DF7068E00D72A3B /* BrowserViewController.m */;
+		name = "BrowserViewController.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 531;
+		vrLoc = 13858;
+	};
+	3191ABE80E837EAB00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB590E830E8600957F79 /* GitCommit.h */;
+		name = "GitCommit.h: 18";
+		rLen = 25;
+		rLoc = 351;
+		rType = 0;
+		vrLen = 835;
+		vrLoc = 0;
+	};
+	3191ABEA0E837EAB00957F79 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 312C951D0E7A38F200182164 /* Git.m */;
-		name = "Git.m: 12";
+		name = "Git.m: 10";
 		rLen = 0;
-		rLoc = 110;
+		rLoc = 117;
 		rType = 0;
-		vrLen = 116;
+		vrLen = 362;
 		vrLoc = 0;
+	};
+	3191ABEF0E837EAB00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5D0E830E8600957F79 /* GitServerHandler.h */;
+		name = "GitServerHandler.h: 12";
+		rLen = 100;
+		rLoc = 429;
+		rType = 0;
+		vrLen = 253;
+		vrLoc = 0;
+	};
+	3191ABF00E837EAB00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 12";
+		rLen = 0;
+		rLoc = 649;
+		rType = 0;
+		vrLen = 248;
+		vrLoc = 0;
+	};
+	3191ABF90E837EAB00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5B0E830E8600957F79 /* GitObject.h */;
+		name = "GitObject.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 561;
+		vrLoc = 0;
+	};
+	3191AC220E856FA500957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4A50295E0DF7068E00D72A3B /* BrowserViewController.m */;
+		name = "BrowserViewController.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 715;
+		vrLoc = 13379;
+	};
+	3191AC390E85704C00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5B0E830E8600957F79 /* GitObject.h */;
+		name = "GitObject.h: 16";
+		rLen = 45;
+		rLoc = 193;
+		rType = 0;
+		vrLen = 561;
+		vrLoc = 0;
+	};
+	3191AC3A0E85704C00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2D500B1A0D5A766900DBA0E3 /* AppController.h */;
+		name = "AppController.h: 62";
+		rLen = 58;
+		rLoc = 2800;
+		rType = 0;
+		vrLen = 579;
+		vrLoc = 2403;
+	};
+	3191AC7B0E85790E00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5C0E830E8600957F79 /* GitObject.m */;
+		name = "GitObject.m: 23";
+		rLen = 0;
+		rLoc = 404;
+		rType = 0;
+		vrLen = 710;
+		vrLoc = 0;
+	};
+	3191AC7C0E85790E00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5A0E830E8600957F79 /* GitCommit.m */;
+		name = "GitCommit.m: 63";
+		rLen = 41;
+		rLoc = 1579;
+		rType = 0;
+		vrLen = 1440;
+		vrLoc = 1327;
+	};
+	3191ACA30E857E4800957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 312C951C0E7A38F200182164 /* Git.h */;
+		name = "Git.h: 10";
+		rLen = 0;
+		rLoc = 167;
+		rType = 0;
+		vrLen = 473;
+		vrLoc = 0;
+	};
+	3191ACC10E85812B00957F79 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5D0E830E8600957F79 /* GitServerHandler.h */;
+		name = "GitServerHandler.h: 18";
+		rLen = 0;
+		rLoc = 376;
+		rType = 0;
+		vrLen = 890;
+		vrLoc = 0;
+	};
+	31A12C690E861BA0008EE3D1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 45";
+		rLen = 0;
+		rLoc = 960;
+		rType = 0;
+		vrLen = 932;
+		vrLoc = 626;
+	};
+	31A12C780E861C27008EE3D1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 44";
+		rLen = 0;
+		rLoc = 959;
+		rType = 0;
+		vrLen = 900;
+		vrLoc = 626;
+	};
+	31A12C7C0E861C41008EE3D1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 43";
+		rLen = 0;
+		rLoc = 947;
+		rType = 0;
+		vrLen = 895;
+		vrLoc = 626;
+	};
+	31A12C810E861CA8008EE3D1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 47";
+		rLen = 0;
+		rLoc = 959;
+		rType = 0;
+		vrLen = 888;
+		vrLoc = 461;
+	};
+	31A12C840E861CDA008EE3D1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 46";
+		rLen = 0;
+		rLoc = 959;
+		rType = 0;
+		vrLen = 937;
+		vrLoc = 461;
+	};
+	31A12C870E861D4A008EE3D1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 47";
+		rLen = 0;
+		rLoc = 959;
+		rType = 0;
+		vrLen = 914;
+		vrLoc = 649;
+	};
+	31A12C8A0E861D82008EE3D1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */;
+		name = "GitServerHandler.m: 195";
+		rLen = 0;
+		rLoc = 4437;
+		rType = 0;
+		vrLen = 554;
+		vrLoc = 4069;
+	};
+	4A50295E0DF7068E00D72A3B /* BrowserViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {957, 6592}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{13379, 715}";
+		};
 	};
 }
