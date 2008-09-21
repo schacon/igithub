@@ -4,6 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GitObject.h"
 
 @interface GitCommit : NSObject {
 	NSArray	   *parentShas;

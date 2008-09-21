@@ -8,6 +8,8 @@ Version: 1.5
 
 */
 
+#import "Git.h"
+#import "GitServerHandler.h"
 #import "AppController.h"
 #import "Picker.h"
 
@@ -214,26 +216,26 @@ Version: 1.5
 			else
 				_outReady = YES;
 			
+			NSLog(@"%s", _cmd);
+
 			if (_inReady && _outReady) {
-				alertView = [[UIAlertView alloc] initWithTitle:@"Game started!" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Continue", nil];
+				alertView = [[UIAlertView alloc] initWithTitle:@"Git server started!" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Continue", nil];
+				[alertView show];
+				[alertView release];
+				
+				Git* git = [Git alloc];
+				[git openRepo: @"/opt/gittest/.git"];
+				[[GitServerHandler alloc] initWithGit:git input:_inStream output:_outStream];				
+
+				alertView = [[UIAlertView alloc] initWithTitle:@"Peer Disconnected!" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"Continue", nil];
 				[alertView show];
 				[alertView release];
 			}
+
 			break;
 		}
 		case NSStreamEventHasBytesAvailable:
 		{
-			if (stream == _inStream) {
-				uint8_t b;
-				unsigned int len = 0;
-				len = [_inStream read:&b maxLength:sizeof(uint8_t)];
-				if(!len) {
-					if ([stream streamStatus] != NSStreamStatusAtEnd)
-						[self _showAlert:@"Failed reading data from peer"];
-				} else {
-					NSLog(@"%d", b);
-				}
-			}
 			break;
 		}
 		case NSStreamEventEndEncountered:

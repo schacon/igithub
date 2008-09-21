@@ -4,6 +4,9 @@
 //
 
 #import "Git.h"
+#import "GitObject.h"
+#import "GitCommit.h"
+#import "GitServerHandler.h"
 
 @implementation Git
 

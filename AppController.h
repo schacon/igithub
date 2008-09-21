@@ -50,6 +50,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "BrowserViewController.h"
 #import "Picker.h"
 #import "TCPServer.h"
+#import "GitCommit.h"
 
 //CLASS INTERFACES:
 

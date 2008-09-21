@@ -8,8 +8,6 @@
 //#include <CFNetwork/CFSocketStream.h>
 
 #import <Foundation/Foundation.h>
-#import "GitObject.h"
-#import "GitCommit.h"
 
 @interface Git : NSObject {
 	NSString* gitDirectory;
