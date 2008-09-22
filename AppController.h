@@ -63,7 +63,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	NSOutputStream*		_outStream;
 	BOOL				_inReady;
 	BOOL				_outReady;
+	NSString*			gitDir;
 }
+
+@property(assign, readwrite) NSString *gitDir;
+
 - (void) activateView:(TapView*)view;
 - (void) deactivateView:(TapView*)view;
 @end

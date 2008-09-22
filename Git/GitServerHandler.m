@@ -6,29 +6,32 @@
 #define NULL_SHA @"0000000000000000000000000000000000000000"
 #define CAPABILITIES @" "
 
-#define OBJ_NONE	  0
-#define OBJ_COMMIT	  1
-#define OBJ_TREE	  2
-#define OBJ_BLOB	  3
-#define OBJ_TAG		  4
+#define OBJ_NONE 0
+#define OBJ_COMMIT 1
+#define OBJ_TREE 2
+#define OBJ_BLOB 3
+#define OBJ_TAG 4
 #define OBJ_OFS_DELTA 6
 #define OBJ_REF_DELTA 7
 
 #import "Git.h"
 #import "GitServerHandler.h"
+#include <zlib.h>
 
 @implementation GitServerHandler
 
 @synthesize inStream;
 @synthesize outStream;
 @synthesize gitRepo;
+@synthesize gitPath;
 
 @synthesize refsRead;
 @synthesize capabilitiesSent;
 
-- (void) initWithGit:(Git *)git input:(NSInputStream *)streamIn output:(NSOutputStream *)streamOut
+- (void) initWithGit:(Git *)git gitPath:(NSString *)gitRepoPath input:(NSInputStream *)streamIn output:(NSOutputStream *)streamOut
 {
 	gitRepo		= git;
+	gitPath 	= gitRepoPath;
 	inStream	= streamIn;
 	outStream	= streamOut;
 	[self handleRequest];
@@ -40,14 +43,21 @@
  * either upload-pack for fetches or receive-pack for pushes
  */
 - (void) handleRequest {
-	NSString *header, *command, *repository;
+	NSString *header, *command, *repository, *repo, *hostpath;
 	header = [self packetReadLine];
-	NSLog(@"header: %@", header);
 	
 	NSArray *values = [header componentsSeparatedByString:@" "];
 	command		= [values objectAtIndex: 0];			
 	repository	= [values objectAtIndex: 1];
-	NSLog(@"header: %@ : %@", command, repository);
+	
+	values = [repository componentsSeparatedByCharactersInSet:[NSCharacterSet controlCharacterSet]];
+	repo		= [values objectAtIndex: 0];			
+	hostpath	= [values objectAtIndex: 1];
+	
+	NSLog(@"header: %@ : %@ : %@", command, repo, hostpath);
+
+	NSString *dir = [gitPath stringByAppendingPathComponent:repo];
+	[gitRepo openRepo:dir];
 	
 	if([command isEqualToString: @"git-receive-pack"]) {		// git push  //
 		NSLog(@"RECEIVE-PACK");
@@ -69,11 +79,8 @@
 - (void) receivePack:(NSString *)repositoryName {
 	capabilitiesSent = 0;
 
-	/*
-	 @git_dir = File.join(@path, path)
-	 git_init(@git_dir) if !File.exists?(@git_dir)
-	 */
-	 
+	[gitRepo ensureGitPath];
+	
 	[self sendRefs];
 	[self readRefs];
 	[self readPack];
@@ -131,9 +138,98 @@
  */
 - (void) readPack {
 	NSLog(@"read pack");
+	int n;
 	int entries = [self readPackHeader];
-	[self unpackAll:entries];
+	
+	for(n = 1; n <= entries; n++) {
+		NSLog(@"entry: %d", n);
+		[self unpackObject];
+	}
+	// receive and process checksum
 } 
+
+- (void) unpackObject {
+	NSLog(@"unpack object");
+	
+	// read in the header
+	int size, type, shift;
+	uint8_t byte[1];
+	[inStream read:byte maxLength:1];
+	
+	size = byte[0] & 0xf;
+	type = (byte[0] >> 4) & 7;
+	shift = 4;
+	while((byte[0] & 0x80) != 0) {
+		[inStream read:byte maxLength:1];
+        size |= ((byte[0] & 0x7f) << shift);
+        shift += 7;
+	}
+	
+	NSLog(@"\nTYPE: %d\n", type);
+	NSLog(@"size: %d\n", size);
+	
+	if((type == OBJ_COMMIT) || (type == OBJ_TREE) || (type == OBJ_BLOB) || (type == OBJ_TAG)) {
+		NSData *objectData;
+		objectData = [self readData:size];
+		[gitRepo writeObject:objectData withType:type withSize:size];
+		// TODO : check saved delta objects
+	} else if ((type == OBJ_REF_DELTA) || (type == OBJ_OFS_DELTA)) {
+		NSLog(@"NO SUPPORT FOR DELTAS YET");
+	} else {
+		NSLog(@"bad object type %d", type);
+	}
+}
+
+- (NSData *) readData:(int)size {
+	// read in the data		
+	NSMutableData *decompressed = [NSMutableData dataWithLength: size];
+	BOOL done = NO;
+	int status;
+	
+	uint8_t	buffer[2];
+	[inStream read:buffer maxLength:1];
+	
+	z_stream strm;
+	strm.next_in = buffer;
+	strm.avail_in = 1;
+	strm.total_out = 0;
+	strm.zalloc = Z_NULL;
+	strm.zfree = Z_NULL;
+	
+	if (inflateInit (&strm) != Z_OK) 
+		NSLog(@"Inflate Issue");
+	
+	while (!done)
+	{
+		// Make sure we have enough room and reset the lengths.
+		if (strm.total_out >= [decompressed length])
+			[decompressed increaseLengthBy: 100];
+		strm.next_out = [decompressed mutableBytes] + strm.total_out;
+		strm.avail_out = [decompressed length] - strm.total_out;
+
+		// Inflate another chunk.
+		status = inflate (&strm, Z_SYNC_FLUSH);
+		if (status == Z_STREAM_END) done = YES;
+		else if (status != Z_OK) {
+			NSLog(@"status for break: %d", status);
+			break;
+		}
+
+		if(!done) {
+			[inStream read:buffer maxLength:1];			
+			strm.next_in = buffer;
+			strm.avail_in = 1;
+		}
+	}
+	if (inflateEnd (&strm) != Z_OK)
+		NSLog(@"Inflate Issue");
+	
+	// Set real length.
+	if (done)
+		[decompressed setLength: strm.total_out];
+	
+	return decompressed;
+}
 
 - (int) readPackHeader {
 	NSLog(@"read pack header");
@@ -146,13 +242,7 @@
 	
 	entries = (inEntries[0] << 24) | (inEntries[1] << 16) | (inEntries[2] << 8) | inEntries[3];
 	version = (inVer[0] << 24) | (inVer[1] << 16) | (inVer[2] << 8) | inVer[3];
-	NSLog(@"entfin : %d", entries);
-	NSLog(@"version: %d", version);
 	return entries;
-}
-
-- (void) unpackAll:(int)entries {
-	NSLog(@"unpack all : %d", entries);
 }
 
 /*

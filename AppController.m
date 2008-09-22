@@ -38,6 +38,8 @@ Version: 1.5
 
 @implementation AppController
 
+@synthesize gitDir;
+
 - (void) _showAlert:(NSString*)title
 {
 	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:@"Check your networking configuration." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -85,9 +87,7 @@ Version: 1.5
 	[_outStream release];
 
 	[_server release];
-	
 	[_picker release];
-	
 	[_window release];
 	
 	[super dealloc];
@@ -222,10 +222,22 @@ Version: 1.5
 				alertView = [[UIAlertView alloc] initWithTitle:@"Git server started!" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Continue", nil];
 				[alertView show];
 				[alertView release];
+								
+				// getting the git path
+				NSArray *paths;
+				paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+				if ([paths count] > 0) {
+					gitDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"git"];
+					
+					BOOL isDir;
+					NSFileManager *fm = [NSFileManager defaultManager];
+					if (![fm fileExistsAtPath:gitDir isDirectory:&isDir] && isDir) {
+						[fm createDirectoryAtPath:gitDir attributes:nil];
+					}
+				}
 				
 				Git* git = [Git alloc];
-				[git openRepo: @"/opt/gittest/.git"];
-				[[GitServerHandler alloc] initWithGit:git input:_inStream output:_outStream];				
+				[[GitServerHandler alloc] initWithGit:git gitPath:gitDir input:_inStream output:_outStream];				
 
 				alertView = [[UIAlertView alloc] initWithTitle:@"Peer Disconnected!" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"Continue", nil];
 				[alertView show];

@@ -16,6 +16,10 @@
 @property(assign, readwrite) NSString *gitDirectory;
 
 - (BOOL) openRepo:(NSString *)dirPath;
+- (BOOL) ensureGitPath;
+- (void) initGitRepo;
+
+- (void) writeObject:(NSData *)objectData withType:(int)type withSize:(int)size;
 
 - (NSMutableArray *) getCommitsFromSha:(NSString *)shaValue withLimit:(int)commitSize;
 - (NSString *) getLooseObjectPathBySha:(NSString *)shaValue;
