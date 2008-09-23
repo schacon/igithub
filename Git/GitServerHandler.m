@@ -94,8 +94,8 @@
 - (void) sendRefs {
 	NSLog(@"send refs");
 
-	// get refs from gitRepo		//
-	// foreach ref, send to client	//
+	// TODO : get refs from gitRepo		//
+	// foreach ref, send to client	    //
 	/*
 	 refs.each do |ref|
 	 send_ref(ref[1], ref[0])
@@ -122,9 +122,10 @@
 	NSString *data;
 	NSLog(@"read refs");
 	data = [self packetReadLine];
+	NSMutableArray *refs = [[NSMutableArray alloc] init];
 	while([data length] > 0) {
 		NSArray  *values  = [data componentsSeparatedByString:@" "];
-		[refsRead addObject: values];  // save the refs for writing later
+		[refs addObject: values];  // save the refs for writing later
 		
 		/* DEBUGGING */
 		NSLog(@"ref: [%@ : %@ : %@]", [values objectAtIndex: 0], \
@@ -132,6 +133,7 @@
 		
 		data = [self packetReadLine];
 	}
+	refsRead = [NSArray arrayWithArray:refs];
 }
 
 /*
@@ -398,6 +400,16 @@
  */
 - (void) writeRefs {
 	NSLog(@"write refs");
+	NSEnumerator *e = [refsRead objectEnumerator];
+	NSArray *thisRef;
+	NSString *toSha, *refName;
+	
+	while ( (thisRef = [e nextObject]) ) {
+		NSLog(@"ref: %@", thisRef);
+		toSha   = [thisRef objectAtIndex:1];
+		refName = [thisRef objectAtIndex:2];
+		[gitRepo updateRef:refName toSha:toSha];
+	}	
 }
 
 
