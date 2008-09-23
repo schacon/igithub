@@ -4,6 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GitObject.h"
 
 @interface GitServerHandler : NSObject {
 	NSInputStream*		inStream;
@@ -34,7 +35,12 @@
 - (void) writeRefs;
 - (NSData *) readData:(int)size;
 - (NSString *) typeString:(int)type;
+- (void) unpackDeltified:(int)type size:(int)size;
 
+- (NSData *) patchDelta:(NSData *)deltaData withObject:(GitObject *)gitObject;
+- (NSArray *) patchDeltaHeaderSize:(NSData *)deltaData position:(int)position;
+
+- (NSString *)readServerSha;
 - (int) readPackHeader;
 - (void) unpackObject;
 

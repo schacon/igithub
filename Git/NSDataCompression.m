@@ -11,7 +11,6 @@
 @implementation NSData (Compression)
 - (NSData *) compressedData
 {
-	NSData *result = nil;
 	unsigned int srcLength = [self length];
 	if (srcLength > 0)
 	{
@@ -23,15 +22,15 @@
 		switch( error ) {
 			case Z_OK:
 				[compData setLength: buffLength];
-				//ASSIGNCOPY(result, compData);
+				return [NSData dataWithBytes:[compData bytes] length:buffLength];
 				break;
 			default:
 				NSAssert( YES, @"Error compressing: Memory Error!" );
 				break;
 		}
-		//RELEASE(compData);
+		//[compData release];
     }
-    return result;
+    return nil;
 }
 
 - (NSData *) decompressedData

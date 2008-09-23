@@ -8,6 +8,7 @@
 //#include <CFNetwork/CFSocketStream.h>
 
 #import <Foundation/Foundation.h>
+#import "GitObject.h"
 
 @interface Git : NSObject {
 	NSString* gitDirectory;
@@ -23,6 +24,8 @@
 
 - (NSMutableArray *) getCommitsFromSha:(NSString *)shaValue withLimit:(int)commitSize;
 - (NSString *) getLooseObjectPathBySha:(NSString *)shaValue;
+- (BOOL) hasObject: (NSString *)sha1;
+- (GitObject *) getObjectFromSha:(NSString *)sha1;
 
 + (int) isAlpha:(unsigned char)n ;
 + (int) gitUnpackHex:(const unsigned char *)rawsha fillSha:(char *)sha1;

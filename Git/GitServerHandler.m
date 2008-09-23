@@ -15,6 +15,7 @@
 #define OBJ_REF_DELTA 7
 
 #import "Git.h"
+#import "GitObject.h"
 #import "GitServerHandler.h"
 #include <zlib.h>
 
@@ -148,9 +149,7 @@
 	// receive and process checksum
 } 
 
-- (void) unpackObject {
-	NSLog(@"unpack object");
-	
+- (void) unpackObject {	
 	// read in the header
 	int size, type, shift;
 	uint8_t byte[1];
@@ -165,8 +164,8 @@
         shift += 7;
 	}
 	
-	NSLog(@"\nTYPE: %d\n", type);
-	NSLog(@"size: %d\n", size);
+	//NSLog(@"\nTYPE: %d\n", type);
+	//NSLog(@"size: %d\n", size);
 	
 	if((type == OBJ_COMMIT) || (type == OBJ_TREE) || (type == OBJ_BLOB) || (type == OBJ_TAG)) {
 		NSData *objectData;
@@ -174,10 +173,147 @@
 		[gitRepo writeObject:objectData withType:[self typeString:type] withSize:size];
 		// TODO : check saved delta objects
 	} else if ((type == OBJ_REF_DELTA) || (type == OBJ_OFS_DELTA)) {
-		NSLog(@"NO SUPPORT FOR DELTAS YET");
+		[self unpackDeltified:type size:size];
 	} else {
 		NSLog(@"bad object type %d", type);
 	}
+}
+
+- (void) unpackDeltified:(int)type size:(int)size {
+	if(type == OBJ_REF_DELTA) {
+		NSString *sha1;
+		NSData *objectData, *contents;
+
+		sha1 = [self readServerSha];
+		//NSLog(@"DELTA SHA: %@", sha1);
+		objectData = [self readData:size];
+
+		if([gitRepo hasObject:sha1]) {
+			GitObject *object;
+			object = [gitRepo getObjectFromSha:sha1];
+			contents = [self patchDelta:objectData withObject:object];
+			[gitRepo writeObject:contents withType:[self typeString:type] withSize:size];
+		} else {
+			// TODO : OBJECT ISN'T HERE YET, SAVE THIS DELTA FOR LATER //
+			/*
+			 @delta_list[sha1] ||= []
+			 @delta_list[sha1] << delta
+			 */
+		}
+	} else {
+		// offset deltas not supported yet
+		// this isn't returned in the capabilities, so it shouldn't be a problem
+	}
+}
+
+- (NSData *) patchDelta:(NSData *)deltaData withObject:(GitObject *)gitObject
+{
+	int sourceSize, destSize, position;
+	int cp_off, cp_size;
+	unsigned char c[2], d[2];
+	
+	int buffLength = 1000;
+	NSMutableData *buffer = [[NSMutableData alloc] initWithCapacity:buffLength];
+	
+	NSArray *sizePos = [self patchDeltaHeaderSize:deltaData position:0];
+	sourceSize	= [[sizePos objectAtIndex:0] intValue];
+	position	= [[sizePos objectAtIndex:1] intValue];
+	
+	sizePos = [self patchDeltaHeaderSize:deltaData position:position];
+	destSize	= [[sizePos objectAtIndex:0] intValue];
+	position	= [[sizePos objectAtIndex:1] intValue];
+
+	//NSLog(@"DS: %d  Pos:%d", destSize, position);
+
+	NSData *source = [NSData dataWithBytes:[[gitObject contents] UTF8String] length:[gitObject size]];
+	NSMutableData *destination = [NSMutableData dataWithCapacity:destSize];
+
+	while (position < ([deltaData length] - 1)) {
+		[deltaData getBytes:c range:NSMakeRange(position, 1)];
+		//NSLog(@"CHR: %d", c[0]);
+		
+		position += 1;
+		if((c[0] & 0x80) != 0) {
+			position -= 1;
+			cp_off = cp_size = 0;
+			
+			if((c[0] & 0x01) != 0) {
+				[deltaData getBytes:d range:NSMakeRange(position += 1, 1)];
+				cp_off = d[0];
+			}
+			if((c[0] & 0x02) != 0) {
+				[deltaData getBytes:d range:NSMakeRange(position += 1, 1)];
+				cp_off |= d[0] << 8;
+			}
+			if((c[0] & 0x04) != 0) {
+				[deltaData getBytes:d range:NSMakeRange(position += 1, 1)];
+				cp_off |= d[0] << 16;
+			}
+			if((c[0] & 0x08) != 0) {
+				[deltaData getBytes:d range:NSMakeRange(position += 1, 1)];
+				cp_off |= d[0] << 24;
+			}
+			if((c[0] & 0x10) != 0) {
+				[deltaData getBytes:d range:NSMakeRange(position += 1, 1)];
+				cp_size = d[0];
+			}
+			if((c[0] & 0x20) != 0) {
+				[deltaData getBytes:d range:NSMakeRange(position += 1, 1)];				
+				cp_size |= d[0] << 8;
+			}
+			if((c[0] & 0x40) != 0) {
+				[deltaData getBytes:d range:NSMakeRange(position += 1, 1)];
+				cp_size |= d[0] << 16;
+			}
+			if(cp_size == 0)
+				cp_size = 0x10000;
+			
+			position += 1;
+			//NSLog(@"pos: %d", position);
+			//NSLog(@"offset: %d, %d", cp_off, cp_size);
+			
+			if(cp_size > buffLength) {
+				buffLength = cp_size + 1;
+				[buffer setLength:buffLength];
+			}
+
+			[source getBytes:[buffer mutableBytes] range:NSMakeRange(cp_off, cp_size)];
+			[destination appendBytes:[buffer bytes]	length:cp_size];
+		} else if(c[0] != 0) {
+			//NSLog(@"thingy: %d, %d", position, c[0]);
+			[source getBytes:[buffer mutableBytes] range:NSMakeRange(position, c[0])];
+			[destination appendBytes:[buffer bytes]	length:c[0]];
+			position += c[0];
+		} else {
+			 NSLog(@"invalid delta data");
+		}
+	}
+	return [NSData dataWithBytes:destination length:[destination length]];
+}
+
+- (NSArray *) patchDeltaHeaderSize:(NSData *)deltaData position:(int)position
+{
+	int size = 0;
+	int shift = 0;
+	unsigned char c[2];
+		
+	do {
+		[deltaData getBytes:c range:NSMakeRange(position, 1)];
+		position += 1;
+		size |= (c[0] & 0x7f) << shift;
+		shift += 7;
+	} while ( (c[0] & 0x80) != 0 );
+
+	return [NSArray arrayWithObjects:[NSNumber numberWithInt:size], [NSNumber numberWithInt:position], nil];
+}
+
+- (NSString *) readServerSha 
+{
+	char sha[41];
+	uint8_t rawsha[20];
+	[inStream read:rawsha maxLength:20];
+	[Git gitUnpackHex:rawsha fillSha:sha];
+	return [[NSString alloc] initWithBytes:sha length:40 encoding:NSASCIIStringEncoding];	
 }
 
 - (NSString *) typeString:(int)type {
@@ -335,7 +471,7 @@
 		return @"";
 	
 	len -= 4;
-	uint8_t data[len];
+	uint8_t data[len + 1];
 	
 	[inStream read:data maxLength:len];
 	data[len] = 0;

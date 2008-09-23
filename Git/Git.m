@@ -7,6 +7,7 @@
 #import "GitObject.h"
 #import "GitCommit.h"
 #import "GitServerHandler.h"
+#import "NSDataCompression.h"
 
 #include <CommonCrypto/CommonDigest.h>
 
@@ -37,16 +38,11 @@
 
 - (void) initGitRepo {
 	NSFileManager *fm = [NSFileManager defaultManager];
-	NSString *dir;
 	[fm createDirectoryAtPath:gitDirectory attributes:nil];
-	NSLog(@"Dir Created: %@ %d", gitDirectory, [gitDirectory length]);
+
+	//NSLog(@"Dir Created: %@ %d", gitDirectory, [gitDirectory length]);
 	
-	NSLog(@"Dir: %@", [gitDirectory substringToIndex:([gitDirectory length] - 20)]);
-
-	dir = [gitDirectory stringByAppendingString:@"/refs"];
-	NSLog(@"Ref Created: %@]", dir);
-
-	[fm createDirectoryAtPath:dir attributes:nil];
+	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"refs"] attributes:nil];
 	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"refs/heads"] attributes:nil];
 	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"refs/tags"] attributes:nil];
 	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"objects"] attributes:nil];
@@ -59,15 +55,12 @@
 
 - (NSString *) writeObject:(NSData *)objectData withType:(NSString *)type withSize:(int)size 
 {
-	NSLog(@"WRITE OBJECT");
 	NSMutableData *object;
 	NSString *header, *path, *shaStr;
 	unsigned char rawsha[20];
 	char sha1[41];
 	
-	header = [NSString stringWithFormat:@"%@ %d", type, size];
-	NSLog(@"header: %@", header);
-	
+	header = [NSString stringWithFormat:@"%@ %d", type, size];	
 	const char *headerBytes = [header cStringUsingEncoding:NSASCIIStringEncoding];
 	
 	object = [NSMutableData dataWithBytes:headerBytes length:([header length] + 1)];
@@ -75,12 +68,13 @@
 	
 	CC_SHA1([object bytes], [object length], rawsha);
 	[Git gitUnpackHex:rawsha fillSha:sha1];
-	NSLog(@"SHAR: %s", sha1);
+	//NSLog(@"WRITING SHA: %s", sha1);
 
 	// write object to file
 	shaStr = [NSString stringWithCString:sha1 encoding:NSASCIIStringEncoding];
 	path = [self getLooseObjectPathBySha:shaStr];
-	[object writeToFile:path atomically:YES];
+	NSData *compress = [[NSData dataWithBytes:[object bytes] length:[object length]] compressedData];
+	[compress writeToFile:path atomically:YES];
 	return shaStr;
 }
 
@@ -108,6 +102,7 @@
 		NSFileHandle *fm = [NSFileHandle fileHandleForReadingAtPath:objectPath];
 
 		gCommit = [[GitCommit alloc] initFromRaw:[fm availableData] withSha:currentSha];
+		
 		[toDoArray addObjectsFromArray:gCommit.parentShas];
 		[commitArray addObject:gCommit];
 	}
@@ -115,6 +110,27 @@
 	// NSLog(@"s: %@", commitArray);
 	
 	return commitArray;
+}
+
+- (GitObject *) getObjectFromSha:(NSString *)sha1 
+{
+	NSString *objectPath = [self getLooseObjectPathBySha:sha1];
+	//NSLog(@"READ FROM FILE: %@", objectPath);
+	NSFileHandle *fm = [NSFileHandle fileHandleForReadingAtPath:objectPath];
+	return [[GitObject alloc] initFromRaw:[fm availableData] withSha:sha1];	
+}
+
+- (BOOL) hasObject: (NSString *)sha1 
+{
+	NSString *path;
+	path = [self getLooseObjectPathBySha:sha1];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	if ([fm fileExistsAtPath:path]) {
+		return YES;
+	} else {
+		// TODO : check packs
+	}
+	return NO;
 }
 
 - (NSString *) getLooseObjectPathBySha: (NSString *)shaValue
