@@ -6,11 +6,11 @@
 #define NULL_SHA @"0000000000000000000000000000000000000000"
 #define CAPABILITIES @" "
 
-#define OBJ_NONE 0
-#define OBJ_COMMIT 1
-#define OBJ_TREE 2
-#define OBJ_BLOB 3
-#define OBJ_TAG 4
+#define OBJ_NONE	0
+#define OBJ_COMMIT	1
+#define OBJ_TREE	2
+#define OBJ_BLOB	3
+#define OBJ_TAG		4
 #define OBJ_OFS_DELTA 6
 #define OBJ_REF_DELTA 7
 
@@ -102,8 +102,8 @@
 	 */
 
 	// send capabilities and null sha to client if no refs //
-	   // send_ref("capabilities^{}", NULL_SHA) if !@capabiliies_sent
-	[self sendRef:@"capabilities^{}" sha:NULL_SHA];
+	if(!capabilitiesSent)
+		[self sendRef:@"capabilities^{}" sha:NULL_SHA];
 	[self packetFlush];
 }
 
@@ -171,13 +171,25 @@
 	if((type == OBJ_COMMIT) || (type == OBJ_TREE) || (type == OBJ_BLOB) || (type == OBJ_TAG)) {
 		NSData *objectData;
 		objectData = [self readData:size];
-		[gitRepo writeObject:objectData withType:type withSize:size];
+		[gitRepo writeObject:objectData withType:[self typeString:type] withSize:size];
 		// TODO : check saved delta objects
 	} else if ((type == OBJ_REF_DELTA) || (type == OBJ_OFS_DELTA)) {
 		NSLog(@"NO SUPPORT FOR DELTAS YET");
 	} else {
 		NSLog(@"bad object type %d", type);
 	}
+}
+
+- (NSString *) typeString:(int)type {
+	if (type == OBJ_COMMIT) 
+		return @"commit";
+	if (type == OBJ_TREE) 
+		return @"tree";
+	if (type == OBJ_BLOB)
+		return @"blob";
+	if (type == OBJ_TAG)
+		return @"tag";
+	return @"";
 }
 
 - (NSData *) readData:(int)size {

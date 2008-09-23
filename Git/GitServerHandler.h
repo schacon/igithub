@@ -33,6 +33,7 @@
 - (void) readPack;
 - (void) writeRefs;
 - (NSData *) readData:(int)size;
+- (NSString *) typeString:(int)type;
 
 - (int) readPackHeader;
 - (void) unpackObject;

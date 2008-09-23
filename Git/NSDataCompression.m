@@ -2,7 +2,7 @@
 //  NSDataCompression.m
 //  ObjGit
 //
-//  taken from the Etoile framework
+//  thankfully borrowed from the Etoile framework
 //
 
 #import "NSDataCompression.h"

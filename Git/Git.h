@@ -19,9 +19,13 @@
 - (BOOL) ensureGitPath;
 - (void) initGitRepo;
 
-- (void) writeObject:(NSData *)objectData withType:(int)type withSize:(int)size;
+- (NSString *) writeObject:(NSData *)objectData withType:(NSString *)type withSize:(int)size;
 
 - (NSMutableArray *) getCommitsFromSha:(NSString *)shaValue withLimit:(int)commitSize;
 - (NSString *) getLooseObjectPathBySha:(NSString *)shaValue;
+
++ (int) isAlpha:(unsigned char)n ;
++ (int) gitUnpackHex:(const unsigned char *)rawsha fillSha:(char *)sha1;
++ (int) gitPackHex:(const char *)sha1 fillRawSha:(unsigned char *)rawsha;
 
 @end
