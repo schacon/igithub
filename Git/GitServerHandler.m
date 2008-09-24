@@ -4,7 +4,7 @@
 //
 
 #define NULL_SHA @"0000000000000000000000000000000000000000"
-#define CAPABILITIES @" "
+#define CAPABILITIES @" report-status delete-refs "
 
 #define OBJ_NONE	0
 #define OBJ_COMMIT	1
@@ -94,13 +94,17 @@
 - (void) sendRefs {
 	NSLog(@"send refs");
 
-	// TODO : get refs from gitRepo		//
-	// foreach ref, send to client	    //
-	/*
-	 refs.each do |ref|
-	 send_ref(ref[1], ref[0])
-	 end
-	 */
+	NSArray *refs = [gitRepo getAllRefs];
+	NSLog(@"refs: %@", refs);
+	
+	NSEnumerator *e = [refs objectEnumerator];
+	NSString *refName, *shaValue;
+	NSArray *thisRef;
+	while ( (thisRef = [e nextObject]) ) {
+		refName  = [thisRef objectAtIndex:0];
+		shaValue = [thisRef objectAtIndex:1];
+		[self sendRef:refName sha:shaValue];
+	}
 
 	// send capabilities and null sha to client if no refs //
 	if(!capabilitiesSent)
@@ -113,7 +117,7 @@
 	if(capabilitiesSent) 
 		sendData = [[NSString alloc] initWithFormat:@"%@ %@\n", shaString, refName];
 	else
-		sendData = [[NSString alloc] initWithFormat:@"%@ %@%c%@\n", shaString, refName, 0, CAPABILITIES];
+		sendData = [[NSString alloc] initWithFormat:@"%@ %@\0%@\n", shaString, refName, CAPABILITIES];
 	[self writeServer:sendData];
 	capabilitiesSent = 1;
 }
@@ -392,7 +396,10 @@
 	
 	entries = (inEntries[0] << 24) | (inEntries[1] << 16) | (inEntries[2] << 8) | inEntries[3];
 	version = (inVer[0] << 24) | (inVer[1] << 16) | (inVer[2] << 8) | inVer[3];
-	return entries;
+	if(version == 2)
+		return entries;
+	else
+		return 0;
 }
 
 /*
@@ -420,7 +427,7 @@
 }
 
 - (void) sendPacket:(NSString *)dataWrite {
-	NSLog(@"send:[%@]", dataWrite);
+	//NSLog(@"send:[%@]", dataWrite);
 	int len = [dataWrite length];
 	uint8_t buffer[len];
 	[[dataWrite dataUsingEncoding:NSUTF8StringEncoding] getBytes:buffer];
@@ -431,11 +438,11 @@
 
 #define hex(a) (hexchar[(a) & 15])
 - (void) writeServer:(NSString *)dataWrite {
-	NSLog(@"write:[%@]", dataWrite);
+	//NSLog(@"write:[%@]", dataWrite);
 	unsigned int len = [dataWrite length];
 		
 	static char hexchar[] = "0123456789abcdef";
-	uint8_t buffer[4];
+	uint8_t buffer[5];
 	
 	len += 4;
 	buffer[0] = hex(len >> 12);
@@ -443,9 +450,9 @@
 	buffer[2] = hex(len >> 4);
 	buffer[3] = hex(len);
 	
-	NSLog(@"write len");
+	//NSLog(@"write len [%c %c %c %c]", buffer[0], buffer[1], buffer[2], buffer[3]);
 	[outStream write:buffer maxLength:4];
-	NSLog(@"write data");
+	//NSLog(@"write data");
 	[self sendPacket:dataWrite];
 }
 

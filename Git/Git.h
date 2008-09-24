@@ -19,6 +19,7 @@
 - (BOOL) openRepo:(NSString *)dirPath;
 - (BOOL) ensureGitPath;
 - (void) initGitRepo;
+- (NSArray *) getAllRefs;
 
 - (NSString *) writeObject:(NSData *)objectData withType:(NSString *)type withSize:(int)size;
 - (void) updateRef:(NSString *)refName toSha:(NSString *)toSha;

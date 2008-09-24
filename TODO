@@ -1,0 +1,10 @@
+
+ToDo List
+
+* doesn't save/check saved delta objects
+
+* won't handle multi-depth refs 'chacon/master', etc
+
+* doesn't handle ofs-deltas, but the client shouldn't be sending them
+
+* doesn't keep objects in packs

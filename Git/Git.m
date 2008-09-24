@@ -36,6 +36,29 @@
 	return YES;
 }
 
+- (NSArray *) getAllRefs 
+{
+	BOOL isDir=NO;
+	NSMutableArray *refsFinal = [[NSMutableArray alloc] init];
+	NSString *tempRef, *thisSha;
+	NSString *refsPath = [gitDirectory stringByAppendingPathComponent:@"refs"];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ([fileManager fileExistsAtPath:refsPath isDirectory:&isDir] && isDir) {
+		NSEnumerator *e = [[fileManager subpathsAtPath:refsPath] objectEnumerator];
+		NSString *thisRef;
+		while ( (thisRef = [e nextObject]) ) {
+			tempRef = [refsPath stringByAppendingPathComponent:thisRef];
+			thisRef = [@"refs" stringByAppendingPathComponent:thisRef];
+
+			if ([fileManager fileExistsAtPath:tempRef isDirectory:&isDir] && !isDir) {
+				thisSha = [NSString stringWithContentsOfFile:tempRef encoding:NSASCIIStringEncoding error:nil];
+				[refsFinal addObject:[NSArray arrayWithObjects:thisRef,thisSha,nil]];
+			}
+		}
+	}
+	return refsFinal;
+}
+
 - (void) updateRef:(NSString *)refName toSha:(NSString *)toSha
 {
 	NSFileManager *fm = [NSFileManager defaultManager];

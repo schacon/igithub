@@ -238,10 +238,6 @@ Version: 1.5
 				
 				Git* git = [Git alloc];
 				[[GitServerHandler alloc] initWithGit:git gitPath:gitDir input:_inStream output:_outStream];				
-
-				alertView = [[UIAlertView alloc] initWithTitle:@"Peer Disconnected!" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"Continue", nil];
-				[alertView show];
-				[alertView release];
 			}
 
 			break;
@@ -254,17 +250,12 @@ Version: 1.5
 		{
 			NSArray*				array = [_window subviews];
 			TapView*				view;
-			UIAlertView*			alertView;
 			
 			NSLog(@"%s", _cmd);
 			
 			//Notify all tap views
 			for(view in array)
 				[view touchUp:YES];
-			
-			alertView = [[UIAlertView alloc] initWithTitle:@"Peer Disconnected!" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"Continue", nil];
-			[alertView show];
-			[alertView release];
 
 			break;
 		}

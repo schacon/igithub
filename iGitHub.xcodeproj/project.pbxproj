@@ -15,6 +15,7 @@
 		2D500B1C0D5A766900DBA0E3 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D500B1B0D5A766900DBA0E3 /* AppController.m */; };
 		2D500FA20D5A86A600DBA0E3 /* TCPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D500F920D5A86A600DBA0E3 /* TCPServer.m */; };
 		2D500FB40D5A86C000DBA0E3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */; };
+		310F88EE0E89A95700FA95A4 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 310F88ED0E89A95700FA95A4 /* TODO */; };
 		312C951E0E7A38F200182164 /* Git.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C951D0E7A38F200182164 /* Git.m */; };
 		3191AB5F0E830E8600957F79 /* GitCommit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5A0E830E8600957F79 /* GitCommit.m */; };
 		3191AB600E830E8600957F79 /* GitObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5C0E830E8600957F79 /* GitObject.m */; };
@@ -41,6 +42,7 @@
 		2D500F910D5A86A600DBA0E3 /* TCPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TCPServer.h; path = Networking/TCPServer.h; sourceTree = "<group>"; };
 		2D500F920D5A86A600DBA0E3 /* TCPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TCPServer.m; path = Networking/TCPServer.m; sourceTree = "<group>"; };
 		2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		310F88ED0E89A95700FA95A4 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		312C951C0E7A38F200182164 /* Git.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Git.h; sourceTree = "<group>"; };
 		312C951D0E7A38F200182164 /* Git.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Git.m; sourceTree = "<group>"; };
 		3191AB590E830E8600957F79 /* GitCommit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitCommit.h; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				3191AB800E830FA600957F79 /* libz.dylib */,
+				310F88ED0E89A95700FA95A4 /* TODO */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				8406D2F00DF4B487005DDED6 /* icon.png in Resources */,
 				4ACBF2160E1AC84C002CC43E /* bg.png in Resources */,
 				4A6968FE0E1AD83800DCB40C /* Default.png in Resources */,
+				310F88EE0E89A95700FA95A4 /* TODO in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
