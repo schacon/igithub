@@ -8,8 +8,8 @@ Version: 1.5
 
 */
 
-#import "Git.h"
-#import "GitServerHandler.h"
+#import "ObjGit.h"
+#import "ObjGitServerHandler.h"
 #import "AppController.h"
 #import "Picker.h"
 
@@ -236,8 +236,8 @@ Version: 1.5
 					}
 				}
 				
-				Git* git = [Git alloc];
-				[[GitServerHandler alloc] initWithGit:git gitPath:gitDir input:_inStream output:_outStream];				
+				ObjGit* git = [ObjGit alloc];
+				[[ObjGitServerHandler alloc] initWithGit:git gitPath:gitDir input:_inStream output:_outStream];				
 			}
 
 			break;

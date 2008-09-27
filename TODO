@@ -1,6 +1,10 @@
 
 ToDo List
 
+* send HEAD with packed refs 
+
+* read/write blob data from disk rather than memory to handle objects > 100M
+
 * doesn't save/check saved delta objects
 
 * won't handle multi-depth refs 'chacon/master', etc

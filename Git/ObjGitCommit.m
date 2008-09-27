@@ -1,12 +1,12 @@
 //
-//  GitCommit.m
+//  ObjGitCommit.m
 //  ObjGit
 //
 
-#import "GitObject.h"
-#import "GitCommit.h"
+#import "ObjGitObject.h"
+#import "ObjGitCommit.h"
 
-@implementation GitCommit
+@implementation ObjGitCommit
 
 @synthesize	parentShas;
 @synthesize treeSha;
@@ -19,10 +19,17 @@
 @synthesize message;
 @synthesize git_object;
 
+- (id) initFromGitObject:(ObjGitObject *)gitObject {
+	self = [super init];	
+	git_object = gitObject;
+	[self parseContent];
+	return self;
+}
+
 - (id) initFromRaw:(NSData *)rawData withSha:(NSString *)shaValue
 {
 	self = [super init];	
-	git_object = [[GitObject alloc] initFromRaw:rawData withSha:shaValue];
+	git_object = [[ObjGitObject alloc] initFromRaw:rawData withSha:shaValue];
 	[self parseContent];
 	// [self logObject];
 	return self;

@@ -1,5 +1,5 @@
 //
-//  Git.h
+//  ObjGit.h
 //  ObjGit
 //
 
@@ -8,9 +8,9 @@
 //#include <CFNetwork/CFSocketStream.h>
 
 #import <Foundation/Foundation.h>
-#import "GitObject.h"
+#import "ObjGitObject.h"
 
-@interface Git : NSObject {
+@interface ObjGit : NSObject {
 	NSString* gitDirectory;
 }
 
@@ -27,7 +27,7 @@
 - (NSMutableArray *) getCommitsFromSha:(NSString *)shaValue withLimit:(int)commitSize;
 - (NSString *) getLooseObjectPathBySha:(NSString *)shaValue;
 - (BOOL) hasObject: (NSString *)sha1;
-- (GitObject *) getObjectFromSha:(NSString *)sha1;
+- (ObjGitObject *) getObjectFromSha:(NSString *)sha1;
 
 + (int) isAlpha:(unsigned char)n ;
 + (int) gitUnpackHex:(const unsigned char *)rawsha fillSha:(char *)sha1;

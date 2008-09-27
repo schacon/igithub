@@ -16,12 +16,24 @@
 		2D500FA20D5A86A600DBA0E3 /* TCPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D500F920D5A86A600DBA0E3 /* TCPServer.m */; };
 		2D500FB40D5A86C000DBA0E3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */; };
 		310F88EE0E89A95700FA95A4 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 310F88ED0E89A95700FA95A4 /* TODO */; };
-		312C951E0E7A38F200182164 /* Git.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C951D0E7A38F200182164 /* Git.m */; };
-		3191AB5F0E830E8600957F79 /* GitCommit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5A0E830E8600957F79 /* GitCommit.m */; };
-		3191AB600E830E8600957F79 /* GitObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5C0E830E8600957F79 /* GitObject.m */; };
-		3191AB610E830E8600957F79 /* GitServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5E0E830E8600957F79 /* GitServerHandler.m */; };
+		312C951E0E7A38F200182164 /* ObjGit.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C951D0E7A38F200182164 /* ObjGit.m */; };
+		3191AB5F0E830E8600957F79 /* ObjGitCommit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5A0E830E8600957F79 /* ObjGitCommit.m */; };
+		3191AB600E830E8600957F79 /* ObjGitObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5C0E830E8600957F79 /* ObjGitObject.m */; };
+		3191AB610E830E8600957F79 /* ObjGitServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5E0E830E8600957F79 /* ObjGitServerHandler.m */; };
 		3191AB730E830F7800957F79 /* NSDataCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB720E830F7800957F79 /* NSDataCompression.m */; };
 		3191AB810E830FA600957F79 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3191AB800E830FA600957F79 /* libz.dylib */; };
+		31C5B2870E8BF40500B07BE9 /* ObjGitTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C5B2860E8BF40500B07BE9 /* ObjGitTree.m */; };
+		31C5B2D00E8C31B000B07BE9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C5B2CF0E8C31B000B07BE9 /* SenTestingKit.framework */; };
+		31C5B2F10E8C326100B07BE9 /* ObjGitTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C5B2860E8BF40500B07BE9 /* ObjGitTree.m */; };
+		31C5B2F20E8C326100B07BE9 /* ObjGitTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C5B2A20E8C2CEE00B07BE9 /* ObjGitTest.m */; };
+		31C5B2F30E8C327E00B07BE9 /* ObjGit.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C951D0E7A38F200182164 /* ObjGit.m */; };
+		31C5B2F40E8C327E00B07BE9 /* ObjGitCommit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5A0E830E8600957F79 /* ObjGitCommit.m */; };
+		31C5B2F50E8C327E00B07BE9 /* ObjGitObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5C0E830E8600957F79 /* ObjGitObject.m */; };
+		31C5B2F60E8C327E00B07BE9 /* ObjGitServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5E0E830E8600957F79 /* ObjGitServerHandler.m */; };
+		31C5B3020E8C330200B07BE9 /* NSDataCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB720E830F7800957F79 /* NSDataCompression.m */; };
+		31C5B3070E8C333B00B07BE9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3191AB800E830FA600957F79 /* libz.dylib */; };
+		31C5B3100E8C333E00B07BE9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		31C5B3660E8C33F200B07BE9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */; };
 		4A50295F0DF7068E00D72A3B /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A50295E0DF7068E00D72A3B /* BrowserViewController.m */; };
 		4A6968FE0E1AD83800DCB40C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A6968FD0E1AD83800DCB40C /* Default.png */; };
 		4ACBF2160E1AC84C002CC43E /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ACBF2150E1AC84C002CC43E /* bg.png */; };
@@ -43,17 +55,23 @@
 		2D500F920D5A86A600DBA0E3 /* TCPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TCPServer.m; path = Networking/TCPServer.m; sourceTree = "<group>"; };
 		2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		310F88ED0E89A95700FA95A4 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
-		312C951C0E7A38F200182164 /* Git.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Git.h; sourceTree = "<group>"; };
-		312C951D0E7A38F200182164 /* Git.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Git.m; sourceTree = "<group>"; };
-		3191AB590E830E8600957F79 /* GitCommit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitCommit.h; sourceTree = "<group>"; };
-		3191AB5A0E830E8600957F79 /* GitCommit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GitCommit.m; sourceTree = "<group>"; };
-		3191AB5B0E830E8600957F79 /* GitObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitObject.h; sourceTree = "<group>"; };
-		3191AB5C0E830E8600957F79 /* GitObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GitObject.m; sourceTree = "<group>"; };
-		3191AB5D0E830E8600957F79 /* GitServerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GitServerHandler.h; sourceTree = "<group>"; };
-		3191AB5E0E830E8600957F79 /* GitServerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GitServerHandler.m; sourceTree = "<group>"; };
+		312C951C0E7A38F200182164 /* ObjGit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGit.h; sourceTree = "<group>"; };
+		312C951D0E7A38F200182164 /* ObjGit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGit.m; sourceTree = "<group>"; };
+		3191AB590E830E8600957F79 /* ObjGitCommit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGitCommit.h; sourceTree = "<group>"; };
+		3191AB5A0E830E8600957F79 /* ObjGitCommit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGitCommit.m; sourceTree = "<group>"; };
+		3191AB5B0E830E8600957F79 /* ObjGitObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGitObject.h; sourceTree = "<group>"; };
+		3191AB5C0E830E8600957F79 /* ObjGitObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGitObject.m; sourceTree = "<group>"; };
+		3191AB5D0E830E8600957F79 /* ObjGitServerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGitServerHandler.h; sourceTree = "<group>"; };
+		3191AB5E0E830E8600957F79 /* ObjGitServerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGitServerHandler.m; sourceTree = "<group>"; };
 		3191AB710E830F7800957F79 /* NSDataCompression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataCompression.h; sourceTree = "<group>"; };
 		3191AB720E830F7800957F79 /* NSDataCompression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataCompression.m; sourceTree = "<group>"; };
 		3191AB800E830FA600957F79 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		31C5B2850E8BF40500B07BE9 /* ObjGitTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGitTree.h; sourceTree = "<group>"; };
+		31C5B2860E8BF40500B07BE9 /* ObjGitTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGitTree.m; sourceTree = "<group>"; };
+		31C5B2A20E8C2CEE00B07BE9 /* ObjGitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGitTest.m; sourceTree = "<group>"; };
+		31C5B2C90E8C313C00B07BE9 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		31C5B2CA0E8C313C00B07BE9 /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
+		31C5B2CF0E8C31B000B07BE9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		32CA4F630368D1EE00C91783 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		4A50295D0DF7068E00D72A3B /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrowserViewController.h; path = Networking/BrowserViewController.h; sourceTree = "<group>"; };
 		4A50295E0DF7068E00D72A3B /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BrowserViewController.m; path = Networking/BrowserViewController.m; sourceTree = "<group>"; };
@@ -78,6 +96,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		31C5B2C60E8C313C00B07BE9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31C5B3660E8C33F200B07BE9 /* SystemConfiguration.framework in Frameworks */,
+				31C5B3100E8C333E00B07BE9 /* Foundation.framework in Frameworks */,
+				31C5B3070E8C333B00B07BE9 /* libz.dylib in Frameworks */,
+				31C5B2D00E8C31B000B07BE9 /* SenTestingKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -85,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* iGitHub.app */,
+				31C5B2C90E8C313C00B07BE9 /* UnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,6 +122,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				31C5B2CF0E8C31B000B07BE9 /* SenTestingKit.framework */,
 				312C951B0E7A38F200182164 /* Git */,
 				2D500B1D0D5A766B00DBA0E3 /* Classes */,
 				2D500B6F0D5A793600DBA0E3 /* Support */,
@@ -101,6 +132,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				3191AB800E830FA600957F79 /* libz.dylib */,
 				310F88ED0E89A95700FA95A4 /* TODO */,
+				31C5B2CA0E8C313C00B07BE9 /* UnitTests-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -165,14 +197,17 @@
 			children = (
 				3191AB710E830F7800957F79 /* NSDataCompression.h */,
 				3191AB720E830F7800957F79 /* NSDataCompression.m */,
-				3191AB590E830E8600957F79 /* GitCommit.h */,
-				3191AB5A0E830E8600957F79 /* GitCommit.m */,
-				3191AB5B0E830E8600957F79 /* GitObject.h */,
-				3191AB5C0E830E8600957F79 /* GitObject.m */,
-				3191AB5D0E830E8600957F79 /* GitServerHandler.h */,
-				3191AB5E0E830E8600957F79 /* GitServerHandler.m */,
-				312C951C0E7A38F200182164 /* Git.h */,
-				312C951D0E7A38F200182164 /* Git.m */,
+				3191AB590E830E8600957F79 /* ObjGitCommit.h */,
+				3191AB5A0E830E8600957F79 /* ObjGitCommit.m */,
+				3191AB5B0E830E8600957F79 /* ObjGitObject.h */,
+				3191AB5C0E830E8600957F79 /* ObjGitObject.m */,
+				3191AB5D0E830E8600957F79 /* ObjGitServerHandler.h */,
+				3191AB5E0E830E8600957F79 /* ObjGitServerHandler.m */,
+				312C951C0E7A38F200182164 /* ObjGit.h */,
+				312C951D0E7A38F200182164 /* ObjGit.m */,
+				31C5B2850E8BF40500B07BE9 /* ObjGitTree.h */,
+				31C5B2860E8BF40500B07BE9 /* ObjGitTree.m */,
+				31C5B2A20E8C2CEE00B07BE9 /* ObjGitTest.m */,
 			);
 			path = Git;
 			sourceTree = "<group>";
@@ -197,6 +232,24 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* iGitHub.app */;
 			productType = "com.apple.product-type.application";
 		};
+		31C5B2C80E8C313C00B07BE9 /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 31C5B2CE0E8C313D00B07BE9 /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				31C5B2C40E8C313C00B07BE9 /* Resources */,
+				31C5B2C50E8C313C00B07BE9 /* Sources */,
+				31C5B2C60E8C313C00B07BE9 /* Frameworks */,
+				31C5B2C70E8C313C00B07BE9 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnitTests;
+			productName = UnitTests;
+			productReference = 31C5B2C90E8C313C00B07BE9 /* UnitTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -210,6 +263,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* iGitHub */,
+				31C5B2C80E8C313C00B07BE9 /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -226,7 +280,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		31C5B2C40E8C313C00B07BE9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		31C5B2C70E8C313C00B07BE9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
@@ -239,11 +316,26 @@
 				188D407F0D6D2F160076AE1E /* TapView.m in Sources */,
 				4A50295F0DF7068E00D72A3B /* BrowserViewController.m in Sources */,
 				4AFB75470DF7691E00DCF235 /* Picker.m in Sources */,
-				312C951E0E7A38F200182164 /* Git.m in Sources */,
-				3191AB5F0E830E8600957F79 /* GitCommit.m in Sources */,
-				3191AB600E830E8600957F79 /* GitObject.m in Sources */,
-				3191AB610E830E8600957F79 /* GitServerHandler.m in Sources */,
+				312C951E0E7A38F200182164 /* ObjGit.m in Sources */,
+				3191AB5F0E830E8600957F79 /* ObjGitCommit.m in Sources */,
+				3191AB600E830E8600957F79 /* ObjGitObject.m in Sources */,
+				3191AB610E830E8600957F79 /* ObjGitServerHandler.m in Sources */,
 				3191AB730E830F7800957F79 /* NSDataCompression.m in Sources */,
+				31C5B2870E8BF40500B07BE9 /* ObjGitTree.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		31C5B2C50E8C313C00B07BE9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31C5B3020E8C330200B07BE9 /* NSDataCompression.m in Sources */,
+				31C5B2F30E8C327E00B07BE9 /* ObjGit.m in Sources */,
+				31C5B2F40E8C327E00B07BE9 /* ObjGitCommit.m in Sources */,
+				31C5B2F50E8C327E00B07BE9 /* ObjGitObject.m in Sources */,
+				31C5B2F60E8C327E00B07BE9 /* ObjGitServerHandler.m in Sources */,
+				31C5B2F10E8C326100B07BE9 /* ObjGitTree.m in Sources */,
+				31C5B2F20E8C326100B07BE9 /* ObjGitTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +392,61 @@
 			};
 			name = Release;
 		};
+		31C5B2CC0E8C313D00B07BE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "UnitTests-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = UnitTests;
+				SDKROOT = macosx10.5;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		31C5B2CD0E8C313D00B07BE9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "UnitTests-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = UnitTests;
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -327,6 +474,15 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		31C5B2CE0E8C313D00B07BE9 /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31C5B2CC0E8C313D00B07BE9 /* Debug */,
+				31C5B2CD0E8C313D00B07BE9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

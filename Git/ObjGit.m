@@ -1,17 +1,17 @@
 //
-//  Git.m
+//  ObjGit.m
 //  ObjGit
 //
 
-#import "Git.h"
-#import "GitObject.h"
-#import "GitCommit.h"
-#import "GitServerHandler.h"
+#import "ObjGit.h"
+#import "ObjGitObject.h"
+#import "ObjGitCommit.h"
+#import "ObjGitServerHandler.h"
 #import "NSDataCompression.h"
 
 #include <CommonCrypto/CommonDigest.h>
 
-@implementation Git
+@implementation ObjGit
 
 @synthesize gitDirectory;
 
@@ -104,7 +104,7 @@
 	[object appendData:objectData];
 	
 	CC_SHA1([object bytes], [object length], rawsha);
-	[Git gitUnpackHex:rawsha fillSha:sha1];
+	[ObjGit gitUnpackHex:rawsha fillSha:sha1];
 	//NSLog(@"WRITING SHA: %s", sha1);
 
 	// write object to file
@@ -126,7 +126,7 @@
 	NSString *currentSha;
 	NSMutableArray *toDoArray = [NSMutableArray arrayWithCapacity:10];
 	NSMutableArray *commitArray = [NSMutableArray arrayWithCapacity:commitSize];
-	GitCommit *gCommit;
+	ObjGitCommit *gCommit;
 
 	[toDoArray addObject: shaValue];
 	
@@ -138,7 +138,7 @@
 		NSString *objectPath = [self getLooseObjectPathBySha:currentSha];
 		NSFileHandle *fm = [NSFileHandle fileHandleForReadingAtPath:objectPath];
 
-		gCommit = [[GitCommit alloc] initFromRaw:[fm availableData] withSha:currentSha];
+		gCommit = [[ObjGitCommit alloc] initFromRaw:[fm availableData] withSha:currentSha];
 		
 		[toDoArray addObjectsFromArray:gCommit.parentShas];
 		[commitArray addObject:gCommit];
@@ -149,12 +149,12 @@
 	return commitArray;
 }
 
-- (GitObject *) getObjectFromSha:(NSString *)sha1 
+- (ObjGitObject *) getObjectFromSha:(NSString *)sha1 
 {
 	NSString *objectPath = [self getLooseObjectPathBySha:sha1];
 	//NSLog(@"READ FROM FILE: %@", objectPath);
 	NSFileHandle *fm = [NSFileHandle fileHandleForReadingAtPath:objectPath];
-	return [[GitObject alloc] initFromRaw:[fm availableData] withSha:sha1];	
+	return [[ObjGitObject alloc] initFromRaw:[fm availableData] withSha:sha1];	
 }
 
 - (BOOL) hasObject: (NSString *)sha1 
@@ -229,7 +229,7 @@
 	for (i = 1; i <= 40; i++) {
 		unsigned char n = sha1[i - 1];
 		
-		if([Git isAlpha:n]) {
+		if([ObjGit isAlpha:n]) {
 			byte |= ((n & 15) + 9) & 15;
 		} else {
 			byte |= (n & 15);

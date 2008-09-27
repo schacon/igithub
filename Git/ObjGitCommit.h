@@ -1,12 +1,12 @@
 //
-//  GitCommit.h
+//  ObjGitCommit.h
 //  ObjGit
 //
 
 #import <Foundation/Foundation.h>
-#import "GitObject.h"
+#import "ObjGitObject.h"
 
-@interface GitCommit : NSObject {
+@interface ObjGitCommit : NSObject {
 	NSArray	   *parentShas;
 	NSString   *treeSha;
 	NSString   *author;
@@ -16,7 +16,7 @@
 	NSString   *committer_email;
 	NSDate	   *committed_date;
 	NSString   *message;
-	GitObject  *git_object;
+	ObjGitObject  *git_object;
 }
 
 @property(assign, readwrite) NSArray   *parentShas;
@@ -28,8 +28,9 @@
 @property(assign, readwrite) NSString  *committer_email;	
 @property(assign, readwrite) NSDate	   *committed_date;	
 @property(assign, readwrite) NSString  *message;	
-@property(assign, readwrite) GitObject *git_object;
+@property(assign, readwrite) ObjGitObject *git_object;
 
+- (id) initFromGitObject:(ObjGitObject *)gitObject;
 - (id) initFromRaw:(NSData *)rawData withSha:(NSString *)shaValue;
 - (void) parseContent;
 - (void) logObject;
