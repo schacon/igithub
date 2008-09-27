@@ -184,9 +184,8 @@
 		while (size > 0) {
 			c = size & 0x7f;
 			size = (size >> 7);
-			if(size > 0) {
+			if(size > 0)
 				c |= 0x80;
-			}
 			buffer[0] = c;
 			[self respondPack:buffer length:1 checkSum:checksum];
 		}
