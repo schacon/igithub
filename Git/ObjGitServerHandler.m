@@ -291,6 +291,7 @@
 	[self readRefs];
 	[self readPack];
 	[self writeRefs];
+	[self packetFlush];
 }
 
 - (void) sendRefs {
@@ -325,17 +326,28 @@
 }
 
 - (void) readRefs {
-	NSString *data;
+	NSString *data, *old, *new, *refName, *cap, *refStuff;
 	NSLog(@"read refs");
 	data = [self packetReadLine];
 	NSMutableArray *refs = [[NSMutableArray alloc] init];
 	while([data length] > 0) {
+		
 		NSArray  *values  = [data componentsSeparatedByString:@" "];
-		[refs addObject: values];  // save the refs for writing later
+		old = [values objectAtIndex:0];
+		new = [values objectAtIndex:1];
+		refStuff = [values objectAtIndex:2];
+		
+		NSArray  *ref  = [refStuff componentsSeparatedByString:@"\0"];
+		refName = [ref objectAtIndex:0];
+		cap = nil;
+		if([ref count] > 1) 
+			cap = [ref objectAtIndex:1];
+
+		NSArray *refData = [NSArray arrayWithObjects:old, new, refName, cap, nil];
+		[refs addObject:refData];  // save the refs for writing later
 		
 		/* DEBUGGING */
-		NSLog(@"ref: [%@ : %@ : %@]", [values objectAtIndex: 0], \
-			  [values objectAtIndex: 1], [values objectAtIndex: 2]);
+		NSLog(@"ref: [%@ : %@ : %@]", old, new, refName, cap);
 		
 		data = [self packetReadLine];
 	}
@@ -354,7 +366,10 @@
 		NSLog(@"entry: %d", n);
 		[self unpackObject];
 	}
+	
 	// receive and process checksum
+	uint8_t checksum[20];
+	[inStream read:checksum maxLength:20];
 } 
 
 - (void) unpackObject {	
@@ -372,8 +387,8 @@
         shift += 7;
 	}
 	
-	//NSLog(@"\nTYPE: %d\n", type);
-	//NSLog(@"size: %d\n", size);
+	NSLog(@"TYPE: %d", type);
+	NSLog(@"size: %d", size);
 	
 	if((type == OBJ_COMMIT) || (type == OBJ_TREE) || (type == OBJ_BLOB) || (type == OBJ_TAG)) {
 		NSData *objectData;
@@ -623,13 +638,17 @@
 	NSLog(@"write refs");
 	NSEnumerator *e = [refsRead objectEnumerator];
 	NSArray *thisRef;
-	NSString *toSha, *refName;
+	NSString *toSha, *refName, *sendOk;
 	
+	[self writeServer:@"unpack ok\n"];
+
 	while ( (thisRef = [e nextObject]) ) {
 		NSLog(@"ref: %@", thisRef);
 		toSha   = [thisRef objectAtIndex:1];
 		refName = [thisRef objectAtIndex:2];
 		[gitRepo updateRef:refName toSha:toSha];
+		sendOk = [NSString stringWithFormat:@"ok %@\n", refName];
+		[self writeServer:sendOk];
 	}	
 }
 

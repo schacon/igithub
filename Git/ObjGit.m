@@ -154,7 +154,7 @@
 - (ObjGitObject *) getObjectFromSha:(NSString *)sha1 
 {
 	NSString *objectPath = [self getLooseObjectPathBySha:sha1];
-	//NSLog(@"READ FROM FILE: %@", objectPath);
+	// NSLog(@"READ FROM FILE: %@", objectPath);
 	NSFileHandle *fm = [NSFileHandle fileHandleForReadingAtPath:objectPath];
 	return [[ObjGitObject alloc] initFromRaw:[fm availableData] withSha:sha1];	
 }
