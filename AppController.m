@@ -11,27 +11,19 @@ Version: 1.5
 #import "ObjGit.h"
 #import "ObjGitServerHandler.h"
 #import "AppController.h"
-#import "Picker.h"
+#import "ProjectViewController.h"
+#import "ProjectController.h"
 
-//CONSTANTS:
-
-#define kNumPads			3
-
-// The Bonjour application protocol, which must:
-// 1) be no longer than 14 characters
-// 2) contain only lower-case letters, digits, and hyphens
-// 3) begin and end with lower-case letter or digit
-// It should also be descriptive and human-readable
-// See the following for more information:
-// http://developer.apple.com/networking/bonjour/faq.html
-#define kGameIdentifier		@"github"
-
+#define bonIdentifier		@"github"
 
 //INTERFACES:
 
 @interface AppController ()
+
+@property (assign, readwrite) NSString *gitDir;
+
 - (void) setup;
-- (void) presentPicker:(NSString*)name;
+
 @end
 
 //CLASS IMPLEMENTATIONS:
@@ -39,6 +31,7 @@ Version: 1.5
 @implementation AppController
 
 @synthesize gitDir;
+@synthesize navigationController;
 
 - (void) _showAlert:(NSString*)title
 {
@@ -47,33 +40,48 @@ Version: 1.5
 	[alertView release];
 }
 
-- (void) applicationDidFinishLaunching:(UIApplication*)application
+- (NSString *)getGitPath
 {
-	CGRect					rect;
-	UIView*					view;
-	NSUInteger				x,
-							y;
-	
-	//Create a full-screen window
-	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	[_window setBackgroundColor:[UIColor darkGrayColor]];
-	
-	//Create the tap views and add them to the view controller's view
-	rect = [[UIScreen mainScreen] applicationFrame];
-	for(y = 0; y < kNumPads; ++y) {
-		for(x = 0; x < kNumPads; ++x) {
-			view = [[TapView alloc] initWithFrame:CGRectMake(rect.origin.x + x * rect.size.width / (float)kNumPads, rect.origin.y + y * rect.size.height / (float)kNumPads, rect.size.width / (float)kNumPads, rect.size.height / (float)kNumPads)];
-			[view setMultipleTouchEnabled:NO];
-			[view setBackgroundColor:[UIColor colorWithHue:((y * kNumPads + x) / (float)(kNumPads * kNumPads)) saturation:0.75 brightness:0.75 alpha:1.0]];
-			[view setTag:(y * kNumPads + x + 1)];
-			[_window addSubview:view];
-			[view release];
+	NSArray *paths;
+	NSString *gitPath = @"";
+	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	if ([paths count] > 0) {
+		gitPath = [NSString stringWithString:[[paths objectAtIndex:0] stringByAppendingPathComponent:@"git"]];
+		NSLog(@"GITDIR:%@", gitPath);
+		
+		BOOL isDir;
+		NSFileManager *fm = [NSFileManager defaultManager];
+		if (![fm fileExistsAtPath:gitPath isDirectory:&isDir] && isDir) {
+			[fm createDirectoryAtPath:gitPath attributes:nil];
 		}
 	}
+	return gitPath;
+}
+
+- (void) applicationDidFinishLaunching:(UIApplication*)application
+{
+	//Create a full-screen window
+	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+	// getting the git path
+	gitDir = [self getGitPath];
+		
+	// Create and configure the navigation and view controllers
+    ProjectController *pController = [[ProjectController alloc] init];
+	[pController readProjects:gitDir];
 	
-	//Show the window
-	[_window makeKeyAndVisible];
+    ProjectViewController *projectViewController = [[ProjectViewController alloc] initWithStyle:UITableViewStylePlain];
+	[projectViewController setProjectController:pController];
 	
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:projectViewController];
+    self.navigationController = aNavigationController;
+    [aNavigationController release];
+    [projectViewController release];
+    
+    // Configure and show the window
+    [_window addSubview:[navigationController view]];
+    [_window makeKeyAndVisible];
+
 	//Create and advertise a new game and discover other availble games
 	[self setup];
 }
@@ -87,7 +95,6 @@ Version: 1.5
 	[_outStream release];
 
 	[_server release];
-	[_picker release];
 	[_window release];
 	
 	[super dealloc];
@@ -117,41 +124,10 @@ Version: 1.5
 	}
 	
 	//Start advertising to clients, passing nil for the name to tell Bonjour to pick use default name
-	if(![_server enableBonjourWithDomain:@"local" applicationProtocol:[TCPServer bonjourTypeFromIdentifier:kGameIdentifier] name:nil]) {
+	if(![_server enableBonjourWithDomain:@"local" applicationProtocol:[TCPServer bonjourTypeFromIdentifier:bonIdentifier] name:nil]) {
 		[self _showAlert:@"Failed advertising server"];
 		return;
 	}
-
-	[self presentPicker:nil];
-}
-
-// Make sure to let the user know what name is being used for Bonjour advertisement.
-// This way, other players can browse for and connect to this game.
-// Note that this may be called while the alert is already being displayed, as
-// Bonjour may detect a name conflict and rename dynamically.
-- (void) presentPicker:(NSString*)name {
-	if (!_picker) {
-		_picker = [[Picker alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] type:[TCPServer bonjourTypeFromIdentifier:kGameIdentifier]];
-		_picker.delegate = self;
-	}
-	
-	_picker.gameName = name;
-
-	if (!_picker.superview) {
-		[_window addSubview:_picker];
-	}
-}
-
-- (void) destroyPicker {
-	[_picker removeFromSuperview];
-	[_picker release];
-	_picker = nil;
-}
-
-// If we display an error or an alert that the remote disconnected, handle dismissal and return to setup
-- (void) alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	[self setup];
 }
 
 - (void) send:(const uint8_t)message
@@ -159,16 +135,6 @@ Version: 1.5
 	if (_outStream && [_outStream hasSpaceAvailable])
 		if([_outStream write:(const uint8_t *)&message maxLength:sizeof(const uint8_t)] == -1)
 			[self _showAlert:@"Failed sending data to peer"];
-}
-
-- (void) activateView:(TapView*)view
-{
-	[self send:[view tag] | 0x80];
-}
-
-- (void) deactivateView:(TapView*)view
-{
-	[self send:[view tag] & 0x7f];
 }
 
 - (void) openStreams
@@ -202,12 +168,9 @@ Version: 1.5
 
 - (void) stream:(NSStream*)stream handleEvent:(NSStreamEvent)eventCode
 {
-	UIAlertView* alertView;
 	switch(eventCode) {
 		case NSStreamEventOpenCompleted:
-		{
-			[self destroyPicker];
-			
+		{			
 			[_server release];
 			_server = nil;
 
@@ -218,26 +181,13 @@ Version: 1.5
 			
 			NSLog(@"%s", _cmd);
 
+			gitDir = [self getGitPath];
+			NSLog(@"gitdir:%@", gitDir);
+			
 			if (_inReady && _outReady) {
-				alertView = [[UIAlertView alloc] initWithTitle:@"Git server started!" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Continue", nil];
-				[alertView show];
-				[alertView release];
-								
-				// getting the git path
-				NSArray *paths;
-				paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-				if ([paths count] > 0) {
-					gitDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"git"];
-					
-					BOOL isDir;
-					NSFileManager *fm = [NSFileManager defaultManager];
-					if (![fm fileExistsAtPath:gitDir isDirectory:&isDir] && isDir) {
-						[fm createDirectoryAtPath:gitDir attributes:nil];
-					}
-				}
-				
 				ObjGit* git = [ObjGit alloc];
 				[[ObjGitServerHandler alloc] initWithGit:git gitPath:gitDir input:_inStream output:_outStream];				
+				[self setup]; // restart the server
 			}
 
 			break;
@@ -248,15 +198,6 @@ Version: 1.5
 		}
 		case NSStreamEventEndEncountered:
 		{
-			NSArray*				array = [_window subviews];
-			TapView*				view;
-			
-			NSLog(@"%s", _cmd);
-			
-			//Notify all tap views
-			for(view in array)
-				[view touchUp:YES];
-
 			break;
 		}
 	}
@@ -269,7 +210,6 @@ Version: 1.5
 - (void) serverDidEnableBonjour:(TCPServer*)server withName:(NSString*)string
 {
 	NSLog(@"%s", _cmd);
-	[self presentPicker:string];
 }
 
 - (void)didAcceptConnectionForServer:(TCPServer*)server inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr

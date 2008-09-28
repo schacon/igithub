@@ -46,28 +46,24 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 */
 
-#import "TapView.h"
 #import "BrowserViewController.h"
-#import "Picker.h"
 #import "TCPServer.h"
 #import "ObjGitCommit.h"
 
 //CLASS INTERFACES:
 
-@interface AppController : NSObject <UIApplicationDelegate, UIActionSheetDelegate, BrowserViewControllerDelegate, TCPServerDelegate>
+@interface AppController : NSObject <UIApplicationDelegate, TCPServerDelegate>
 {
 	UIWindow*			_window;
-	Picker*				_picker;
 	TCPServer*			_server;
 	NSInputStream*		_inStream;
 	NSOutputStream*		_outStream;
 	BOOL				_inReady;
 	BOOL				_outReady;
+	UINavigationController *navigationController;
 	NSString*			gitDir;
 }
 
-@property(assign, readwrite) NSString *gitDir;
+@property (nonatomic, retain) UINavigationController *navigationController;
 
-- (void) activateView:(TapView*)view;
-- (void) deactivateView:(TapView*)view;
 @end
