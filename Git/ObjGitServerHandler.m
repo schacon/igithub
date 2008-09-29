@@ -113,6 +113,7 @@
 
 - (void) uploadPackFile
 {
+	NSLog(@"upload pack file");
 	NSString *command, *shaValue;
 	NSArray *thisRef;
 
@@ -127,6 +128,7 @@
 		}
 	}
 
+	NSLog(@"gathering shas");
 	e    = [needRefs objectEnumerator];
 	while ( (thisRef = [e nextObject]) ) {
 		command  = [thisRef objectAtIndex:0];
@@ -141,6 +143,7 @@
 
 - (void) sendPackData
 {
+	NSLog(@"send pack data");
 	NSString *current;
 	NSEnumerator *e;
 	
@@ -226,7 +229,6 @@
 - (void) gatherObjectShasFromCommit:(NSString *)shaValue 
 {
 	NSString *parentSha;
-
 	ObjGitCommit *commit = [[ObjGitCommit alloc] initFromGitObject:[gitRepo getObjectFromSha:shaValue]];
 	[refDict setObject:@"_commit" forKey:shaValue];
 
@@ -234,10 +236,10 @@
 	[self gatherObjectShasFromTree:[commit treeSha]];
 
 	NSArray *parents = [commit parentShas];
-	[commit release];
 	
 	NSEnumerator *e = [parents objectEnumerator];
 	while ( (parentSha = [e nextObject]) ) {
+		NSLog(@"parent sha:%@", parentSha);
 		// TODO : check that refDict does not have this
 		[self gatherObjectShasFromCommit:parentSha];
 	}
@@ -245,12 +247,20 @@
 
 - (void) gatherObjectShasFromTree:(NSString *)shaValue 
 {
-	ObjGitTree *tree = [[ObjGitTree alloc] initFromGitObject:[gitRepo getObjectFromSha:shaValue]];
+	NSLog(@"Gather from tree");
+	ObjGitTree *tree = [ObjGitTree alloc];
+	NSLog(@"Tree alloc");
+	ObjGit *g = [gitRepo getObjectFromSha:shaValue];
+	NSLog(@"Obj Init alloc");
+	[tree initFromGitObject:g];
+	NSLog(@"INIT");
 	[refDict setObject:@"/" forKey:shaValue];
+	NSLog(@"Tree added");
 	NSEnumerator *e = [[tree treeEntries] objectEnumerator];
 	NSArray *entries;
 	NSString *name, *sha, *mode;
 	while ( (entries = [e nextObject]) ) {
+		NSLog(@"Tree entry");
 		mode = [entries objectAtIndex:0];
 		name = [entries objectAtIndex:1];
 		sha  = [entries objectAtIndex:2];

@@ -13,7 +13,9 @@
 @synthesize gitObject;
 
 - (id) initFromGitObject:(ObjGitObject *)object {
+	NSLog(@"Tree init1");
 	self = [super init];	
+	NSLog(@"Tree init");
 	gitObject = object;
 	[self parseContent];
 	return self;

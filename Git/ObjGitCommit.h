@@ -25,10 +25,10 @@
 @property(assign, readwrite) NSString  *treeSha;
 @property(assign, readwrite) NSString  *author;	
 @property(assign, readwrite) NSString  *author_email;	
-@property(retain, readwrite) NSDate	 *authored_date;	
+@property(copy  , readwrite) NSDate	   *authored_date;	
 @property(assign, readwrite) NSString  *committer;	
 @property(assign, readwrite) NSString  *committer_email;	
-@property(retain, readwrite) NSDate	 *committed_date;	
+@property(retain, readwrite) NSDate	   *committed_date;	
 @property(assign, readwrite) NSString  *message;	
 @property(assign, readwrite) ObjGitObject *git_object;
 

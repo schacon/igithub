@@ -115,7 +115,7 @@
 	
 	CC_SHA1([object bytes], [object length], rawsha);
 	[ObjGit gitUnpackHex:rawsha fillSha:sha1];
-	//NSLog(@"WRITING SHA: %s", sha1);
+	NSLog(@"WRITING SHA: %s", sha1);
 
 	// write object to file
 	shaStr = [NSString stringWithCString:sha1 encoding:NSASCIIStringEncoding];
@@ -162,7 +162,7 @@
 - (ObjGitObject *) getObjectFromSha:(NSString *)sha1 
 {
 	NSString *objectPath = [self getLooseObjectPathBySha:sha1];
-	// NSLog(@"READ FROM FILE: %@", objectPath);
+	NSLog(@"READ FROM FILE: %@", objectPath);
 	NSFileHandle *fm = [NSFileHandle fileHandleForReadingAtPath:objectPath];
 	return [[ObjGitObject alloc] initFromRaw:[fm availableData] withSha:sha1];	
 }

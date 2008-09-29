@@ -27,7 +27,7 @@
 
 	// load data
 	NSLog(@"Data load");
-	self.commitList = [gitRepo getCommitsFromSha:gitSha withLimit:100];
+	self.commitList = [gitRepo getCommitsFromSha:gitSha withLimit:30];
 	
     // Scroll the table view to the top before it appears
     [self.tableView reloadData];
@@ -58,9 +58,10 @@
 	return cell;
 }
 
-#define NAME_TAG 1
-#define TIME_TAG 2
-#define IMAGE_TAG 3
+#define ONE_TAG 1
+#define TWO_TAG 2
+#define THR_TAG 3
+#define FOUR_TAG 4
 
 - (void)configureCell:(UITableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
     
@@ -70,7 +71,7 @@
 	static NSDateFormatter *dateFormatter = nil;
 	if (dateFormatter == nil) {
 		dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateFormat:@"h:mm a"];
+		[dateFormatter setDateFormat:@"MMM dd YY, kk:ss"]; // Sept 5 08:30
 	}
 
 	ObjGitCommit *commit = [self.commitList objectAtIndex:indexPath.row];
@@ -78,22 +79,17 @@
 	UILabel *label;
 	
 	// Get the time zone wrapper for the row
-	label = (UILabel *)[cell viewWithTag:NAME_TAG];
-	label.text = [commit author];
-	
-	label = (UILabel *)[cell viewWithTag:TIME_TAG];
-	NSLog(@"DATE");
-	//NSLog(@"DATE:%@", [commit authored_date]);
-	//label.text = [dateFormatter stringFromDate:[commit authored_date]];
-	label.font = [UIFont fontWithName:@"Courier New" size:20];
+	label = (UILabel *)[cell viewWithTag:ONE_TAG];
 	label.text = [[commit sha] substringToIndex:6];
 	
-	//label = (UILabel *)[cell viewWithTag:IMAGE_TAG];
-	//label.text = [commit author];
+	label = (UILabel *)[cell viewWithTag:TWO_TAG];
+	label.text = [commit author];
 	
-	// Get the time zone wrapper for the row
-	//UIImageView *imageView = (UIImageView *)[cell viewWithTag:IMAGE_TAG];
-	//imageView.image = wrapper.image;
+	label = (UILabel *)[cell viewWithTag:THR_TAG];
+	label.text = [dateFormatter stringFromDate:[commit authored_date]];
+	
+	label = (UILabel *)[cell viewWithTag:FOUR_TAG];
+	label.text = [commit message];
 }    
 
 
@@ -109,51 +105,57 @@
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:rect reuseIdentifier:identifier] autorelease];
 	
 #define LEFT_COLUMN_OFFSET 10.0
-#define LEFT_COLUMN_WIDTH 160.0
+#define LEFT_COLUMN_WIDTH 70.0
 	
-#define MIDDLE_COLUMN_OFFSET 170.0
-#define MIDDLE_COLUMN_WIDTH 90.0
+#define MIDDLE_COLUMN_OFFSET 80.0
+#define MIDDLE_COLUMN_WIDTH 130.0
 	
-#define RIGHT_COLUMN_OFFSET 280.0
+#define RIGHT_COLUMN_OFFSET 210.0
+#define RIGHT_COLUMN_WIDTH 90.0
 	
 #define MAIN_FONT_SIZE 18.0
 #define LABEL_HEIGHT 26.0
-	
-#define IMAGE_SIDE 30.0
-	
+		
 	/*
 	 Create labels for the text fields; set the highlight color so that when the cell is selected it changes appropriately.
 	 */
 	UILabel *label;
 	
-	rect = CGRectMake(LEFT_COLUMN_OFFSET, (ROW_HEIGHT - LABEL_HEIGHT) / 2.0, LEFT_COLUMN_WIDTH, LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_COLUMN_OFFSET, 10, LEFT_COLUMN_WIDTH, LABEL_HEIGHT);
 	label = [[UILabel alloc] initWithFrame:rect];
-	label.tag = NAME_TAG;
-	label.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
+	label.tag = ONE_TAG;
+	label.font = [UIFont fontWithName:@"Courier New" size:15];
 	label.adjustsFontSizeToFitWidth = YES;
 	[cell.contentView addSubview:label];
 	label.highlightedTextColor = [UIColor whiteColor];
 	[label release];
 	
-	rect = CGRectMake(MIDDLE_COLUMN_OFFSET, (ROW_HEIGHT - LABEL_HEIGHT) / 2.0, MIDDLE_COLUMN_WIDTH, LABEL_HEIGHT);
+	rect = CGRectMake(MIDDLE_COLUMN_OFFSET, 0, MIDDLE_COLUMN_WIDTH, LABEL_HEIGHT);
 	label = [[UILabel alloc] initWithFrame:rect];
-	label.tag = TIME_TAG;
-	label.font = [UIFont systemFontOfSize:MAIN_FONT_SIZE];
-	label.textAlignment = UITextAlignmentRight;
+	label.tag = TWO_TAG;
+	label.font = [UIFont systemFontOfSize:15];
+	label.textAlignment = UITextAlignmentLeft;
 	[cell.contentView addSubview:label];
 	label.highlightedTextColor = [UIColor whiteColor];
 	[label release];
 	
+	rect = CGRectMake(RIGHT_COLUMN_OFFSET, 0, RIGHT_COLUMN_WIDTH, LABEL_HEIGHT);
+	label = [[UILabel alloc] initWithFrame:rect];
+	label.tag = THR_TAG;
+	label.textAlignment = UITextAlignmentRight;
+	label.font = [UIFont systemFontOfSize:10];
+	[cell.contentView addSubview:label];
+	label.highlightedTextColor = [UIColor whiteColor];
+	[label release];
 	
-	// Create an image view for the quarter image
-	
-	rect = CGRectMake(RIGHT_COLUMN_OFFSET, (ROW_HEIGHT - IMAGE_SIDE) / 2.0, IMAGE_SIDE, IMAGE_SIDE);
-	
-	UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
-	imageView.tag = IMAGE_TAG;
-	[cell.contentView addSubview:imageView];
-	[imageView release];
-	
+	rect = CGRectMake(MIDDLE_COLUMN_OFFSET, LABEL_HEIGHT, 200.0, 15);
+	label = [[UILabel alloc] initWithFrame:rect];
+	label.tag = FOUR_TAG;
+	label.textAlignment = UITextAlignmentLeft;
+	label.font = [UIFont systemFontOfSize:10];
+	[cell.contentView addSubview:label];
+	label.highlightedTextColor = [UIColor whiteColor];
+	[label release];
 	
 	return cell;
 }
