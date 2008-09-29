@@ -12,14 +12,17 @@
 
 @interface ObjGit : NSObject {
 	NSString* gitDirectory;
+	NSString* gitName;
 }
 
-@property(assign, readwrite) NSString *gitDirectory;
+@property(copy, readwrite) NSString *gitDirectory;
+@property(copy, readwrite) NSString *gitName;
 
 - (BOOL) openRepo:(NSString *)dirPath;
 - (BOOL) ensureGitPath;
 - (void) initGitRepo;
 - (NSArray *) getAllRefs;
+- (NSString *) getName;
 
 - (NSString *) writeObject:(NSData *)objectData withType:(NSString *)type withSize:(int)size;
 - (void) updateRef:(NSString *)refName toSha:(NSString *)toSha;

@@ -15,13 +15,13 @@
 	NSData*   raw;
 }
 
-@property(assign, readwrite) NSString *sha;	
+@property(copy, readwrite) NSString *sha;	
 @property(assign, readwrite) NSInteger size;	
-@property(assign, readwrite) NSString *type;	
-@property(assign, readwrite) NSString *contents;	
+@property(copy, readwrite) NSString *type;	
+@property(copy, readwrite) NSString *contents;	
 @property(assign, readwrite) char *rawContents;	
 @property(assign, readwrite) int rawContentLen;
-@property(assign, readwrite) NSData   *raw;	
+@property(copy, readwrite) NSData   *raw;	
 
 - (id) initFromRaw:(NSData *)rawData withSha:(NSString *)shaValue;
 - (void) parseRaw;

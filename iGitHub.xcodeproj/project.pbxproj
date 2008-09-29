@@ -15,9 +15,11 @@
 		2D500FA20D5A86A600DBA0E3 /* TCPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D500F920D5A86A600DBA0E3 /* TCPServer.m */; };
 		2D500FB40D5A86C000DBA0E3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */; };
 		310F88EE0E89A95700FA95A4 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 310F88ED0E89A95700FA95A4 /* TODO */; };
+		311D2AF80E904D7000A08291 /* CommitsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311D2AF70E904D7000A08291 /* CommitsViewController.m */; };
 		312C951E0E7A38F200182164 /* ObjGit.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C951D0E7A38F200182164 /* ObjGit.m */; };
 		316381DB0E8FEECB00044E4A /* ProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 316381CC0E8FED3100044E4A /* ProjectViewController.m */; };
 		316382540E900E7100044E4A /* ProjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 316382530E900E7100044E4A /* ProjectController.m */; };
+		316382CB0E901A9300044E4A /* ProjectDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 316382CA0E901A9300044E4A /* ProjectDetailViewController.m */; };
 		3191AB5F0E830E8600957F79 /* ObjGitCommit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5A0E830E8600957F79 /* ObjGitCommit.m */; };
 		3191AB600E830E8600957F79 /* ObjGitObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5C0E830E8600957F79 /* ObjGitObject.m */; };
 		3191AB610E830E8600957F79 /* ObjGitServerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 3191AB5E0E830E8600957F79 /* ObjGitServerHandler.m */; };
@@ -53,12 +55,16 @@
 		2D500F920D5A86A600DBA0E3 /* TCPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TCPServer.m; path = Networking/TCPServer.m; sourceTree = "<group>"; };
 		2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		310F88ED0E89A95700FA95A4 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
+		311D2AF60E904D7000A08291 /* CommitsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommitsViewController.h; sourceTree = "<group>"; };
+		311D2AF70E904D7000A08291 /* CommitsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommitsViewController.m; sourceTree = "<group>"; };
 		312C951C0E7A38F200182164 /* ObjGit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGit.h; sourceTree = "<group>"; };
 		312C951D0E7A38F200182164 /* ObjGit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGit.m; sourceTree = "<group>"; };
 		316381CB0E8FED3100044E4A /* ProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectViewController.h; sourceTree = "<group>"; };
 		316381CC0E8FED3100044E4A /* ProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectViewController.m; sourceTree = "<group>"; };
 		316382520E900E7100044E4A /* ProjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectController.h; sourceTree = "<group>"; };
 		316382530E900E7100044E4A /* ProjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectController.m; sourceTree = "<group>"; };
+		316382C90E901A9300044E4A /* ProjectDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectDetailViewController.h; sourceTree = "<group>"; };
+		316382CA0E901A9300044E4A /* ProjectDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectDetailViewController.m; sourceTree = "<group>"; };
 		3191AB590E830E8600957F79 /* ObjGitCommit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGitCommit.h; sourceTree = "<group>"; };
 		3191AB5A0E830E8600957F79 /* ObjGitCommit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGitCommit.m; sourceTree = "<group>"; };
 		3191AB5B0E830E8600957F79 /* ObjGitObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGitObject.h; sourceTree = "<group>"; };
@@ -179,6 +185,10 @@
 				316381CC0E8FED3100044E4A /* ProjectViewController.m */,
 				316382520E900E7100044E4A /* ProjectController.h */,
 				316382530E900E7100044E4A /* ProjectController.m */,
+				316382C90E901A9300044E4A /* ProjectDetailViewController.h */,
+				316382CA0E901A9300044E4A /* ProjectDetailViewController.m */,
+				311D2AF60E904D7000A08291 /* CommitsViewController.h */,
+				311D2AF70E904D7000A08291 /* CommitsViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -322,6 +332,8 @@
 				3191AB730E830F7800957F79 /* NSDataCompression.m in Sources */,
 				31C5B2870E8BF40500B07BE9 /* ObjGitTree.m in Sources */,
 				316382540E900E7100044E4A /* ProjectController.m in Sources */,
+				316382CB0E901A9300044E4A /* ProjectDetailViewController.m in Sources */,
+				311D2AF80E904D7000A08291 /* CommitsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

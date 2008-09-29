@@ -18,10 +18,12 @@
 @synthesize committed_date;
 @synthesize message;
 @synthesize git_object;
+@synthesize sha;
 
 - (id) initFromGitObject:(ObjGitObject *)gitObject {
 	self = [super init];	
-	git_object = gitObject;
+	self.sha = [gitObject sha];
+	self.git_object = gitObject;
 	[self parseContent];
 	return self;
 }
@@ -29,9 +31,10 @@
 - (id) initFromRaw:(NSData *)rawData withSha:(NSString *)shaValue
 {
 	self = [super init];	
-	git_object = [[ObjGitObject alloc] initFromRaw:rawData withSha:shaValue];
+	self.git_object = [[ObjGitObject alloc] initFromRaw:rawData withSha:shaValue];
+	self.sha = shaValue;
 	[self parseContent];
-	// [self logObject];
+	[self logObject];
 	return self;
 }
 
@@ -47,7 +50,7 @@
 - (void) parseContent
 {
 	// extract parent shas, tree sha, author/committer info, message
-	NSArray			*lines = [git_object.contents componentsSeparatedByString:@"\n"];
+	NSArray			*lines = [self.git_object.contents componentsSeparatedByString:@"\n"];
 	NSEnumerator	*enumerator;
 	NSMutableArray	*parents;
 	NSMutableString *buildMessage;
@@ -68,27 +71,27 @@
 				key = [values objectAtIndex: 0];			
 				val = [values objectAtIndex: 1];			
 				if([key isEqualToString: @"tree"]) {
-					treeSha = val;
+					self.treeSha = val;
 				} else if ([key isEqualToString: @"parent"]) {
 					[parents addObject: val];
 				} else if ([key isEqualToString: @"author"]) {
 					NSArray *name_email_date = [self parseAuthorString:line withType:@"author "];
-					author		  = [name_email_date objectAtIndex: 0];
-					author_email  = [name_email_date objectAtIndex: 1];
-					authored_date = [name_email_date objectAtIndex: 2];
+					self.author		  = [name_email_date objectAtIndex: 0];
+					self.author_email  = [name_email_date objectAtIndex: 1];
+					self.authored_date = [name_email_date objectAtIndex: 2];
 				} else if ([key isEqualToString: @"committer"]) {
 					NSArray *name_email_date = [self parseAuthorString:line withType:@"committer "];
-					committer		 = [name_email_date objectAtIndex: 0];
-					committer_email  = [name_email_date objectAtIndex: 1];
-					committed_date   = [name_email_date objectAtIndex: 2];
+					self.committer		 = [name_email_date objectAtIndex: 0];
+					self.committer_email  = [name_email_date objectAtIndex: 1];
+					self.committed_date   = [name_email_date objectAtIndex: 2];
 				}
 			}
 		} else {
 			[buildMessage appendString: line];
 		}
     }
-	message = buildMessage;
-	parentShas = parents;
+	self.message = buildMessage;
+	self.parentShas = parents;
 }
 
 - (NSArray *) parseAuthorString:(NSString *)authorString withType:(NSString *)typeString

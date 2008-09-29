@@ -4,6 +4,8 @@
 //
 
 #import "ProjectViewController.h"
+#import "ProjectDetailViewController.h"
+#import "ObjGit.h"
 
 
 @implementation ProjectViewController
@@ -12,7 +14,7 @@
 
 - (id)initWithStyle:(UITableViewStyle)style {
 	if ((self = [super initWithStyle:style])) {
-		self.title = NSLocalizedString(@"iGitHub Projects", @"My Local Git Project List");
+		self.title = NSLocalizedString(@"Projects", @"My Local Git Project List");
 	}
 	return self;
 }
@@ -38,15 +40,25 @@
 	}
 
 	// Get the object to display and set the value in the cell
-    NSArray *itemAtIndex = (NSArray *)[projectController objectInListAtIndex:indexPath.row];
-    cell.text = [itemAtIndex objectAtIndex:0];
+	NSLog(@"TEST 1");
+	NSLog(@"OBJ:%@", [projectController objectInListAtIndex:indexPath.row]);
+    ObjGit *itemAtIndex = [projectController objectInListAtIndex:indexPath.row];
+	NSLog(@"TEST 2");
+	NSLog(@"obj:%@", [itemAtIndex getName]);
+    cell.text = [itemAtIndex gitName];
 	return cell;
 }
 
-/*
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    ProjectDetailViewController *detailViewController = [[ProjectDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    detailViewController.detailItem = [projectController objectInListAtIndex:indexPath.row];
+    
+    // Push the detail view controller
+    [[self navigationController] pushViewController:detailViewController animated:YES];
+    [detailViewController release];
 }
-*/
+
 /*
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	

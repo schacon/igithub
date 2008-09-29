@@ -14,6 +14,7 @@
 @implementation ObjGit
 
 @synthesize gitDirectory;
+@synthesize gitName;
 
 - (id) init 
 {
@@ -25,10 +26,17 @@
     [super dealloc];
 }
 
+- (NSString *) getName 
+{
+	NSLog(@"GIT NAME TEST");
+	NSLog(@"GIT NAME:%@", self.gitName);
+	return self.gitName;
+}
+
 - (BOOL) ensureGitPath {
 	BOOL isDir;
 	NSFileManager *fm = [NSFileManager defaultManager];
-	if ([fm fileExistsAtPath:gitDirectory isDirectory:&isDir] && isDir) {
+	if ([fm fileExistsAtPath:self.gitDirectory isDirectory:&isDir] && isDir) {
 		return YES;
 	} else {
 		[self initGitRepo];
@@ -41,7 +49,7 @@
 	BOOL isDir=NO;
 	NSMutableArray *refsFinal = [[NSMutableArray alloc] init];
 	NSString *tempRef, *thisSha;
-	NSString *refsPath = [gitDirectory stringByAppendingPathComponent:@"refs"];
+	NSString *refsPath = [self.gitDirectory stringByAppendingPathComponent:@"refs"];
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	if ([fileManager fileExistsAtPath:refsPath isDirectory:&isDir] && isDir) {
 		NSEnumerator *e = [[fileManager subpathsAtPath:refsPath] objectEnumerator];
@@ -64,32 +72,32 @@
 - (void) updateRef:(NSString *)refName toSha:(NSString *)toSha
 {
 	NSFileManager *fm = [NSFileManager defaultManager];
-	NSString *refPath = [gitDirectory stringByAppendingPathComponent:refName];
+	NSString *refPath = [self.gitDirectory stringByAppendingPathComponent:refName];
 	[fm createFileAtPath:refPath contents:[NSData dataWithBytes:[toSha UTF8String] length:[toSha length]] attributes:nil];
 }
 
 - (void) initGitRepo {
 	NSFileManager *fm = [NSFileManager defaultManager];
-	[fm createDirectoryAtPath:gitDirectory attributes:nil];
+	[fm createDirectoryAtPath:self.gitDirectory attributes:nil];
 
 	//NSLog(@"Dir Created: %@ %d", gitDirectory, [gitDirectory length]);
 	NSString *config = @"[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = true\n\tlogallrefupdates = true\n";
-	NSString *configFile = [gitDirectory stringByAppendingPathComponent:@"config"];
+	NSString *configFile = [self.gitDirectory stringByAppendingPathComponent:@"config"];
 	[fm createFileAtPath:configFile contents:[NSData dataWithBytes:[config UTF8String] length:[config length]] attributes:nil];
 
 	NSString *head = @"ref: refs/heads/master\n";
-	NSString *headFile = [gitDirectory stringByAppendingPathComponent:@"HEAD"];
+	NSString *headFile = [self.gitDirectory stringByAppendingPathComponent:@"HEAD"];
 	[fm createFileAtPath:headFile contents:[NSData dataWithBytes:[head UTF8String] length:[head length]] attributes:nil];
 
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"refs"] attributes:nil];
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"refs/heads"] attributes:nil];
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"refs/tags"] attributes:nil];
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"objects"] attributes:nil];
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"objects/info"] attributes:nil];
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"objects/pack"] attributes:nil];
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"branches"] attributes:nil];
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"hooks"] attributes:nil];
-	[fm createDirectoryAtPath:[gitDirectory stringByAppendingPathComponent:@"info"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"refs"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"refs/heads"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"refs/tags"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"objects"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"objects/info"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"objects/pack"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"branches"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"hooks"] attributes:nil];
+	[fm createDirectoryAtPath:[self.gitDirectory stringByAppendingPathComponent:@"info"] attributes:nil];
 }
 
 - (NSString *) writeObject:(NSData *)objectData withType:(NSString *)type withSize:(int)size 
@@ -119,7 +127,7 @@
 
 - (BOOL) openRepo:(NSString *)dirPath 
 {
-	gitDirectory = dirPath;
+	self.gitDirectory = dirPath;
 	return YES;
 }
 
@@ -177,7 +185,7 @@
 	NSString *looseSubDir   = [shaValue substringWithRange:NSMakeRange(0, 2)];
 	NSString *looseFileName = [shaValue substringWithRange:NSMakeRange(2, 38)];
 	
-	NSString *dir = [NSString stringWithFormat: @"%@/objects/%@", gitDirectory, looseSubDir];
+	NSString *dir = [NSString stringWithFormat: @"%@/objects/%@", self.gitDirectory, looseSubDir];
 	
 	BOOL isDir;
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -186,7 +194,7 @@
 	}
 	
 	return [NSString stringWithFormat: @"%@/objects/%@/%@", \
-			gitDirectory, looseSubDir, looseFileName];
+			self.gitDirectory, looseSubDir, looseFileName];
 }
 
 
