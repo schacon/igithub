@@ -88,6 +88,7 @@ Version: 1.5
 
 - (void) dealloc
 {	
+	NSLog(@"dealloc");
 	[_inStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 	[_inStream release];
 
@@ -128,6 +129,8 @@ Version: 1.5
 		[self _showAlert:@"Failed advertising server"];
 		return;
 	}
+	
+
 }
 
 - (void) send:(const uint8_t)message
@@ -171,9 +174,6 @@ Version: 1.5
 	switch(eventCode) {
 		case NSStreamEventOpenCompleted:
 		{			
-			[_server release];
-			_server = nil;
-
 			if (stream == _inStream)
 				_inReady = YES;
 			else
@@ -209,6 +209,7 @@ Version: 1.5
 
 - (void) serverDidEnableBonjour:(TCPServer*)server withName:(NSString*)string
 {
+	NSLog(@"testtest");
 	NSLog(@"%s", _cmd);
 }
 

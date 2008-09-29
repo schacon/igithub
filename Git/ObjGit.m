@@ -26,13 +26,6 @@
     [super dealloc];
 }
 
-- (NSString *) getName 
-{
-	NSLog(@"GIT NAME TEST");
-	NSLog(@"GIT NAME:%@", self.gitName);
-	return self.gitName;
-}
-
 - (BOOL) ensureGitPath {
 	BOOL isDir;
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -155,16 +148,18 @@
 	}
 	
 	// NSLog(@"s: %@", commitArray);
-	
+	//[toDoArray release];
 	return commitArray;
 }
 
 - (ObjGitObject *) getObjectFromSha:(NSString *)sha1 
 {
 	NSString *objectPath = [self getLooseObjectPathBySha:sha1];
-	NSLog(@"READ FROM FILE: %@", objectPath);
+	//NSLog(@"READ FROM FILE: %@", objectPath);
 	NSFileHandle *fm = [NSFileHandle fileHandleForReadingAtPath:objectPath];
-	return [[ObjGitObject alloc] initFromRaw:[fm availableData] withSha:sha1];	
+	ObjGitObject *obj = [[ObjGitObject alloc] initFromRaw:[fm availableData] withSha:sha1];
+	[fm closeFile];
+	return obj;	
 }
 
 - (BOOL) hasObject: (NSString *)sha1 

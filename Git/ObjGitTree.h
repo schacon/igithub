@@ -11,7 +11,7 @@
 	ObjGitObject  *gitObject;
 }
 
-@property(assign, readwrite) NSArray   *treeEntries;
+@property(copy, readwrite) NSArray   *treeEntries;
 @property(assign, readwrite) ObjGitObject *gitObject;
 
 - (id) initFromGitObject:(ObjGitObject *)object;

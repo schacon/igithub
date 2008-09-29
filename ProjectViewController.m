@@ -40,11 +40,7 @@
 	}
 
 	// Get the object to display and set the value in the cell
-	NSLog(@"TEST 1");
-	NSLog(@"OBJ:%@", [projectController objectInListAtIndex:indexPath.row]);
     ObjGit *itemAtIndex = [projectController objectInListAtIndex:indexPath.row];
-	NSLog(@"TEST 2");
-	NSLog(@"obj:%@", [itemAtIndex getName]);
     cell.text = [itemAtIndex gitName];
 	return cell;
 }

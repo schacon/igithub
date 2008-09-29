@@ -13,10 +13,8 @@
 @synthesize gitObject;
 
 - (id) initFromGitObject:(ObjGitObject *)object {
-	NSLog(@"Tree init1");
 	self = [super init];	
-	NSLog(@"Tree init");
-	gitObject = object;
+	self.gitObject = object;
 	[self parseContent];
 	return self;
 }
@@ -29,7 +27,7 @@
 // 100644 testfile\0[20 char sha]
 - (void) parseContent
 {
-	char *contents = [gitObject rawContents];
+	char *contents = [self.gitObject rawContents];
 	
 	char mode[9];
 	int modePtr = 0;
@@ -46,7 +44,7 @@
 	int i, j, state;
 	state = 1;
 	
-	for(i = 0; i < [gitObject rawContentLen] - 1; i++) {
+	for(i = 0; i < [self.gitObject rawContentLen] - 1; i++) {
 		if(contents[i] == 0) {
 			state = 1;
 			for(j = 0; j < 20; j++)

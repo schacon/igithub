@@ -247,9 +247,11 @@
 
 - (void) gatherObjectShasFromTree:(NSString *)shaValue 
 {
-	ObjGitTree *tree = [[ObjGitTree alloc] initFromGitObject:[gitRepo getObjectFromSha:shaValue]];
+	ObjGitTree *tree = [ObjGitTree alloc];
+	[tree initFromGitObject:[gitRepo getObjectFromSha:shaValue]];
 	[refDict setObject:@"/" forKey:shaValue];
 	NSEnumerator *e = [[tree treeEntries] objectEnumerator];
+	//[tree release];
 	NSArray *entries;
 	NSString *name, *sha, *mode;
 	while ( (entries = [e nextObject]) ) {
@@ -419,6 +421,7 @@
 			contents = [self patchDelta:objectData withObject:object];
 			//NSLog(@"unpacked delta: %@ : %@", contents, [object type]);
 			[gitRepo writeObject:contents withType:[object type] withSize:[contents length]];
+			//[object release];
 		} else {
 			// TODO : OBJECT ISN'T HERE YET, SAVE THIS DELTA FOR LATER //
 			/*
@@ -510,10 +513,13 @@
 			[destination appendBytes:[buffer bytes]	length:cp_size];
 			//NSLog(@"dest: %@", destination);
 		} else if(c[0] != 0) {
+			if(c[0] > destSize) 
+				break;
 			//NSLog(@"thingy: %d, %d", position, c[0]);
-			[source getBytes:[buffer mutableBytes] range:NSMakeRange(position, c[0])];
+			[deltaData getBytes:[buffer mutableBytes] range:NSMakeRange(position, c[0])];
 			[destination appendBytes:[buffer bytes]	length:c[0]];
 			position += c[0];
+			destSize -= c[0];
 		} else {
 			 NSLog(@"invalid delta data");
 		}
