@@ -47,6 +47,11 @@
 	NSLog(@"message  : %@", message);
 }
 
+- (NSArray *) authorArray 
+{
+	return [NSArray arrayWithObjects:self.author, self.author_email, self.authored_date, nil];
+}
+
 - (void) parseContent
 {
 	// extract parent shas, tree sha, author/committer info, message
@@ -88,6 +93,7 @@
 			}
 		} else {
 			[buildMessage appendString: line];
+			[buildMessage appendString: @"\n"];
 		}
     }
 	self.message = buildMessage;

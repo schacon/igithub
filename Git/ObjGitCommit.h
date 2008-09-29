@@ -20,14 +20,14 @@
 	ObjGitObject  *git_object;
 }
 
-@property(assign, readwrite) NSString  *sha;
-@property(assign, readwrite) NSArray   *parentShas;
-@property(assign, readwrite) NSString  *treeSha;
-@property(assign, readwrite) NSString  *author;	
-@property(assign, readwrite) NSString  *author_email;	
-@property(copy  , readwrite) NSDate	   *authored_date;	
-@property(assign, readwrite) NSString  *committer;	
-@property(assign, readwrite) NSString  *committer_email;	
+@property(copy, readwrite) NSString  *sha;
+@property(copy, readwrite) NSArray   *parentShas;
+@property(copy, readwrite) NSString    *treeSha;
+@property(copy, readwrite) NSString    *author;	
+@property(copy, readwrite) NSString    *author_email;	
+@property(copy, readwrite) NSDate	   *authored_date;	
+@property(copy, readwrite) NSString  *committer;	
+@property(copy, readwrite) NSString  *committer_email;	
 @property(retain, readwrite) NSDate	   *committed_date;	
 @property(assign, readwrite) NSString  *message;	
 @property(assign, readwrite) ObjGitObject *git_object;
@@ -36,6 +36,7 @@
 - (id) initFromRaw:(NSData *)rawData withSha:(NSString *)shaValue;
 - (void) parseContent;
 - (void) logObject;
+- (NSArray *) authorArray; 
 - (NSArray *) parseAuthorString:(NSString *)authorString withType:(NSString *)typeString;
 
 @end

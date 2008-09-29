@@ -4,6 +4,7 @@
 //
 
 #import "CommitsViewController.h"
+#import "CommitDetailViewController.h"
 #import "ObjGitCommit.h"
 
 #define ROW_HEIGHT 60
@@ -158,6 +159,18 @@
 	[label release];
 	
 	return cell;
+}
+
+// SWITCH TO SINGLE COMMIT VIEW //
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    CommitDetailViewController *commitViewController = [[CommitDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];	
+    commitViewController.gitRepo = self.gitRepo;
+    commitViewController.gitCommit = [self.commitList objectAtIndex:indexPath.row];
+
+    // Push the commit view controller
+    [[self navigationController] pushViewController:commitViewController animated:YES];
+    [commitViewController release];
 }
 
 /*

@@ -16,6 +16,7 @@
 		2D500FB40D5A86C000DBA0E3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */; };
 		310F88EE0E89A95700FA95A4 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 310F88ED0E89A95700FA95A4 /* TODO */; };
 		311D2AF80E904D7000A08291 /* CommitsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311D2AF70E904D7000A08291 /* CommitsViewController.m */; };
+		311D2CD10E9155E500A08291 /* CommitDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311D2CD00E9155E500A08291 /* CommitDetailViewController.m */; };
 		312C951E0E7A38F200182164 /* ObjGit.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C951D0E7A38F200182164 /* ObjGit.m */; };
 		316381DB0E8FEECB00044E4A /* ProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 316381CC0E8FED3100044E4A /* ProjectViewController.m */; };
 		316382540E900E7100044E4A /* ProjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = 316382530E900E7100044E4A /* ProjectController.m */; };
@@ -57,6 +58,8 @@
 		310F88ED0E89A95700FA95A4 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		311D2AF60E904D7000A08291 /* CommitsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommitsViewController.h; sourceTree = "<group>"; };
 		311D2AF70E904D7000A08291 /* CommitsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommitsViewController.m; sourceTree = "<group>"; };
+		311D2CCF0E9155E500A08291 /* CommitDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommitDetailViewController.h; sourceTree = "<group>"; };
+		311D2CD00E9155E500A08291 /* CommitDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommitDetailViewController.m; sourceTree = "<group>"; };
 		312C951C0E7A38F200182164 /* ObjGit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjGit.h; sourceTree = "<group>"; };
 		312C951D0E7A38F200182164 /* ObjGit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjGit.m; sourceTree = "<group>"; };
 		316381CB0E8FED3100044E4A /* ProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectViewController.h; sourceTree = "<group>"; };
@@ -189,6 +192,8 @@
 				316382CA0E901A9300044E4A /* ProjectDetailViewController.m */,
 				311D2AF60E904D7000A08291 /* CommitsViewController.h */,
 				311D2AF70E904D7000A08291 /* CommitsViewController.m */,
+				311D2CCF0E9155E500A08291 /* CommitDetailViewController.h */,
+				311D2CD00E9155E500A08291 /* CommitDetailViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -334,6 +339,7 @@
 				316382540E900E7100044E4A /* ProjectController.m in Sources */,
 				316382CB0E901A9300044E4A /* ProjectDetailViewController.m in Sources */,
 				311D2AF80E904D7000A08291 /* CommitsViewController.m in Sources */,
+				311D2CD10E9155E500A08291 /* CommitDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,29 @@
 
 ToDo List
+====================================
 
-* send HEAD with packed refs 
+* view a commit
+
+* flick up/down to browse commits
+
+* status bar (when clones/fetches are happening)
+
+* about page - who did this
+
+* how to page
+
+* sharing screen - so people can see how to clone
+
+* delete a repo
+
+* public / private repos
+
+* commit key for private repos
+
+
+
+Implementation Get-Back-Tos
+====================================
 
 * read/write blob data from disk rather than memory to handle objects > 100M
 
