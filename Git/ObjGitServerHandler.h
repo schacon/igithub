@@ -56,7 +56,7 @@
 - (void) unpackDeltified:(int)type size:(int)size;
 
 - (NSData *) patchDelta:(NSData *)deltaData withObject:(ObjGitObject *)gitObject;
-- (NSArray *) patchDeltaHeaderSize:(NSData *)deltaData position:(int)position;
+- (NSArray *) patchDeltaHeaderSize:(NSData *)deltaData position:(unsigned long)position;
 
 - (NSString *)readServerSha;
 - (int) readPackHeader;

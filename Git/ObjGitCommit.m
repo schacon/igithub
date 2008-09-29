@@ -34,7 +34,7 @@
 	self.git_object = [[ObjGitObject alloc] initFromRaw:rawData withSha:shaValue];
 	self.sha = shaValue;
 	[self parseContent];
-	[self logObject];
+	//[self logObject];
 	return self;
 }
 
