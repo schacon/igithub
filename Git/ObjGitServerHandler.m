@@ -54,6 +54,7 @@
  * either upload-pack for fetches or receive-pack for pushes
  */
 - (void) handleRequest {
+	NSLog(@"HANDLE REQUEST");
 	NSString *header, *command, *repository, *repo, *hostpath;
 	header = [self packetReadLine];
 	
@@ -84,6 +85,9 @@
 	[self sendRefs];
 	[self receiveNeeds];
 	[self uploadPackFile];
+	//NSLog(@"out:%@", outStream);	
+	//NSLog(@"out avail:%d", [outStream hasSpaceAvailable]);
+	//NSLog(@" in avail:%d", [inStream  hasBytesAvailable]);
 }
 
 - (void) receiveNeeds

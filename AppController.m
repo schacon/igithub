@@ -47,7 +47,6 @@ Version: 1.5
 	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	if ([paths count] > 0) {
 		gitPath = [NSString stringWithString:[[paths objectAtIndex:0] stringByAppendingPathComponent:@"git"]];
-		NSLog(@"GITDIR:%@", gitPath);
 		
 		BOOL isDir;
 		NSFileManager *fm = [NSFileManager defaultManager];
@@ -181,12 +180,18 @@ Version: 1.5
 			
 			NSLog(@"%s", _cmd);
 
-			gitDir = [self getGitPath];
-			NSLog(@"gitdir:%@", gitDir);
+			NSString *tgitDir = [self getGitPath];
+			NSLog(@"gitdir:%@", tgitDir);
 			
+			//NSLog(@"out avail:%d", [_outStream hasSpaceAvailable]);
+			//NSLog(@" in avail:%d", [_inStream  hasBytesAvailable]);
+
 			if (_inReady && _outReady) {
 				ObjGit* git = [ObjGit alloc];
-				[[ObjGitServerHandler alloc] initWithGit:git gitPath:gitDir input:_inStream output:_outStream];				
+				ObjGitServerHandler *obsh = [ObjGitServerHandler alloc];
+				NSLog(@"INIT WITH GIT:  %@ : %@ : %@ : %@", git, obsh, _inStream, _outStream);
+				[obsh initWithGit:git gitPath:tgitDir input:_inStream output:_outStream];				
+				NSLog(@"INIT WITH GIT");
 				[self setup]; // restart the server
 			}
 
@@ -217,6 +222,8 @@ Version: 1.5
 {
 	if (_inStream || _outStream || server != _server)
 		return;
+	
+	NSLog(@"accept connection");
 	
 	[_server release];
 	_server = nil;

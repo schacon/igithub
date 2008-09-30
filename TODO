@@ -2,8 +2,6 @@
 ToDo List
 ====================================
 
-* view a commit
-
 * flick up/down to browse commits
 
 * status bar (when clones/fetches are happening)
@@ -22,8 +20,25 @@ ToDo List
 
 
 
+GitHub Features
+====================================
+
+* github user/pass login
+
+* a "search github" feature
+
+* fork/clone a github project
+
+* send a pull request
+
+* add a list of remotes of people that forked you
+
+
+
 Implementation Get-Back-Tos
 ====================================
+
+* second fetches break
 
 * read/write blob data from disk rather than memory to handle objects > 100M
 
