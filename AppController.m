@@ -34,6 +34,7 @@ Version: 1.5
 @synthesize gitDir;
 @synthesize navigationController;
 @synthesize tabBarController;
+@synthesize serverViewController;
 
 - (NSString *)getGitPath
 {
@@ -54,6 +55,8 @@ Version: 1.5
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
+	NSString * thisHostName = [[NSProcessInfo processInfo] hostName];
+	NSLog(@"hostname: %@", thisHostName);
 	// Create a full-screen window
 	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
@@ -68,12 +71,13 @@ Version: 1.5
 	[projectViewController setProjectController:pController];
 
 	ServerViewController *serverController = [[ServerViewController alloc] init];
+	self.serverViewController = serverController;
 	
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:projectViewController];
     self.navigationController = aNavigationController;
 	
 	UITabBarController *atabBarController = [[UITabBarController alloc] init];
-	NSArray *vc = [NSArray arrayWithObjects:navigationController, serverController, nil];
+	NSArray *vc = [NSArray arrayWithObjects:navigationController, serverViewController, nil];
 	[atabBarController setViewControllers:vc animated:NO];
 	self.tabBarController = atabBarController;
 	
@@ -158,7 +162,8 @@ Version: 1.5
 
 - (void) serverDidEnableBonjour:(TCPServer*)server withName:(NSString*)string
 {
-	//NSLog(@"%s", _cmd);
+	//[self.serverViewController setServerName:string];
+	//NSLog(@"%@", string);
 }
 
 - (void)didAcceptConnectionForServer:(TCPServer*)server inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr

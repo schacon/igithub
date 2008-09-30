@@ -10,7 +10,11 @@
 
 
 @interface ServerViewController : UIViewController {
-
+	UILabel* serverNameLabel;
 }
+
+@property (nonatomic, retain) UILabel* serverNameLabel;
+
+- (void)setServerName:(NSString *)string;
 
 @end

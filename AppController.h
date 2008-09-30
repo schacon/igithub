@@ -47,6 +47,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 */
 
 #import "BrowserViewController.h"
+#import "ServerViewController.h"
 #import "TCPServer.h"
 #import "ObjGitCommit.h"
 
@@ -62,10 +63,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	BOOL				_outReady;
 	UINavigationController *navigationController;
 	UITabBarController *tabBarController;
+	ServerViewController *serverViewController;
 	NSString*			gitDir;
 }
 
 @property (nonatomic, retain) UINavigationController *navigationController;
 @property (nonatomic, retain) UITabBarController *tabBarController;
+@property (nonatomic, retain) ServerViewController *serverViewController;
 
 @end
