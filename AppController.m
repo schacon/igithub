@@ -13,8 +13,9 @@ Version: 1.5
 #import "AppController.h"
 #import "ProjectViewController.h"
 #import "ProjectController.h"
+#import "ServerViewController.h"
 
-#define bonIdentifier		@"github"
+#define bonIdentifier @"git"
 
 //INTERFACES:
 
@@ -32,13 +33,7 @@ Version: 1.5
 
 @synthesize gitDir;
 @synthesize navigationController;
-
-- (void) _showAlert:(NSString*)title
-{
-	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:@"Check your networking configuration." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alertView show];
-	[alertView release];
-}
+@synthesize tabBarController;
 
 - (NSString *)getGitPath
 {
@@ -59,7 +54,7 @@ Version: 1.5
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
-	//Create a full-screen window
+	// Create a full-screen window
 	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
 	// getting the git path
@@ -71,27 +66,31 @@ Version: 1.5
 	
     ProjectViewController *projectViewController = [[ProjectViewController alloc] initWithStyle:UITableViewStylePlain];
 	[projectViewController setProjectController:pController];
+
+	ServerViewController *serverController = [[ServerViewController alloc] init];
 	
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:projectViewController];
     self.navigationController = aNavigationController;
-    [aNavigationController release];
-    [projectViewController release];
-    
+	
+	UITabBarController *atabBarController = [[UITabBarController alloc] init];
+	NSArray *vc = [NSArray arrayWithObjects:navigationController, serverController, nil];
+	[atabBarController setViewControllers:vc animated:NO];
+	self.tabBarController = atabBarController;
+	
     // Configure and show the window
-    [_window addSubview:[navigationController view]];
+	[_window addSubview:tabBarController.view];
     [_window makeKeyAndVisible];
 
-	//Create and advertise a new game and discover other availble games
+    [projectViewController release];
+    [aNavigationController release];
+    
 	[self setup];
 }
 
 - (void) dealloc
 {	
 	NSLog(@"dealloc");
-	[_inStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 	[_inStream release];
-
-	[_outStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 	[_outStream release];
 
 	[_server release];
@@ -101,15 +100,13 @@ Version: 1.5
 }
 
 - (void) setup {
-	[_server release];
-	_server = nil;
+	//[_server release];
+	//_server = nil;
 	
-	[_inStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 	[_inStream release];
 	_inStream = nil;
 	_inReady = NO;
 
-	[_outStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 	[_outStream release];
 	_outStream = nil;
 	_outReady = NO;
@@ -119,93 +116,40 @@ Version: 1.5
 	NSError* error;
 	if(_server == nil || ![_server start:&error]) {
 		NSLog(@"Failed creating server: %@", error);
-		[self _showAlert:@"Failed creating server"];
 		return;
 	}
 	
-	//Start advertising to clients, passing nil for the name to tell Bonjour to pick use default name
-	if(![_server enableBonjourWithDomain:@"local" applicationProtocol:[TCPServer bonjourTypeFromIdentifier:bonIdentifier] name:nil]) {
-		[self _showAlert:@"Failed advertising server"];
-		return;
-	}
+	gitDir = [self getGitPath];
 	
-
-}
-
-- (void) send:(const uint8_t)message
-{
-	if (_outStream && [_outStream hasSpaceAvailable])
-		if([_outStream write:(const uint8_t *)&message maxLength:sizeof(const uint8_t)] == -1)
-			[self _showAlert:@"Failed sending data to peer"];
+	BOOL isDir=NO;
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ([fileManager fileExistsAtPath:gitDir isDirectory:&isDir] && isDir) {
+		NSEnumerator *e = [[fileManager directoryContentsAtPath:gitDir] objectEnumerator];
+		NSString *thisDir;
+		while ( (thisDir = [e nextObject]) ) {
+			NSLog(@"announce:%@", thisDir);
+			[_server enableBonjourWithDomain:@"local" applicationProtocol:[TCPServer bonjourTypeFromIdentifier:bonIdentifier] name:thisDir];
+		}
+	}	
 }
 
 - (void) openStreams
 {
-	_inStream.delegate = self;
-	[_inStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[_inStream open];
-	_outStream.delegate = self;
-	[_outStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	NSString *tgitDir = [self getGitPath];
+	NSLog(@"gitdir:%@", tgitDir);
+
 	[_outStream open];
-}
+	[_inStream  open];
+	
+	ObjGit* git = [ObjGit alloc];
+	ObjGitServerHandler *obsh = [[ObjGitServerHandler alloc] init];
+	NSLog(@"INIT WITH GIT:  %@ : %@ : %@ : %@ : %@", obsh, git, tgitDir, _inStream, _outStream);
+	[obsh initWithGit:git gitPath:tgitDir input:_inStream output:_outStream];				
 
-- (void) browserViewController:(BrowserViewController*)bvc didResolveInstance:(NSNetService*)netService
-{
-	if (!netService) {
-		[self setup];
-		return;
-	}
-
-	if (![netService getInputStream:&_inStream outputStream:&_outStream]) {
-		[self _showAlert:@"Failed connecting to server"];
-		return;
-	}
-
-	[self openStreams];
-}
-
-@end
-
-@implementation AppController (NSStreamDelegate)
-
-- (void) stream:(NSStream*)stream handleEvent:(NSStreamEvent)eventCode
-{
-	switch(eventCode) {
-		case NSStreamEventOpenCompleted:
-		{			
-			if (stream == _inStream)
-				_inReady = YES;
-			else
-				_outReady = YES;
-			
-			NSLog(@"%s", _cmd);
-
-			NSString *tgitDir = [self getGitPath];
-			NSLog(@"gitdir:%@", tgitDir);
-			
-			//NSLog(@"out avail:%d", [_outStream hasSpaceAvailable]);
-			//NSLog(@" in avail:%d", [_inStream  hasBytesAvailable]);
-
-			if (_inReady && _outReady) {
-				ObjGit* git = [ObjGit alloc];
-				ObjGitServerHandler *obsh = [ObjGitServerHandler alloc];
-				NSLog(@"INIT WITH GIT:  %@ : %@ : %@ : %@", git, obsh, _inStream, _outStream);
-				[obsh initWithGit:git gitPath:tgitDir input:_inStream output:_outStream];				
-				NSLog(@"INIT WITH GIT");
-				[self setup]; // restart the server
-			}
-
-			break;
-		}
-		case NSStreamEventHasBytesAvailable:
-		{
-			break;
-		}
-		case NSStreamEventEndEncountered:
-		{
-			break;
-		}
-	}
+	[_outStream close];
+	[_inStream  close];
+	
+	[self setup]; // restart the server
 }
 
 @end
@@ -214,8 +158,7 @@ Version: 1.5
 
 - (void) serverDidEnableBonjour:(TCPServer*)server withName:(NSString*)string
 {
-	NSLog(@"testtest");
-	NSLog(@"%s", _cmd);
+	//NSLog(@"%s", _cmd);
 }
 
 - (void)didAcceptConnectionForServer:(TCPServer*)server inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr
@@ -225,6 +168,7 @@ Version: 1.5
 	
 	NSLog(@"accept connection");
 	
+	[_server stop];
 	[_server release];
 	_server = nil;
 	

@@ -14,6 +14,10 @@
 		2D500B1C0D5A766900DBA0E3 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D500B1B0D5A766900DBA0E3 /* AppController.m */; };
 		2D500FA20D5A86A600DBA0E3 /* TCPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D500F920D5A86A600DBA0E3 /* TCPServer.m */; };
 		2D500FB40D5A86C000DBA0E3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */; };
+		310855400E92A7F300208197 /* ServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3108553F0E92A7F300208197 /* ServerViewController.m */; };
+		3108557A0E92B4B200208197 /* server.png in Resources */ = {isa = PBXBuildFile; fileRef = 310855790E92B4B200208197 /* server.png */; };
+		310855870E92B81200208197 /* servericon.png in Resources */ = {isa = PBXBuildFile; fileRef = 310855860E92B81200208197 /* servericon.png */; };
+		3108559C0E92B95B00208197 /* rssicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3108559B0E92B95B00208197 /* rssicon.png */; };
 		310F88EE0E89A95700FA95A4 /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 310F88ED0E89A95700FA95A4 /* TODO */; };
 		311D2AF80E904D7000A08291 /* CommitsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311D2AF70E904D7000A08291 /* CommitsViewController.m */; };
 		311D2CD10E9155E500A08291 /* CommitDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311D2CD00E9155E500A08291 /* CommitDetailViewController.m */; };
@@ -38,6 +42,7 @@
 		31C5B3070E8C333B00B07BE9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3191AB800E830FA600957F79 /* libz.dylib */; };
 		31C5B3100E8C333E00B07BE9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		31C5B3660E8C33F200B07BE9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */; };
+		31CB1FCD0E929EDD008B3093 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 31CB1FCC0E929EDD008B3093 /* test.png */; };
 		4A50295F0DF7068E00D72A3B /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A50295E0DF7068E00D72A3B /* BrowserViewController.m */; };
 		4A6968FE0E1AD83800DCB40C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A6968FD0E1AD83800DCB40C /* Default.png */; };
 		4ACBF2160E1AC84C002CC43E /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ACBF2150E1AC84C002CC43E /* bg.png */; };
@@ -55,6 +60,11 @@
 		2D500F910D5A86A600DBA0E3 /* TCPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TCPServer.h; path = Networking/TCPServer.h; sourceTree = "<group>"; };
 		2D500F920D5A86A600DBA0E3 /* TCPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TCPServer.m; path = Networking/TCPServer.m; sourceTree = "<group>"; };
 		2D500FB20D5A86C000DBA0E3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		3108553E0E92A7F300208197 /* ServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerViewController.h; sourceTree = "<group>"; };
+		3108553F0E92A7F300208197 /* ServerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerViewController.m; sourceTree = "<group>"; };
+		310855790E92B4B200208197 /* server.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = server.png; sourceTree = "<group>"; };
+		310855860E92B81200208197 /* servericon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = servericon.png; sourceTree = "<group>"; };
+		3108559B0E92B95B00208197 /* rssicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rssicon.png; sourceTree = "<group>"; };
 		310F88ED0E89A95700FA95A4 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		311D2AF60E904D7000A08291 /* CommitsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommitsViewController.h; sourceTree = "<group>"; };
 		311D2AF70E904D7000A08291 /* CommitsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommitsViewController.m; sourceTree = "<group>"; };
@@ -83,6 +93,7 @@
 		31C5B2C90E8C313C00B07BE9 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31C5B2CA0E8C313C00B07BE9 /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
 		31C5B2CF0E8C31B000B07BE9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		31CB1FCC0E929EDD008B3093 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		4A50295D0DF7068E00D72A3B /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrowserViewController.h; path = Networking/BrowserViewController.h; sourceTree = "<group>"; };
 		4A50295E0DF7068E00D72A3B /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BrowserViewController.m; path = Networking/BrowserViewController.m; sourceTree = "<group>"; };
@@ -157,6 +168,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3108559B0E92B95B00208197 /* rssicon.png */,
+				310855860E92B81200208197 /* servericon.png */,
+				310855790E92B4B200208197 /* server.png */,
+				31CB1FCC0E929EDD008B3093 /* test.png */,
 				4ACBF2150E1AC84C002CC43E /* bg.png */,
 				8406D2EF0DF4B487005DDED6 /* icon.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -194,6 +209,8 @@
 				311D2AF70E904D7000A08291 /* CommitsViewController.m */,
 				311D2CCF0E9155E500A08291 /* CommitDetailViewController.h */,
 				311D2CD00E9155E500A08291 /* CommitDetailViewController.m */,
+				3108553E0E92A7F300208197 /* ServerViewController.h */,
+				3108553F0E92A7F300208197 /* ServerViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -292,6 +309,10 @@
 				4ACBF2160E1AC84C002CC43E /* bg.png in Resources */,
 				4A6968FE0E1AD83800DCB40C /* Default.png in Resources */,
 				310F88EE0E89A95700FA95A4 /* TODO in Resources */,
+				31CB1FCD0E929EDD008B3093 /* test.png in Resources */,
+				3108557A0E92B4B200208197 /* server.png in Resources */,
+				310855870E92B81200208197 /* servericon.png in Resources */,
+				3108559C0E92B95B00208197 /* rssicon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +361,7 @@
 				316382CB0E901A9300044E4A /* ProjectDetailViewController.m in Sources */,
 				311D2AF80E904D7000A08291 /* CommitsViewController.m in Sources */,
 				311D2CD10E9155E500A08291 /* CommitDetailViewController.m in Sources */,
+				310855400E92A7F300208197 /* ServerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

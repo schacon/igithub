@@ -52,7 +52,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 //CLASS INTERFACES:
 
-@interface AppController : NSObject <UIApplicationDelegate, TCPServerDelegate>
+@interface AppController : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, TCPServerDelegate>
 {
 	UIWindow*			_window;
 	TCPServer*			_server;
@@ -61,9 +61,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	BOOL				_inReady;
 	BOOL				_outReady;
 	UINavigationController *navigationController;
+	UITabBarController *tabBarController;
 	NSString*			gitDir;
 }
 
 @property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, retain) UITabBarController *tabBarController;
 
 @end

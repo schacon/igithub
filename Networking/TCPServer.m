@@ -181,7 +181,13 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
 	
 	NSLog(@"on domain: %@", domain);
 
+	NSArray *keys =		[NSArray arrayWithObjects:@"description", nil];
+	NSArray *objects =	[NSArray arrayWithObjects:@"iphone git server", nil];
+	NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+	
 	self.netService = [[NSNetService alloc] initWithDomain:domain type:protocol name:name port:self.port];
+	[self.netService setTXTRecordData:[NSNetService dataFromTXTRecordDictionary:dictionary]];
+	
 	if(self.netService == nil)
 		return NO;
 	

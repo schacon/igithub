@@ -12,13 +12,13 @@
 
 @synthesize projectController;
 
-- (id)initWithStyle:(UITableViewStyle)style {
+ - (id)initWithStyle:(UITableViewStyle)style {
 	if ((self = [super initWithStyle:style])) {
 		self.title = NSLocalizedString(@"Projects", @"My Local Git Project List");
+        self.tabBarItem.image = [UIImage imageNamed:@"servericon.png"];
 	}
 	return self;
 }
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
