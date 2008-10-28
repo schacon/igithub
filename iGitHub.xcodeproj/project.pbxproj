@@ -427,7 +427,7 @@
 					CoreServices,
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = WiTap;
+				PRODUCT_NAME = iGitHub;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
