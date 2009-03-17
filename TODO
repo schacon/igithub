@@ -1,3 +1,17 @@
+Main Features / TODO 
+====================================
+
+* integrate CocoaGit, replacing ObjGit
+   - add server functionality to CocoaGit
+
+* push / pull works locally and over bonjour
+
+* browse local repos
+
+* uses file handles for writing / reading packs instead of memory
+   - library option?
+
+
 
 ToDo List
 ====================================
@@ -9,8 +23,6 @@ ToDo List
 * about page - who did this
 
 * how to page
-
-* sharing screen - so people can see how to clone
 
 * delete a repo
 
