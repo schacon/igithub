@@ -4,7 +4,7 @@
 //
 
 #import "ProjectController.h"
-#import "ObjGit.h"
+#import "Git.h"
 
 @interface ProjectController ()
 @property (nonatomic, copy, readwrite) NSMutableArray *list;
@@ -17,7 +17,7 @@
 // Custom set accessor to ensure the new list is mutable
 - (void)readProjects:(NSString *)projectPath
 {
-	//NSLog(@"READ PROJECTS:%@", projectPath);
+	NSLog(@"READ PROJECTS:%@", projectPath);
 	BOOL isDir=NO;
 	[list release];
 	list = [[NSMutableArray alloc] init];
@@ -27,9 +27,9 @@
 		NSString *thisDir;
 		while ( (thisDir = [e nextObject]) ) {
 			NSString *dir = [projectPath stringByAppendingPathComponent:thisDir];
-			ObjGit* git = [[ObjGit alloc] init];	
-			[git openRepo:dir];
-			[git setGitName:thisDir];
+			GITRepo* git = [[GITRepo alloc] init];	
+			[git initWithRoot:dir];
+			[git setDesc:thisDir];
 			[list addObject:git];
 		}
 	}

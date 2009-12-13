@@ -5,7 +5,7 @@
 
 #import "ProjectDetailViewController.h"
 #import "CommitsViewController.h"
-#import "ObjGit.h"
+#import "Git.h"
 
 @implementation ProjectDetailViewController
 
@@ -19,7 +19,7 @@
     // Scroll the table view to the top before it appears
     [self.tableView reloadData];
     [self.tableView setContentOffset:CGPointZero animated:NO];
-    self.title = [detailItem gitName];
+    self.title = [detailItem desc];
 }
 
 // Standard table view data source and delegate methods
@@ -40,7 +40,7 @@
             break;
         case 1:
             // For the branches section, there is size
-            rows = [[detailItem getAllRefs] count];
+            rows = [[detailItem branches] count];
             break;
         default:
             break;
@@ -63,10 +63,10 @@
     
     switch (indexPath.section) {
         case 0:
-            cellText = [detailItem gitName];
+            cellText = [detailItem desc];
             break;
         case 1:
-            cellText = [[[detailItem getAllRefs] objectAtIndex:indexPath.row] objectAtIndex:0];
+            cellText = [[[detailItem branches] objectAtIndex:indexPath.row] objectAtIndex:0];
 
             break;
         default:
@@ -100,7 +100,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     CommitsViewController *commitsViewController = [[CommitsViewController alloc] initWithStyle:UITableViewStylePlain];
-	NSArray *refArray = [[detailItem getAllRefs] objectAtIndex:indexPath.row];
+	NSArray *refArray = [[detailItem branches] objectAtIndex:indexPath.row];
 	NSLog(@"refs:%@", refArray);
 	
     commitsViewController.gitRepo = detailItem;

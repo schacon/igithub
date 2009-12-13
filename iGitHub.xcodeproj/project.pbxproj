@@ -332,6 +332,7 @@
 		31F1DB5A10D57FD400AFEBEF /* CocoaGit */ = {
 			isa = PBXGroup;
 			children = (
+				31F1DC6E10D5A54100AFEBEF /* Refs */,
 				31F1DBC710D5824600AFEBEF /* Packs */,
 				31F1DBB710D5822B00AFEBEF /* Stores */,
 				31F1DBA110D5820200AFEBEF /* Core */,
@@ -467,6 +468,13 @@
 				31F1DBDC10D5827C00AFEBEF /* GITPackReverseIndex.m */,
 			);
 			name = PackfileIndex;
+			sourceTree = "<group>";
+		};
+		31F1DC6E10D5A54100AFEBEF /* Refs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Refs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

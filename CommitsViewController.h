@@ -4,16 +4,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ObjGit.h"
+#import "Git.h"
 
 @interface CommitsViewController : UITableViewController {
-	ObjGit   *gitRepo;
+	GITRepo	 *gitRepo;
 	NSString *gitRef;
 	NSString *gitSha;
 	NSMutableArray *commitList;
 }
 
-@property (nonatomic, retain) ObjGit   *gitRepo;
+@property (nonatomic, retain) GITRepo  *gitRepo;
 @property (nonatomic, retain) NSString *gitRef;
 @property (nonatomic, retain) NSString *gitSha;
 @property (nonatomic, retain) NSMutableArray *commitList;

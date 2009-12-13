@@ -218,9 +218,9 @@
 - (BOOL) updateRef:(NSString *)refName toSha:(NSString *)toSha;
 - (BOOL) updateRef:(NSString *)refName toSha:(NSString *)toSha error:(NSError **)error;
 
-
 - (BOOL) writeObject:(NSData *)objectData withType:(NSString *)type size:(NSUInteger)size;
 
 - (BOOL) hasObject: (NSString *)sha1;
+- (void)setDesc:(NSString*)descrip;
 
 @end

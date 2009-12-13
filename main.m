@@ -3,6 +3,7 @@
 */
 
 #import <UIKit/UIKit.h>
+#import "Git.h"
 
 int main(int argc, char *argv[])
 {

@@ -8,8 +8,6 @@ Version: 1.5
 
 */
 
-#import "ObjGit.h"
-#import "ObjGitServerHandler.h"
 #import "AppController.h"
 #import "ProjectViewController.h"
 #import "ProjectController.h"
@@ -94,34 +92,13 @@ Version: 1.5
 - (void) dealloc
 {	
 	NSLog(@"dealloc");
-	[_inStream release];
-	[_outStream release];
-
-	[_server release];
-	[_window release];
-	
+	[_window release];	
 	[super dealloc];
 }
 
 - (void) setup {
-	//[_server release];
-	//_server = nil;
-	
-	[_inStream release];
-	_inStream = nil;
-	_inReady = NO;
-
-	[_outStream release];
-	_outStream = nil;
-	_outReady = NO;
-	
-	_server = [TCPServer new];
-	[_server setDelegate:self];
-	NSError* error;
-	if(_server == nil || ![_server start:&error]) {
-		NSLog(@"Failed creating server: %@", error);
-		return;
-	}
+	// TODO: setup the http server
+	NSLog(@"Setup");
 	
 	gitDir = [self getGitPath];
 	
@@ -132,57 +109,9 @@ Version: 1.5
 		NSString *thisDir;
 		while ( (thisDir = [e nextObject]) ) {
 			NSLog(@"announce:%@", thisDir);
-			[_server enableBonjourWithDomain:@"local" applicationProtocol:[TCPServer bonjourTypeFromIdentifier:bonIdentifier] name:thisDir];
+			// TODO: announce http over bonjour
 		}
 	}	
-}
-
-- (void) openStreams
-{
-	NSString *tgitDir = [self getGitPath];
-	NSLog(@"gitdir:%@", tgitDir);
-
-	[_outStream open];
-	[_inStream  open];
-	
-	ObjGit* git = [ObjGit alloc];
-	ObjGitServerHandler *obsh = [[ObjGitServerHandler alloc] init];
-	NSLog(@"INIT WITH GIT:  %@ : %@ : %@ : %@ : %@", obsh, git, tgitDir, _inStream, _outStream);
-	[obsh initWithGit:git gitPath:tgitDir input:_inStream output:_outStream];				
-
-	[_outStream close];
-	[_inStream  close];
-	
-	[self setup]; // restart the server
-}
-
-@end
-
-@implementation AppController (TCPServerDelegate)
-
-- (void) serverDidEnableBonjour:(TCPServer*)server withName:(NSString*)string
-{
-	//[self.serverViewController setServerName:string];
-	//NSLog(@"%@", string);
-}
-
-- (void)didAcceptConnectionForServer:(TCPServer*)server inputStream:(NSInputStream *)istr outputStream:(NSOutputStream *)ostr
-{
-	if (_inStream || _outStream || server != _server)
-		return;
-	
-	NSLog(@"accept connection");
-	
-	[_server stop];
-	[_server release];
-	_server = nil;
-	
-	_inStream = istr;
-	[_inStream retain];
-	_outStream = ostr;
-	[_outStream retain];
-	
-	[self openStreams];
 }
 
 @end

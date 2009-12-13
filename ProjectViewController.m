@@ -5,8 +5,6 @@
 
 #import "ProjectViewController.h"
 #import "ProjectDetailViewController.h"
-#import "ObjGit.h"
-
 
 @implementation ProjectViewController
 
@@ -40,8 +38,8 @@
 	}
 
 	// Get the object to display and set the value in the cell
-    ObjGit *itemAtIndex = [projectController objectInListAtIndex:indexPath.row];
-    cell.text = [itemAtIndex gitName];
+    GITRepo *itemAtIndex = [projectController objectInListAtIndex:indexPath.row];
+    cell.text = [itemAtIndex desc];
 	return cell;
 }
 

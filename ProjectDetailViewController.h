@@ -4,12 +4,12 @@
 //
 
 #import <UIKit/UIkit.h>
-#import "ObjGit.h"
+#import "Git.h"
 
 @interface ProjectDetailViewController : UITableViewController {
-	ObjGit *detailItem;
+	GITRepo *detailItem;
 }
 
-@property (nonatomic, retain) ObjGit *detailItem;
+@property (nonatomic, retain) GITRepo *detailItem;
 
 @end

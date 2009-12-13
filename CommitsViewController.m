@@ -5,7 +5,7 @@
 
 #import "CommitsViewController.h"
 #import "CommitDetailViewController.h"
-#import "ObjGitCommit.h"
+#import "Git.h"
 
 #define ROW_HEIGHT 60
 

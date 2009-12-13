@@ -5,6 +5,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ProjectController.h"
+#import "Git.h"
 
 @interface ProjectViewController : UITableViewController {
     ProjectController *projectController;

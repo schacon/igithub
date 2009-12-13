@@ -48,22 +48,15 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "BrowserViewController.h"
 #import "ServerViewController.h"
-#import "TCPServer.h"
-#import "ObjGitCommit.h"
 
 //CLASS INTERFACES:
 
-@interface AppController : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, TCPServerDelegate>
+@interface AppController : NSObject <UIApplicationDelegate, UITabBarControllerDelegate>
 {
 	UIWindow*			_window;
-	TCPServer*			_server;
-	NSInputStream*		_inStream;
-	NSOutputStream*		_outStream;
-	BOOL				_inReady;
-	BOOL				_outReady;
-	UINavigationController *navigationController;
-	UITabBarController *tabBarController;
-	ServerViewController *serverViewController;
+	UINavigationController	*navigationController;
+	UITabBarController		*tabBarController;
+	ServerViewController	*serverViewController;
 	NSString*			gitDir;
 }
 

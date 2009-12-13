@@ -103,6 +103,11 @@
     return [[GITRepo allocWithZone:zone] initWithRoot:self.root];
 }
 
+- (void)setDesc:(NSString*)descrip
+{
+	self.desc = descrip;
+}
+
 #pragma mark -
 #pragma mark Internal Methods
 - (NSData*)dataWithContentsOfObject:(NSString*)sha1
