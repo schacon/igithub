@@ -12,6 +12,8 @@ Version: 1.5
 #import "ProjectViewController.h"
 #import "ProjectController.h"
 #import "ServerViewController.h"
+#import "HTTPServer.h"
+#import "MyHTTPConnection.h"
 
 #define bonIdentifier @"git"
 
@@ -78,6 +80,21 @@ Version: 1.5
 	NSArray *vc = [NSArray arrayWithObjects:navigationController, serverViewController, nil];
 	[atabBarController setViewControllers:vc animated:NO];
 	self.tabBarController = atabBarController;
+	
+	// start the server
+	NSString *root = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
+	
+	httpServer = [HTTPServer new];
+	[httpServer setType:@"_http._tcp."];
+	[httpServer setConnectionClass:[MyHTTPConnection class]];
+	[httpServer setDocumentRoot:[NSURL fileURLWithPath:root]];
+	[httpServer setPort:8082];
+	
+	NSError *error;
+	if(![httpServer start:&error])
+	{
+		NSLog(@"Error starting HTTP Server: %@", error);
+	}
 	
     // Configure and show the window
 	[_window addSubview:tabBarController.view];

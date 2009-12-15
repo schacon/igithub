@@ -48,8 +48,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "BrowserViewController.h"
 #import "ServerViewController.h"
+#import "MyHTTPConnection.h"
 
 //CLASS INTERFACES:
+
+@class HTTPServer;
 
 @interface AppController : NSObject <UIApplicationDelegate, UITabBarControllerDelegate>
 {
@@ -57,6 +60,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	UINavigationController	*navigationController;
 	UITabBarController		*tabBarController;
 	ServerViewController	*serverViewController;
+	HTTPServer			*httpServer;
 	NSString*			gitDir;
 }
 

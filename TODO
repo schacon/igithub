@@ -1,4 +1,16 @@
 
+Cloning List
+====================================
+
+* HTTP server
+
+* http smart server
+
+* http smart client
+
+* Bonjour announcement
+
+
 ToDo List
 ====================================
 
@@ -38,11 +50,7 @@ GitHub Features
 Implementation Get-Back-Tos
 ====================================
 
-* second fetches break
-
 * read/write blob data from disk rather than memory to handle objects > 100M
-
-* doesn't save/check saved delta objects
 
 * won't handle multi-depth refs 'chacon/master', etc
 
