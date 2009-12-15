@@ -7,15 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ObjGit.h"
-#import "ObjGitCommit.h"
+#import "Git.h"
 
 @interface CommitDetailViewController : UITableViewController {
-	ObjGit *gitRepo;
-	ObjGitCommit *gitCommit;
+	GITRepo	  *gitRepo;
+	GITCommit *gitCommit;
 }
 
-@property (nonatomic, retain) ObjGit   *gitRepo;
-@property (nonatomic, retain) ObjGitCommit   *gitCommit;
+@property (nonatomic, retain) GITRepo	*gitRepo;
+@property (nonatomic, retain) GITCommit *gitCommit;
 
 @end

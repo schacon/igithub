@@ -167,7 +167,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     CommitDetailViewController *commitViewController = [[CommitDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];	
     commitViewController.gitRepo = self.gitRepo;
-    commitViewController.gitCommit = [self.commitList objectAtIndex:indexPath.row];
+    commitViewController.gitCommit = [[self.commitList objectAtIndex:indexPath.row] object];
 
     // Push the commit view controller
     [[self navigationController] pushViewController:commitViewController animated:YES];

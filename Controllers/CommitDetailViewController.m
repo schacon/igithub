@@ -4,8 +4,7 @@
 //
 
 #import "CommitDetailViewController.h"
-#import "ObjGit.h"
-#import "ObjGitCommit.h"
+#import "Git.h"
 
 @implementation CommitDetailViewController
 
@@ -25,7 +24,7 @@
     // Scroll the table view to the top before it appears
     [self.tableView reloadData];
     [self.tableView setContentOffset:CGPointZero animated:NO];
-    self.title = [[gitCommit sha] substringToIndex:6];
+    self.title = [[gitCommit sha1] substringToIndex:6];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -88,13 +87,15 @@
         case 0:
 			cell.font = [UIFont fontWithName:@"Courier New" size:12];
 			cell.textAlignment = UITextAlignmentCenter;
-			cell.text = [self.gitCommit sha];
+			cell.text = [self.gitCommit sha1];
             break;
         case 1:
-			if(indexPath.row == 2) {
-				cell.text = [dateFormatter stringFromDate:[[self.gitCommit authorArray] objectAtIndex:indexPath.row]];
+			if(indexPath.row == 1) {
+				cell.text = [[self.gitCommit author] email];
+			} else if(indexPath.row == 2) {
+				cell.text = [dateFormatter stringFromDate:[[self.gitCommit authored] date]];
 			} else {
-				cell.text = [[self.gitCommit authorArray] objectAtIndex:indexPath.row];
+				cell.text = [[self.gitCommit author] name];
 			}
 			break;
 		case 2:
@@ -114,7 +115,7 @@
 		case 3:
 			cell.font = [UIFont fontWithName:@"Courier New" size:12];
 			cell.textAlignment = UITextAlignmentCenter;
-			cell.text = [self.gitCommit treeSha];
+			cell.text = [self.gitCommit treeSha1];
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             break;
 		case 4:
@@ -184,7 +185,7 @@
 
 			CommitDetailViewController *commitViewController = [[CommitDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];	
 			commitViewController.gitRepo = self.gitRepo;
-			commitViewController.gitCommit = [[ObjGitCommit alloc] initFromGitObject:[gitRepo getObjectFromSha:sha]];
+			commitViewController.gitCommit = [self.gitRepo commitWithSha1:sha];
 			
 			// Push the commit view controller
 			[[self navigationController] pushViewController:commitViewController animated:YES];
