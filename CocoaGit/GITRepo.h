@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GITObject.h"
+#import "GITGraph.h"
 
 @class GITObjectStore, GITRefStore;
 @class GITObject, GITCommit, GITTree, GITTag, GITBlob;
@@ -220,6 +221,7 @@
 - (BOOL) updateRef:(NSString *)refName toSha:(NSString *)toSha;
 - (BOOL) updateRef:(NSString *)refName toSha:(NSString *)toSha error:(NSError **)error;
 
+- (NSArray*) getCommitsFromCommit:(NSString *)targetString withLimit:(int)limit;
 
 - (BOOL) writeObject:(NSData *)objectData withType:(NSString *)type;
 

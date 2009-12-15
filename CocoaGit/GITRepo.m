@@ -325,6 +325,35 @@
 							 shaString, @"sha", nil];
 }
 
+- (NSArray*) getCommitsFromCommit:(NSString *)targetString withLimit:(int)limit
+{ 
+	NSLog(@"FU");
+
+	NSError *commitError = nil;
+    GITCommit *commit;
+    if ( isSha1StringValid(targetString) ) {
+        commit = [self commitWithSha1:targetString error:&commitError];
+    } else {
+        if ( [targetString isEqual:@"HEAD"] ) {
+            commit = [self head];
+        } else {
+            GITRef *ref = [self branchWithName:targetString];
+            if ( ref )
+                commit = [self commitWithSha1:[ref sha1] error:&commitError];
+        }
+    }
+
+	NSLog(@"Commit Gathered");
+
+    GITGraph *g = [[GITGraph alloc] init];
+    [g buildGraphWithStartingCommit:commit];
+	
+    NSArray *sorted;
+	sorted = [g nodesSortedByTopology:1];
+
+	return sorted;
+}
+
 - (BOOL) updateRef:(NSString *)refName toSha:(NSString *)toSha
 {
 	return [self updateRef:refName toSha:toSha error:nil];

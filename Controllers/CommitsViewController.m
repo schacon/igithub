@@ -27,8 +27,9 @@
     [super viewWillAppear:animated];
 
 	// load data
-	NSLog(@"Data load");
-	self.commitList = [gitRepo getCommitsFromSha:gitSha withLimit:30];
+	NSLog(@"Data load from [%@]", gitSha);
+	self.commitList = [gitRepo getCommitsFromCommit:gitSha withLimit:30];
+	NSLog(@"Data [%@]", self.commitList);
 	
     // Scroll the table view to the top before it appears
     [self.tableView reloadData];
@@ -75,19 +76,19 @@
 		[dateFormatter setDateFormat:@"MMM dd YY, kk:ss"]; // Sept 5 08:30
 	}
 
-	ObjGitCommit *commit = [self.commitList objectAtIndex:indexPath.row];
+	GITCommit *commit = [[self.commitList objectAtIndex:indexPath.row] object];
 	
 	UILabel *label;
 	
 	// Get the time zone wrapper for the row
 	label = (UILabel *)[cell viewWithTag:ONE_TAG];
-	label.text = [[commit sha] substringToIndex:6];
+	label.text = [[commit sha1] substringToIndex:6];
 	
 	label = (UILabel *)[cell viewWithTag:TWO_TAG];
-	label.text = [commit author];
+	label.text = [[commit author] name];
 	
 	label = (UILabel *)[cell viewWithTag:THR_TAG];
-	label.text = [dateFormatter stringFromDate:[commit authored_date]];
+	label.text = [dateFormatter stringFromDate:[[commit authored] date]];
 	
 	label = (UILabel *)[cell viewWithTag:FOUR_TAG];
 	label.text = [commit message];
