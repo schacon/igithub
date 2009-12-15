@@ -66,8 +66,7 @@
             cellText = [detailItem desc];
             break;
         case 1:
-            cellText = [[[detailItem branches] objectAtIndex:indexPath.row] objectAtIndex:0];
-
+            cellText = [[[detailItem branches] objectAtIndex:indexPath.row] name];
             break;
         default:
             break;
@@ -100,15 +99,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     CommitsViewController *commitsViewController = [[CommitsViewController alloc] initWithStyle:UITableViewStylePlain];
-	NSArray *refArray = [[detailItem branches] objectAtIndex:indexPath.row];
-	NSLog(@"refs:%@", refArray);
+	GITRef *ref = [[detailItem branches] objectAtIndex:indexPath.row];
 	
     commitsViewController.gitRepo = detailItem;
-    commitsViewController.gitRef  = [refArray objectAtIndex:0];
-    commitsViewController.gitSha  = [refArray objectAtIndex:1];
+    commitsViewController.gitRef  = [ref name];
+    commitsViewController.gitSha  = [ref sha1];
     
-	NSLog(@"TEST");
-
     // Push the commit view controller
     [[self navigationController] pushViewController:commitsViewController animated:YES];
     [commitsViewController release];
