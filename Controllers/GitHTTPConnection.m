@@ -10,6 +10,12 @@
 
 @implementation GitHTTPConnection
 
++ (void)initialize
+{
+	NSLog(@"init");
+	return [super initialize];
+}
+
 /**
  * Returns whether or not the requested resource is browseable.
 **/
@@ -18,10 +24,8 @@
 	return YES;
 }
 
-
 /**
  * This method creates a html browseable page.
- * Customize to fit your needs
 **/
 - (NSString *)createBrowseableIndex:(NSString *)path
 {
@@ -51,7 +55,6 @@
     return [outdata autorelease];
 }
 
-
 - (BOOL)supportsMethod:(NSString *)method atPath:(NSString *)relativePath
 {
 	NSLog(@"Supports Method: method:%@ path:%@", method, relativePath);
@@ -64,29 +67,8 @@
 	return [super supportsMethod:method atPath:relativePath];
 }
 
-
-/**
- * Returns whether or not the server will accept POSTs.
- * That is, whether the server will accept uploaded data for the given URI.
-**/
-- (BOOL)supportsPOST:(NSString *)path withSize:(UInt64)contentLength
-{
-	NSLog(@"POST:%@", path);
-	
-	dataStartIndex = 0;
-	multipartData = [[NSMutableArray alloc] init];
-	postHeaderOK = FALSE;
-	
-	return YES;
-}
-
-
 /**
  * This method is called to get a response for a request.
- * You may return any object that adopts the HTTPResponse protocol.
- * The HTTPServer comes with two such classes: HTTPFileResponse and HTTPDataResponse.
- * HTTPFileResponse is a wrapper for an NSFileHandle object, and is the preferred way to send a file response.
- * HTTPDataResopnse is a wrapper for an NSData object, and may be used to send a custom response.
 **/
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
@@ -94,16 +76,16 @@
 	
 	// getting the service paramater
 	NSArray *split = [path componentsSeparatedByString:@"?"];
-	NSString *service = @"";
+	gitService = @"";
 	if ([split count] > 1) {
-		service = [split objectAtIndex:1];
-		if ([service isEqualToString:@"service=git-receive-pack"]) {
-			NSLog(@"receive-pack: %@", service);
-			service = @"git-receive-pack";
+		gitService = [split objectAtIndex:1];
+		if ([gitService isEqualToString:@"service=git-receive-pack"]) {
+			NSLog(@"receive-pack: %@", gitService);
+			gitService = @"git-receive-pack";
 		}
-		if ([service isEqualToString:@"service=git-receive-pack"]) {
-			NSLog(@"receive-pack: %@", service);
-			service = @"git-upload-pack";
+		if ([gitService isEqualToString:@"service=git-receive-pack"]) {
+			NSLog(@"receive-pack: %@", gitService);
+			gitService = @"git-upload-pack";
 		}		
 		path = [split objectAtIndex:0];
 	}
@@ -124,7 +106,7 @@
 		NSLog(@"path: %@", relPathStr);
 
 		if ([relPathStr isEqualToString:@"info/refs"]) {
-			return [self advertiseRefs:repo service:service];             // advertise refs for the project
+			return [self advertiseRefs:repo];             // advertise refs for the project
 		} else if ([relPathStr isEqualToString:@"git-receive-pack"]) {
 			return [self receivePack:repo];                               // accept a packfile (push)
 		} else if ([relPathStr isEqualToString:@"git-upload-pack"]) {
@@ -149,12 +131,12 @@
 	return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];	
 }
 
-- (NSObject<HTTPResponse> *)advertiseRefs:(NSString *)repository service:(NSString *)service
+- (NSObject<HTTPResponse> *)advertiseRefs:(NSString *)repository
 {
-	NSLog(@"advertiseRefs %@:%@", repository, service);
+	NSLog(@"advertiseRefs %@:%@", repository, gitService);
 
 	NSMutableData *outdata = [NSMutableData new];
-	NSString *serviceLine = [NSString stringWithFormat:@"# service=%@\n", service];
+	NSString *serviceLine = [NSString stringWithFormat:@"# service=%@\n", gitService];
 
 	[outdata appendData:[self packetData:serviceLine]];
 	[outdata appendData:[@"0000" dataUsingEncoding:NSUTF8StringEncoding]];
@@ -168,7 +150,8 @@
 
 - (NSData *)preprocessResponse:(CFHTTPMessageRef)response
 {
-	//S: Content-Type: application/x-git-upload-pack-advertisement
+	NSString *contentType = [NSString stringWithFormat:@"application/x-git-%@-advertisement", gitService];
+	CFHTTPMessageSetHeaderFieldValue(response, CFSTR("Content-Type"), (CFStringRef)contentType);
 	CFHTTPMessageSetHeaderFieldValue(response, CFSTR("Cache-Control"), CFSTR("no-cache"));
 	return [super preprocessResponse:response];
 }
@@ -204,71 +187,26 @@
 - (NSObject<HTTPResponse> *)receivePack:(NSString *)project
 {
 	NSLog(@"ACCEPT PACKFILE");
+	if (requestContentLength > 0)  // Process POST data
+	{
+		NSLog(@"processing post data: %i", requestContentLength);
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"NewFileUploaded" object:nil];
+		requestContentLength = 0;		
+	}
+	return nil;
 }
 
 - (NSObject<HTTPResponse> *)uploadPack:(NSString *)project
 {
 	NSLog(@"GENERATE AND TRANSFER PACKFILE");
+	return nil;
 }
 
 - (NSObject<HTTPResponse> *)plainResponse:(NSString *)project path:(NSString *)path
 {	
 	NSData *requestData = [(NSData *)CFHTTPMessageCopySerializedMessage(request) autorelease];
-	
 	NSString *requestStr = [[[NSString alloc] initWithData:requestData encoding:NSASCIIStringEncoding] autorelease];
 	NSLog(@"\n=== Request ====================\n%@\n================================", requestStr);
-	
-	if (requestContentLength > 0)  // Process POST data
-	{
-		NSLog(@"processing post data: %i", requestContentLength);
-		
-		if ([multipartData count] < 2) return nil;
-		
-		NSString* postInfo = [[NSString alloc] initWithBytes:[[multipartData objectAtIndex:1] bytes]
-													  length:[[multipartData objectAtIndex:1] length]
-													encoding:NSUTF8StringEncoding];
-		
-		NSArray* postInfoComponents = [postInfo componentsSeparatedByString:@"; filename="];
-		postInfoComponents = [[postInfoComponents lastObject] componentsSeparatedByString:@"\""];
-		postInfoComponents = [[postInfoComponents objectAtIndex:1] componentsSeparatedByString:@"\\"];
-		NSString* filename = [postInfoComponents lastObject];
-		
-		if (![filename isEqualToString:@""]) //this makes sure we did not submitted upload form without selecting file
-		{
-			UInt16 separatorBytes = 0x0A0D;
-			NSMutableData* separatorData = [NSMutableData dataWithBytes:&separatorBytes length:2];
-			[separatorData appendData:[multipartData objectAtIndex:0]];
-			int l = [separatorData length];
-			int count = 2;	//number of times the separator shows up at the end of file data
-			
-			NSFileHandle* dataToTrim = [multipartData lastObject];
-			NSLog(@"data: %@", dataToTrim);
-			
-			unsigned long long i;
-			for (i = [dataToTrim offsetInFile] - l; i > 0; i--)
-			{
-				[dataToTrim seekToFileOffset:i];
-				if ([[dataToTrim readDataOfLength:l] isEqualToData:separatorData])
-				{
-					[dataToTrim truncateFileAtOffset:i];
-					i -= l;
-					if (--count == 0) break;
-				}
-			}
-			
-			NSLog(@"NewFileUploaded");
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"NewFileUploaded" object:nil];
-		}
-		
-		int n;
-		for (n = 1; n < [multipartData count] - 1; n++)
-			NSLog(@"%@", [[NSString alloc] initWithBytes:[[multipartData objectAtIndex:n] bytes] length:[[multipartData objectAtIndex:n] length] encoding:NSUTF8StringEncoding]);
-		
-		[postInfo release];
-		[multipartData release];
-		requestContentLength = 0;
-		
-	}
 	
 	NSString *filePath = [self filePathForURI:path];
 	
@@ -308,61 +246,13 @@
 	// This prevents a 50 MB upload from being stored in RAM.
 	// The size of the chunks are limited by the POST_CHUNKSIZE definition.
 	// Therefore, this method may be called multiple times for the same POST request.
+
+	NSLog(@"processPostDataChunk");
+	NSLog(@"data: %@", postDataChunk);
+
 	
-	//NSLog(@"processPostDataChunk");
-	
-	if (!postHeaderOK)
-	{
-		UInt16 separatorBytes = 0x0A0D;
-		NSData* separatorData = [NSData dataWithBytes:&separatorBytes length:2];
-		
-		int l = [separatorData length];
-		int i;
-		for (i = 0; i < [postDataChunk length] - l; i++)
-		{
-			NSRange searchRange = {i, l};
-
-			if ([[postDataChunk subdataWithRange:searchRange] isEqualToData:separatorData])
-			{
-				NSRange newDataRange = {dataStartIndex, i - dataStartIndex};
-				dataStartIndex = i + l;
-				i += l - 1;
-				NSData *newData = [postDataChunk subdataWithRange:newDataRange];
-
-				if ([newData length])
-				{
-					[multipartData addObject:newData];
-				}
-				else
-				{
-					postHeaderOK = TRUE;
-					
-					NSString* postInfo = [[NSString alloc] initWithBytes:[[multipartData objectAtIndex:1] bytes] length:[[multipartData objectAtIndex:1] length] encoding:NSUTF8StringEncoding];
-					NSArray* postInfoComponents = [postInfo componentsSeparatedByString:@"; filename="];
-					postInfoComponents = [[postInfoComponents lastObject] componentsSeparatedByString:@"\""];
-					postInfoComponents = [[postInfoComponents objectAtIndex:1] componentsSeparatedByString:@"\\"];
-					NSString* filename = [[[server documentRoot] path] stringByAppendingPathComponent:[postInfoComponents lastObject]];
-					NSRange fileDataRange = {dataStartIndex, [postDataChunk length] - dataStartIndex};
-					
-					[[NSFileManager defaultManager] createFileAtPath:filename contents:[postDataChunk subdataWithRange:fileDataRange] attributes:nil];
-					NSFileHandle *file = [[NSFileHandle fileHandleForUpdatingAtPath:filename] retain];
-
-					if (file)
-					{
-						[file seekToEndOfFile];
-						[multipartData addObject:file];
-					}
-					
-					[postInfo release];
-					
-					break;
-				}
-			}
-		}
-	}
-	else
-	{
-		[(NSFileHandle*)[multipartData lastObject] writeData:postDataChunk];
+	if (requestContentLength > 0) {
+	} else {
 	}
 }
 
