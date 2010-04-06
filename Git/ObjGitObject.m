@@ -4,7 +4,7 @@
 //
 
 #import "ObjGitObject.h"
-#import "NSDataCompression.h"
+#import "NSData+Compression.h"
 
 @implementation ObjGitObject
 

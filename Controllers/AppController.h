@@ -48,7 +48,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "BrowserViewController.h"
 #import "ServerViewController.h"
-#import "MyHTTPConnection.h"
+#import "GitHTTPConnection.h"
 
 //CLASS INTERFACES:
 

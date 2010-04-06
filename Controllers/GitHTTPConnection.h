@@ -7,7 +7,7 @@
 #import "HTTPConnection.h"
 
 
-@interface MyHTTPConnection : HTTPConnection
+@interface GitHTTPConnection : HTTPConnection
 {
 	int dataStartIndex;
 	NSMutableArray* multipartData;

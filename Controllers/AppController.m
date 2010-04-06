@@ -13,7 +13,7 @@ Version: 1.5
 #import "ProjectController.h"
 #import "ServerViewController.h"
 #import "HTTPServer.h"
-#import "MyHTTPConnection.h"
+#import "GitHTTPConnection.h"
 
 #define bonIdentifier @"git"
 
@@ -81,13 +81,11 @@ Version: 1.5
 	[atabBarController setViewControllers:vc animated:NO];
 	self.tabBarController = atabBarController;
 	
-	// start the server
-	NSString *root = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
-	
+	// start the server	
 	httpServer = [HTTPServer new];
 	[httpServer setType:@"_http._tcp."];
-	[httpServer setConnectionClass:[MyHTTPConnection class]];
-	[httpServer setDocumentRoot:[NSURL fileURLWithPath:root]];
+	[httpServer setConnectionClass:[GitHTTPConnection class]];
+	[httpServer setDocumentRoot:[NSURL fileURLWithPath:gitDir]];
 	[httpServer setPort:8082];
 	
 	NSError *error;

@@ -3,12 +3,12 @@
 //  who graciously decided to share it with the CocoaHTTPServer community.
 //
 
-#import "MyHTTPConnection.h"
+#import "GitHTTPConnection.h"
 #import "HTTPServer.h"
 #import "HTTPResponse.h"
 #import "AsyncSocket.h"
 
-@implementation MyHTTPConnection
+@implementation GitHTTPConnection
 
 /**
  * Returns whether or not the requested resource is browseable.
@@ -175,9 +175,11 @@
 
 		if ([self isBrowseable:folder])
 		{
-			//NSLog(@"folder: %@", folder);
+			NSLog(@"folder: %@", folder);
 			NSData *browseData = [[self createBrowseableIndex:folder] dataUsingEncoding:NSUTF8StringEncoding];
 			return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+		} else {
+			NSLog(@"Something else");
 		}
 	}
 	
