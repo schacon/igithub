@@ -15,9 +15,6 @@
 **/
 - (BOOL)isBrowseable:(NSString *)path
 {
-	// Override me to provide custom configuration...
-	// You can configure it for the entire server, or based on the current request
-	
 	return YES;
 }
 
@@ -47,20 +44,7 @@
 		if ([[fileDict objectForKey:NSFileType] isEqualToString: @"NSFileTypeDirectory"]) fname = [fname stringByAppendingString:@"/"];
 		[outdata appendFormat:@"<a href=\"%@\">%@</a>		(%8.1f Kb, %@)<br />\n", fname, fname, [[fileDict objectForKey:NSFileSize] floatValue] / 1024, modDate];
     }
-    [outdata appendString:@"</p>"];
-	
-	if ([self supportsPOST:path withSize:0])
-	{
-		[outdata appendString:@"<form action=\"\" method=\"post\" enctype=\"multipart/form-data\" name=\"form1\" id=\"form1\">"];
-		[outdata appendString:@"<label>upload file"];
-		[outdata appendString:@"<input type=\"file\" name=\"file\" id=\"file\" />"];
-		[outdata appendString:@"</label>"];
-		[outdata appendString:@"<label>"];
-		[outdata appendString:@"<input type=\"submit\" name=\"button\" id=\"button\" value=\"Submit\" />"];
-		[outdata appendString:@"</label>"];
-		[outdata appendString:@"</form>"];
-	}
-	
+    [outdata appendString:@"</p>"];	
 	[outdata appendString:@"</body></html>"];
     
 	//NSLog(@"outData: %@", outdata);
@@ -70,6 +54,8 @@
 
 - (BOOL)supportsMethod:(NSString *)method atPath:(NSString *)relativePath
 {
+	NSLog(@"Supports Method: method:%@ path:%@", method, relativePath);
+
 	if ([@"POST" isEqualToString:method])
 	{
 		return YES;
@@ -85,7 +71,7 @@
 **/
 - (BOOL)supportsPOST:(NSString *)path withSize:(UInt64)contentLength
 {
-//	NSLog(@"POST:%@", path);
+	NSLog(@"POST:%@", path);
 	
 	dataStartIndex = 0;
 	multipartData = [[NSMutableArray alloc] init];
@@ -106,6 +92,127 @@
 {
 	NSLog(@"httpResponseForURI: method:%@ path:%@", method, path);
 	
+	// getting the service paramater
+	NSArray *split = [path componentsSeparatedByString:@"?"];
+	NSString *service = @"";
+	if ([split count] > 1) {
+		service = [split objectAtIndex:1];
+		if ([service isEqualToString:@"service=git-receive-pack"]) {
+			NSLog(@"receive-pack: %@", service);
+			service = @"git-receive-pack";
+		}
+		if ([service isEqualToString:@"service=git-receive-pack"]) {
+			NSLog(@"receive-pack: %@", service);
+			service = @"git-upload-pack";
+		}		
+		path = [split objectAtIndex:0];
+	}
+
+	// seperating the project and path
+	NSArray *req_path  = [path componentsSeparatedByString:@"/"];
+	if ([req_path count] > 2) {
+		NSString *repo = [req_path objectAtIndex:1];
+		NSLog(@"repo: %@", repo);
+		
+		NSArray *relPath;
+		NSRange theRange;
+		theRange.location = 2;
+		theRange.length = [req_path count] - 2;
+		
+		relPath = [req_path subarrayWithRange:theRange];
+		NSString *relPathStr = [relPath componentsJoinedByString:@"/"];
+		NSLog(@"path: %@", relPathStr);
+
+		if ([relPathStr isEqualToString:@"info/refs"]) {
+			return [self advertiseRefs:repo service:service];             // advertise refs for the project
+		} else if ([relPathStr isEqualToString:@"git-receive-pack"]) {
+			return [self receivePack:repo];                               // accept a packfile (push)
+		} else if ([relPathStr isEqualToString:@"git-upload-pack"]) {
+			return [self uploadPack:repo];                                // create and transfer a packfile (fetch)
+		} else {
+			return [self plainResponse:repo path:relPathStr];             // dumb request
+		}
+	} else if ([req_path count] > 1) {
+		// no path listed, just the project
+		NSString *repo = [req_path objectAtIndex:1];
+		return [self plainResponse:repo path:@"/"];
+	}
+
+	// home index request
+	return [self indexPage];
+}
+
+- (NSObject<HTTPResponse> *)indexPage
+{
+	NSLog(@"indexPage");
+	NSData *browseData = [[self createBrowseableIndex:@"/"] dataUsingEncoding:NSUTF8StringEncoding];
+	return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];	
+}
+
+- (NSObject<HTTPResponse> *)advertiseRefs:(NSString *)repository service:(NSString *)service
+{
+	NSLog(@"advertiseRefs %@:%@", repository, service);
+
+	NSMutableData *outdata = [NSMutableData new];
+	NSString *serviceLine = [NSString stringWithFormat:@"# service=%@\n", service];
+
+	[outdata appendData:[self packetData:serviceLine]];
+	[outdata appendData:[@"0000" dataUsingEncoding:NSUTF8StringEncoding]];
+	[outdata appendData:[self packetData:@"0000000000000000000000000000000000000000 capabilities^{}\0include_tag multi_ack_detailed"]];
+	[outdata appendData:[@"0000" dataUsingEncoding:NSUTF8StringEncoding]];
+	
+	NSLog(@"\n\nREPSONSE:\n%@", outdata);
+		
+	return [[[HTTPDataResponse alloc] initWithData:outdata] autorelease];
+}
+
+- (NSData *)preprocessResponse:(CFHTTPMessageRef)response
+{
+	//S: Content-Type: application/x-git-upload-pack-advertisement
+	CFHTTPMessageSetHeaderFieldValue(response, CFSTR("Cache-Control"), CFSTR("no-cache"));
+	return [super preprocessResponse:response];
+}
+
+- (NSData*) packetData:(NSString*) info
+{
+	return [[self prependPacketLine:info] dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+#define hex(a) (hexchar[(a) & 15])
+- (NSString*) prependPacketLine:(NSString*) info
+{
+	static char hexchar[] = "0123456789abcdef";
+	uint8_t buffer[5];
+
+	unsigned int length = [info length] + 4;
+	
+	buffer[0] = hex(length >> 12);
+	buffer[1] = hex(length >> 8);
+	buffer[2] = hex(length >> 4);
+	buffer[3] = hex(length);
+	
+	NSLog(@"write len [%c %c %c %c]", buffer[0], buffer[1], buffer[2], buffer[3]);
+
+	NSData *data=[[NSData alloc] initWithBytes:buffer length:4];
+	NSString *lenStr = [[NSString alloc] 
+						initWithData:data
+						encoding:NSUTF8StringEncoding];
+
+	return [NSString stringWithFormat:@"%@%@", lenStr, info];
+}
+
+- (NSObject<HTTPResponse> *)receivePack:(NSString *)project
+{
+	NSLog(@"ACCEPT PACKFILE");
+}
+
+- (NSObject<HTTPResponse> *)uploadPack:(NSString *)project
+{
+	NSLog(@"GENERATE AND TRANSFER PACKFILE");
+}
+
+- (NSObject<HTTPResponse> *)plainResponse:(NSString *)project path:(NSString *)path
+{	
 	NSData *requestData = [(NSData *)CFHTTPMessageCopySerializedMessage(request) autorelease];
 	
 	NSString *requestStr = [[[NSString alloc] initWithData:requestData encoding:NSASCIIStringEncoding] autorelease];

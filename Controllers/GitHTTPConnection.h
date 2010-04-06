@@ -17,6 +17,18 @@
 - (BOOL)isBrowseable:(NSString *)path;
 - (NSString *)createBrowseableIndex:(NSString *)path;
 
+- (NSObject<HTTPResponse> *)indexPage;
+- (NSObject<HTTPResponse> *)plainResponse:(NSString *)project path:(NSString *)path;
+
+- (NSObject<HTTPResponse> *)advertiseRefs:(NSString *)repository service:(NSString *)service;
+
+- (NSObject<HTTPResponse> *)receivePack:(NSString *)project;
+- (NSObject<HTTPResponse> *)uploadPack:(NSString *)project;
+
+- (NSData*) packetData:(NSString*) info;
+- (NSString*) prependPacketLine:(NSString*) info;
+
 - (BOOL)supportsPOST:(NSString *)path withSize:(UInt64)contentLength;
+
 
 @end
