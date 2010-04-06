@@ -156,51 +156,37 @@
 	return [super preprocessResponse:response];
 }
 
-- (NSData*) packetData:(NSString*) info
-{
-	return [[self prependPacketLine:info] dataUsingEncoding:NSUTF8StringEncoding];
-}
 
-#define hex(a) (hexchar[(a) & 15])
-- (NSString*) prependPacketLine:(NSString*) info
-{
-	static char hexchar[] = "0123456789abcdef";
-	uint8_t buffer[5];
-
-	unsigned int length = [info length] + 4;
-	
-	buffer[0] = hex(length >> 12);
-	buffer[1] = hex(length >> 8);
-	buffer[2] = hex(length >> 4);
-	buffer[3] = hex(length);
-	
-	NSLog(@"write len [%c %c %c %c]", buffer[0], buffer[1], buffer[2], buffer[3]);
-
-	NSData *data=[[NSData alloc] initWithBytes:buffer length:4];
-	NSString *lenStr = [[NSString alloc] 
-						initWithData:data
-						encoding:NSUTF8StringEncoding];
-
-	return [NSString stringWithFormat:@"%@%@", lenStr, info];
-}
 
 - (NSObject<HTTPResponse> *)receivePack:(NSString *)project
 {
 	NSLog(@"ACCEPT PACKFILE");
-	if (requestContentLength > 0)  // Process POST data
-	{
-		NSLog(@"processing post data: %i", requestContentLength);
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"NewFileUploaded" object:nil];
-		requestContentLength = 0;		
-	}
+
+	NSData *requestData = [(NSData *)CFHTTPMessageCopySerializedMessage(request) autorelease];
+	NSString *requestStr = [[[NSString alloc] initWithData:requestData encoding:NSASCIIStringEncoding] autorelease];
+	NSLog(@"\n=== Request ====================\n%@\n================================", requestStr);
+	
+	NSLog(@"file offset: %d", [packfile offsetInFile]);
+	[packfile seekToFileOffset:0];
+	NSData* pktlen = [packfile readDataOfLength:4];
+	NSLog(@"pkt-ln: %@", pktlen);
+	
+	// readRefs
+	// readPack
+	// writeRefs
+	// send updated refs (oks)
+	// packetFlush
+	
 	return nil;
 }
+
 
 - (NSObject<HTTPResponse> *)uploadPack:(NSString *)project
 {
 	NSLog(@"GENERATE AND TRANSFER PACKFILE");
 	return nil;
 }
+
 
 - (NSObject<HTTPResponse> *)plainResponse:(NSString *)project path:(NSString *)path
 {	
@@ -232,28 +218,59 @@
 }
 
 
+// TODO: Add random and move to temp?
+- (void)prepareForBodyWithSize:(UInt64)contentLength
+{
+	NSArray *paths;
+	NSString *tmpPath = @"";
+	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	tmpPath = [NSString stringWithString:[[paths objectAtIndex:0] stringByAppendingPathComponent:@"gitTmp"]];
+	NSString* packfilePath = [tmpPath stringByAppendingPathComponent:@"pack-upload.data"];
+	NSLog(@"PREPARE %@", packfilePath);
+	[[NSFileManager defaultManager] createFileAtPath: packfilePath
+											contents: nil attributes: nil];
+	packfile = [[NSFileHandle fileHandleForUpdatingAtPath:packfilePath] retain];
+	[packfile truncateFileAtOffset: 0];
+}
+
 /**
  * This method is called to handle data read from a POST.
  * The given data is part of the POST body.
 **/
 - (void)processDataChunk:(NSData *)postDataChunk
 {
-	// Override me to do something useful with a POST.
-	// If the post is small, such as a simple form, you may want to simply append the data to the request.
-	// If the post is big, such as a file upload, you may want to store the file to disk.
-	// 
-	// Remember: In order to support LARGE POST uploads, the data is read in chunks.
-	// This prevents a 50 MB upload from being stored in RAM.
-	// The size of the chunks are limited by the POST_CHUNKSIZE definition.
-	// Therefore, this method may be called multiple times for the same POST request.
-
-	NSLog(@"processPostDataChunk");
-	NSLog(@"data: %@", postDataChunk);
-
-	
-	if (requestContentLength > 0) {
-	} else {
-	}
+	[packfile writeData:postDataChunk];
 }
+
+
+#define hex(a) (hexchar[(a) & 15])
+- (NSString*) prependPacketLine:(NSString*) info
+{
+	static char hexchar[] = "0123456789abcdef";
+	uint8_t buffer[5];
+	
+	unsigned int length = [info length] + 4;
+	
+	buffer[0] = hex(length >> 12);
+	buffer[1] = hex(length >> 8);
+	buffer[2] = hex(length >> 4);
+	buffer[3] = hex(length);
+	
+	NSLog(@"write len [%c %c %c %c]", buffer[0], buffer[1], buffer[2], buffer[3]);
+	
+	NSData *data=[[NSData alloc] initWithBytes:buffer length:4];
+	NSString *lenStr = [[NSString alloc] 
+						initWithData:data
+						encoding:NSUTF8StringEncoding];
+	
+	return [NSString stringWithFormat:@"%@%@", lenStr, info];
+}
+
+
+- (NSData*) packetData:(NSString*) info
+{
+	return [[self prependPacketLine:info] dataUsingEncoding:NSUTF8StringEncoding];
+}
+
 
 @end

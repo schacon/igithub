@@ -36,10 +36,12 @@ Version: 1.5
 @synthesize tabBarController;
 @synthesize serverViewController;
 
+// creates [userDocs]/git path for git repos
 - (NSString *)getGitPath
 {
 	NSArray *paths;
 	NSString *gitPath = @"";
+	NSString *tmpPath = @"";
 	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	if ([paths count] > 0) {
 		gitPath = [NSString stringWithString:[[paths objectAtIndex:0] stringByAppendingPathComponent:@"git"]];
@@ -48,6 +50,12 @@ Version: 1.5
 		NSFileManager *fm = [NSFileManager defaultManager];
 		if (![fm fileExistsAtPath:gitPath isDirectory:&isDir] && isDir) {
 			[fm createDirectoryAtPath:gitPath attributes:nil];
+		}
+
+		tmpPath = [NSString stringWithString:[[paths objectAtIndex:0] stringByAppendingPathComponent:@"gitTmp"]];
+		
+		if (![fm fileExistsAtPath:tmpPath isDirectory:&isDir] && isDir) {
+			[fm createDirectoryAtPath:tmpPath attributes:nil];
 		}
 	}
 	return gitPath;

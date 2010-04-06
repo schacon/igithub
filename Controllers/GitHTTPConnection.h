@@ -10,6 +10,7 @@
 @interface GitHTTPConnection : HTTPConnection
 {
 	NSString* gitService;
+	NSFileHandle* packfile;
 }
 
 - (BOOL)isBrowseable:(NSString *)path;
@@ -23,7 +24,7 @@
 - (NSObject<HTTPResponse> *)receivePack:(NSString *)project;
 - (NSObject<HTTPResponse> *)uploadPack:(NSString *)project;
 
-- (NSData*) packetData:(NSString*) info;
 - (NSString*) prependPacketLine:(NSString*) info;
+- (NSData*) packetData:(NSString*) info;
 
 @end
