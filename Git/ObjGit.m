@@ -7,7 +7,7 @@
 #import "ObjGitObject.h"
 #import "ObjGitCommit.h"
 #import "ObjGitServerHandler.h"
-#import "NSDataCompression.h"
+#import "NSData+Compression.h"
 
 #include <CommonCrypto/CommonDigest.h>
 

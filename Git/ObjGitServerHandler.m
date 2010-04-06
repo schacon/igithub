@@ -22,7 +22,7 @@
 #import "ObjGitCommit.h"
 #import "ObjGitTree.h"
 #import "ObjGitServerHandler.h"
-#import "NSDataCompression.h"
+#import "NSData+Compression.h"
 #include <zlib.h>
 #include <CommonCrypto/CommonDigest.h>
 
