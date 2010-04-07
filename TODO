@@ -8,37 +8,18 @@ Main Features / TODO
 
 * browse local repos
 
-* uses file handles for writing / reading packs instead of memory
-   - library option?
-
-
 
 Cloning List
 ====================================
 
 * http smart server
   - push
-    - info/refs
-	  - dumb [SHA ref, etc]
-	  - smart 
-	    C: GET $GIT_URL/info/refs?service=git-upload-pack HTTP/1.0
-		  S: 200 OK
-		  S: Content-Type: application/x-git-upload-pack-advertisement
-		  S: Cache-Control: no-cache
-		  S:
-		  S: ....# service=git-upload-pack
-		  S: ....95dcfa3633004da0049d3d0fa03f80589cbcaf31 refs/heads/maint\0 multi_ack
-		  S: ....d049f6c27a2244e12041955e262a404c7faba355 refs/heads/master
-		  S: ....2cb58b79488a98d2721cea644875a8dd0026b115 refs/tags/v1.0
-		  S: ....a3c2e2402b99163d1d59756e5f207ae21cccba4c refs/tags/v1.0^{}
-		C: POST $GIT_URL/git-receive-pack HTTP/1.0
-		  C: ....0a53e9ddeaddad63ad106860237bbf53411d11a7 441b40d833fdfa93eb2908e52742248faf0ee993 refs/heads/maint\0 report-status
-		  C: 0000
-		  C: PACK....
-
-
+    - iteratively copy packfile data into temp packfile
+    - copy packfile tmp into checksum name
+	- generate packfile index
+	- update refs
+	- return report-status
   - fetch
-    -   
 
 * http smart client
 
