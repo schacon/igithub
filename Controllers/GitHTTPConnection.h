@@ -24,6 +24,12 @@
 - (NSObject<HTTPResponse> *)receivePack:(NSString *)project;
 - (NSObject<HTTPResponse> *)uploadPack:(NSString *)project;
 
+- (NSString *)gitRoot:(NSString *)project;
+- (NSString *)gitTmp:(NSString *)project;
+
+
+- (NSString *) packetReadLine;
+
 - (NSString*) prependPacketLine:(NSString*) info;
 - (NSData*) packetData:(NSString*) info;
 

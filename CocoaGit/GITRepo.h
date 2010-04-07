@@ -227,4 +227,6 @@
 
 - (BOOL) hasObject: (NSString *)sha1;
 
++ (void) initGitRepo:gitDirectory;
+
 @end

@@ -7,6 +7,10 @@
 #import "HTTPServer.h"
 #import "HTTPResponse.h"
 #import "AsyncSocket.h"
+#import "Git.h"
+#import "GITRepo.h"
+#import "GITPackFile.h"
+#import "GITPlaceholderPackFile.h"
 
 @implementation GitHTTPConnection
 
@@ -138,6 +142,22 @@
 	NSMutableData *outdata = [NSMutableData new];
 	NSString *serviceLine = [NSString stringWithFormat:@"# service=%@\n", gitService];
 
+	GITRepo	*gitRepo;
+	NSString* gitPath = [self gitRoot:repository];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:gitPath]) {
+		if([gitService isEqualToString:@"git-receive-pack"]) {
+			// create the repository when you first try to push to it, if it doesn't exist
+			NSLog(@"create repo");
+			NSLog(@"path: %@", gitPath);
+			[GITRepo initGitRepo:gitPath];
+		}
+	} else {
+		// TODO: initialize git repo for ref reading
+	}
+	gitRepo = [[GITRepo alloc] initWithRoot:gitPath];
+	NSLog(@"repo: %@", gitRepo);
+
+	// TODO: actually read from Git repository
 	[outdata appendData:[self packetData:serviceLine]];
 	[outdata appendData:[@"0000" dataUsingEncoding:NSUTF8StringEncoding]];
 	[outdata appendData:[self packetData:@"0000000000000000000000000000000000000000 capabilities^{}\0include_tag multi_ack_detailed"]];
@@ -167,17 +187,96 @@
 	NSLog(@"\n=== Request ====================\n%@\n================================", requestStr);
 	
 	NSLog(@"file offset: %d", [packfile offsetInFile]);
-	[packfile seekToFileOffset:0];
-	NSData* pktlen = [packfile readDataOfLength:4];
-	NSLog(@"pkt-ln: %@", pktlen);
+	if([packfile offsetInFile] == 0) {
+		return nil;
+	}
 	
-	// readRefs
+	GITRepo *repo = [[GITRepo alloc] initWithRoot:[self gitRoot:project]];
+	NSLog(@"repo: %@", repo);
+	
+	[packfile seekToFileOffset:0];
+
+	// read refs
+	NSMutableArray*			refsRead;
+	NSString *data, *old, *new, *refName, *cap, *refStuff;
+	NSLog(@"read refs");
+	data = [self packetReadLine];
+	NSMutableArray *refs = [[NSMutableArray alloc] init];
+	while([data length] > 0) {
+		
+		NSArray  *values  = [data componentsSeparatedByString:@" "];
+		old = [values objectAtIndex:0];
+		new = [values objectAtIndex:1];
+		refStuff = [values objectAtIndex:2];
+		
+		NSArray  *ref  = [refStuff componentsSeparatedByString:@"\0"];
+		refName = [ref objectAtIndex:0];
+		cap = nil;
+		if([ref count] > 1) 
+			cap = [ref objectAtIndex:1];
+		
+		NSArray *refData = [NSArray arrayWithObjects:old, new, refName, cap, nil];
+		[refs addObject:refData];  // save the refs for writing later
+		
+		/* DEBUGGING */
+		NSLog(@"ref: [%@ : %@ : %@]", old, new, refName, cap);
+		
+		data = [self packetReadLine];
+	}
+	refsRead = [NSArray arrayWithArray:refs];
+
 	// readPack
+	NSData *pack = [[packfile readDataToEndOfFile] autorelease];
+	NSLog(@"data: %@", pack);
+	GITPackFile *packf = [[GITPackFile alloc] initWithData:pack error:NULL];
+	NSLog(@"data: %@", packf);
+
+	NSLog(@"checksum : %@", [packf checksumString]);
+	NSLog(@"obj count: %@", [packf numberOfObjects]);
+	NSLog(@"done");
+	
+	// TODO: explode packfile if it's too small (number of objects)
+
 	// writeRefs
 	// send updated refs (oks)
 	// packetFlush
 	
 	return nil;
+}
+
+
+- (NSString *) packetReadLine {
+	NSData* length = [packfile readDataOfLength:4];
+	NSLog(@"%@", length);
+	uint8_t *linelen;
+	linelen = [length bytes];
+
+	int n;
+	int len = 0;
+	for (n = 0; n < 4; n++) {
+		unsigned char c = linelen[n];
+		len <<= 4;
+		if (c >= '0' && c <= '9') {
+			len += c - '0';
+			continue;
+		}
+		if (c >= 'a' && c <= 'f') {
+			len += c - 'a' + 10;
+			continue;
+		}
+		if (c >= 'A' && c <= 'F') {
+			len += c - 'A' + 10;
+			continue;
+		}
+		NSLog(@"protocol error: bad line length character");
+	}
+	
+	if (!len)
+		return @"";
+	
+	len -= 4;
+	NSData* data = [packfile readDataOfLength:len];	
+	return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 
@@ -221,16 +320,30 @@
 // TODO: Add random and move to temp?
 - (void)prepareForBodyWithSize:(UInt64)contentLength
 {
-	NSArray *paths;
-	NSString *tmpPath = @"";
-	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	tmpPath = [NSString stringWithString:[[paths objectAtIndex:0] stringByAppendingPathComponent:@"gitTmp"]];
-	NSString* packfilePath = [tmpPath stringByAppendingPathComponent:@"pack-upload.data"];
+	NSString* packfilePath = [self gitTmp:@"pack-upload.data"];
 	NSLog(@"PREPARE %@", packfilePath);
 	[[NSFileManager defaultManager] createFileAtPath: packfilePath
 											contents: nil attributes: nil];
 	packfile = [[NSFileHandle fileHandleForUpdatingAtPath:packfilePath] retain];
 	[packfile truncateFileAtOffset: 0];
+}
+
+- (NSString *)gitRoot:(NSString *)project;
+{
+	NSArray *paths;
+	NSString *tmpPath = @"";
+	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	tmpPath = [NSString stringWithString:[[paths objectAtIndex:0] stringByAppendingPathComponent:@"git"]];
+	return [tmpPath stringByAppendingPathComponent:project];
+}
+
+- (NSString *)gitTmp:(NSString *)project;
+{
+	NSArray *paths;
+	NSString *tmpPath = @"";
+	paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	tmpPath = [NSString stringWithString:[[paths objectAtIndex:0] stringByAppendingPathComponent:@"gitTmp"]];
+	return [tmpPath stringByAppendingPathComponent:project];
 }
 
 /**
